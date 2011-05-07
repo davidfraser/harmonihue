@@ -1,0 +1,76 @@
+<h1>Harmonic Difference</h1>
+<h2>Goal</h2>
+<p>The goal is to find a function `hd` that approximates the ''harmonic difference'' between two frequencies. The idea is that this result will be low for frequencies that are harmonies of each other, and high for frequencies that aren't. Different octaves of the same tone will have zero harmonic difference.</p>
+<p>This should work for the different notes of the scale - ideally it should also be a continuous function.</p>
+<h2>Constraints</h2>
+<p>This function is basically a metric between the points in the frequency space</p>
+<pre>hd(a, a) = 0                    # identity
+hd(a, 2a) = 0                   # octaves
+hd(a, b) = hd(b, a)             # commutative
+hd(a, b) = hd(a, 2b)            # octaves
+hd(a, b) + hd(b, c) &gt;= hd(a, c) # convex ?
+hd(a, b) = hd(ra, rb)           # transposition
+hd(a, 3a) = 1                   # perfect fifth set
+</pre>
+<h2>Geometry</h2>
+<p>The intervals 0 -&gt; 4 -&gt; 8 -&gt; 12=0 comprise an equilateral triangle - each side must be the same length.</p>
+<p>The intervals 0 -&gt; 3 -&gt; 6 -&gt; 9 -&gt; 12=0 comprise a perfect square - each side must be the same length.</p>
+<h2>Discrete Pythagorean</h2>
+<p>This should be fairly easily accomplished for the distinct points on the Pythagorean scale using the circle of fifths</p>
+<p>Here based on D:</p>
+<table><tr><td>Ab</td><td>-6</td></tr>
+<tr><td>Eb</td><td>-5</td></tr>
+<tr><td>Bb</td><td>-4</td></tr>
+<tr><td>F</td><td>-3</td></tr>
+<tr><td>C</td><td>-2</td></tr>
+<tr><td>G</td><td>-1</td></tr>
+<tr><td>D</td><td>0</td></tr>
+<tr><td>A</td><td>1</td></tr>
+<tr><td>E</td><td>2</td></tr>
+<tr><td>B</td><td>3</td></tr>
+<tr><td>F#</td><td>4</td></tr>
+<tr><td>C#</td><td>5</td></tr>
+<tr><td>G#</td><td>6</td></tr>
+</table>
+<p>We can then assign a calculation for the difference between any two points:</p>
+<table><tr><td>A</td><td>Bb</td><td>B</td><td>C</td><td>C#</td><td>D</td><td>Eb</td><td>E</td><td>F</td><td>F#</td><td>G</td><td>Ab</td></tr>
+<tr><td>7</td><td>2</td><td>9</td><td>4</td><td>11</td><td>6</td><td>1</td><td>8</td><td>3</td><td>10</td><td>5</td><td>0</td></tr>
+</table>
+<pre>hd(a, b) = p(a) - p(b) (mod 12)
+</pre>
+<p>This trivially satisfies the above equations. The question is whether/how it can successfully be extended to the real line.</p>
+<h3>Color Mapping</h3>
+<p>With this system we can map the [0, 12) space to the H value in a HSV colour space - that also wraps around</p>
+<h2>Ideal</h2>
+<p>When looking at the twelve-tone scale, we basically need to assign differences to 1, 2, 3, 4, 5, and 6 semitones</p>
+<p>The Pythagorean arrangement above sets up the following ordering on different intervals (measured in semitones):
+ d(5) &lt; d(2) &lt; d(3) &lt; d(4) &lt; d(1) &lt; d(6)</p>
+<p>Ideally the following ordering would be preferred, which corresponds to the relative dissonance of the intervals:
+ d(5) &lt; d(4) &lt; d(3) &lt; d(2) &lt; d(1) &lt; d(6)</p>
+<p>This basically consists in swapping the relative values of the 4-semitone and 2-semitone intervals.</p>
+<p>The challenge is whether this ordering is possible within some two- or three-dimensional colour space.</p>
+<p>A similar mapping of values around D:</p>
+<table><tr><td>Ab</td><td>-6</td></tr>
+<tr><td>Eb</td><td>-5</td></tr>
+<tr><td>C</td><td>-4</td></tr>
+<tr><td>F</td><td>-3</td></tr>
+<tr><td>Bb</td><td>-2</td></tr>
+<tr><td>G</td><td>-1</td></tr>
+<tr><td>D</td><td>0</td></tr>
+<tr><td>A</td><td>1</td></tr>
+<tr><td>F#</td><td>2</td></tr>
+<tr><td>B</td><td>3</td></tr>
+<tr><td>E</td><td>4</td></tr>
+<tr><td>C#</td><td>5</td></tr>
+<tr><td>G#</td><td>6</td></tr>
+</table>
+<p>Then if we map indexes on this basis:</p>
+<table><tr><td>A</td><td>Bb</td><td>B</td><td>C</td><td>C#</td><td>D</td><td>Eb</td><td>E</td><td>F</td><td>F#</td><td>G</td><td>Ab</td></tr>
+<tr><td>7</td><td>4</td><td>9</td><td>2</td><td>11</td><td>6</td><td>1</td><td>10</td><td>3</td><td>8</td><td>5</td><td>0</td></tr>
+</table>
+<p>We end up with this working nicely for intervals based on A and Eb, but not for the other spaces.</p>
+<p>So basically we're seeking:</p>
+<ul><li>A difference function <code>d</code> that will map an interval in semitones to a distance in a colour space
+</li><li>This should satisfy <code>d(5) &lt; d(4) &lt; d(3) &lt; d(2) &lt; d(1) &lt; d(6)</code>
+</li><li>A mapping <code>C</code> of the 12 tones to that colour space, such that the distance in the colour space between two tones <code>i</code> and <code>j</code> is equal to <code>d(C[i]-C[j] (mod 12))</code>
+</li></ul>
