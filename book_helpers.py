@@ -156,29 +156,38 @@ def torus_figure(ax, R=10.0, r=3.0, alpha=0.3, color='b'):
     polyc = ax.plot_surface(x, y, z,  rstride=9, cstride=9, color=color, alpha=alpha)
     polyc.set_linewidth(0)
     polyc.set_edgecolor(color)
-    ax.set_xlim3d((-R-r, R+r))
-    ax.set_ylim3d((-R-r, R+r))
-    ax.set_zlim3d((-R-r, R+r))
     return polyc
+
+def tone_spiral(ax, R, r, color='yellow'):
+    """Draws a tone spiral around a torus of given radii"""
+    u = numpy.linspace(0, 2*numpy.pi, 180)
+    v = numpy.linspace(0, 3*2*numpy.pi, 180)
+    x = (R + r*numpy.cos(v))*numpy.cos(u)
+    y = (R + r*numpy.cos(v))*numpy.sin(u)
+    z = r*numpy.sin(v)
+    return ax.plot(x, y, z, color='yellow')
+
+def tone_points(ax, R, r, color='orange'):
+    """Draws tone points and labels them around a torus of given radii"""
+    u = numpy.linspace(0, 2*numpy.pi, 12)
+    v = numpy.linspace(0, 3*2*numpy.pi, 12)
+    x = (R + r*numpy.cos(v))*numpy.cos(u)
+    y = (R + r*numpy.cos(v))*numpy.sin(u)
+    z = r*numpy.sin(v)
+    cycle = list(tone_cycle(7))
+    cycle.reverse()
+    for n, i in enumerate(cycle):
+        ax.text(x[n], y[n], z[n], tones[i])
+    return ax.scatter(x, y, z, color='orange')
 
 @figure_function
 def draw_torus(R=10.0, r=5.0):
     """Draws a torus"""
     fig = pyplot.figure(1, figsize=(10,10))
     ax = mplot3d.Axes3D(fig)
-    polyc = torus_figure(ax, R, r, color='red')
-    u = numpy.linspace(0, 2*numpy.pi, 180)
-    v = numpy.linspace(0, 3*2*numpy.pi, 180)
-    x = (R + r*numpy.cos(v))*numpy.cos(u)
-    y = (R + r*numpy.cos(v))*numpy.sin(u)
-    z = r*numpy.sin(v)
-    ax.plot(x, y, z, color='yellow')
-    x, y, z = x[::180/12], y[::180/12], z[::180/12]
-    ax.scatter(x, y, z, color='orange')
-    cycle = list(tone_cycle(7))
-    cycle.reverse()
-    for n, i in enumerate(cycle):
-        ax.text(x[n], y[n], z[n], tones[i])
+    torus = torus_figure(ax, R, r, color='red')
+    spiral = tone_spiral(ax, R, r, color='yellow')
+    points = tone_points(ax, R, r, color='orange')
     ax.set_xlim3d((-R-r, R+r))
     ax.set_ylim3d((-R-r, R+r))
     ax.set_zlim3d((-R-r, R+r))
