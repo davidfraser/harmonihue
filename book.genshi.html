@@ -1,8 +1,11 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- header_tag -->
-<html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:py="http://genshi.edgewall.org/">
 <head>
 <title>Harmonic Hues</title>
+<?python
+from book_helpers import *
+?>
 </head>
 <body>
 <h1>Harmonic Hues</h1>
@@ -52,11 +55,12 @@ hd(a, 3a) = 1                   # perfect fifth set
 <h4>Distance around the circle of fifths</h4>
 <p>Basing the difference directly on the distance between two points on the circle of fifths is simple; the first table contains tones in the order of the circle of fifths, the second on their standard pitch-based order:</p>
 <table>
-<tr><td>Ab</td><td>Eb</td><td>Bb</td><td>F</td><td>C</td><td>G</td><td>D</td><td>A</td><td>E</td><td>B</td><td>F#</td><td>C#</td><td>G#</td></tr>
-<tr><td>-6</td><td>-5</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr>
+<tr><td py:for="i in tone_cycle(7)">${tones[i]}</td></tr>
+<tr><td py:for="i in tone_cycle(7)">${i}</td></tr>
+<tr><td py:for="i in range(12)">${i}</td></tr>
 </table>
 <table>
-<tr><td>A</td><td>Bb</td><td>B</td><td>C</td><td>C#</td><td>D</td><td>Eb</td><td>E</td><td>F</td><td>F#</td><td>G</td><td>Ab</td></tr>
+<tr><td py:for="tone in tones">${tone}</td></tr>
 <tr><td>7</td><td>2</td><td>9</td><td>4</td><td>11</td><td>6</td><td>1</td><td>8</td><td>3</td><td>10</td><td>5</td><td>0</td></tr>
 </table>
 <p>The equation <tt>hd(a, b) = p(a) - p(b) (mod 12)</tt> then trivially satisfies some of the above conditions for harmonic difference.</p>

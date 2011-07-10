@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+
+import genshi.template
+import os
+import sys
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+loader = genshi.template.TemplateLoader([script_dir])
+for filename in sys.argv[1:]:
+    template = loader.load(filename)
+    sys.stdout.write(template.generate().render())
+
