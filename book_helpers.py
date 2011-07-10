@@ -6,6 +6,7 @@ import math
 import os
 import matplotlib
 from matplotlib import pyplot
+import decorator
 
 OUTPUT_DIR = "out"
 
@@ -23,13 +24,21 @@ def tone_cycle_pos(i, interval, start=0):
     c = list(tone_cycle(interval, start))
     return c.index(i)
 
-def draw_tone_circle(filename, interval, start=0):
+@decorator.decorator
+def figure_saver(f, *args, **kwargs):
+    filename = "_".join([f.__name__] + [repr(a) for a in args] + [repr(v) for k, v in sorted(kwargs.items())]) + ".png"
+    fig = f(*args, **kwargs)
+    fig.savefig(os.path.join(OUTPUT_DIR, filename))
+    pyplot.close()
+    return filename
+
+@figure_saver
+def draw_tone_circle(interval, start=0):
     fig = pyplot.figure(1, figsize=(2,2))
     ax = fig.add_axes([0.05, 0.05, 0.95, 0.95])
     cycle_7 = list(reversed([tones[i] for i in tone_cycle(7)]))
     pyplot.pie([1.0/12]*12, colors=[(0.7,)*3, (0.9,)*3], labels=cycle_7)
-    fig.savefig(os.path.join(OUTPUT_DIR, filename))
-    pyplot.close()
+    return fig
 
 def web_color(rgb):
     r, g, b = [int(i*255) for i in rgb]
@@ -41,7 +50,8 @@ def get_matplotlib_color(i):
     rgb = matplotlib.colors.colorConverter.to_rgb(default_colors[i])
     return web_color(rgb)
 
-def draw_tone_cycles(filename, interval):
+@figure_saver
+def draw_tone_cycles(interval):
     fig = pyplot.figure(1, figsize=(2,2))
     ax = fig.add_axes([0.2, 0.2, 0.7, 0.7], polar=True)
     cycle_7 = list(tone_cycle(7))
@@ -62,7 +72,6 @@ def draw_tone_cycles(filename, interval):
         ax.plot(theta, r)
     pyplot.grid(False)
     pyplot.axis('tight')
-    fig.savefig(os.path.join(OUTPUT_DIR, filename))
-    pyplot.close()
+    return fig
 
 
