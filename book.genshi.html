@@ -29,7 +29,7 @@ from book_helpers import *
 <h4>Notes on Pitch</h4>
 <p>The twelve-tone system was derived as a compromise between the natural harmonics generated on physical instruments, and the desire to be able to play in different keys without complicated tuning. This is all described well elsewhere.</p>
 
-<p><img src="${draw_even_temper()}"/></p>
+<p><img src="${draw_even_temper.save()}"/></p>
 
 <h3>Some Maths</h3>
 <p>Starting with that basic idea leads immediately to the following:</p>
@@ -55,7 +55,7 @@ hd(a, 3a) = 1                   # perfect fifth set
 <p>This can be displayed visually in a circle as follows:</p>
 <table>
 <tr>
-<td><img src="${draw_tone_circle(1)}"/></td><td><img src="${draw_tone_circle(7)}"/></td>
+<td><img src="${draw_tone_circle.save(1)}"/></td><td><img src="${draw_tone_circle.save(7)}"/></td>
 </tr></table>
 <p>Basing the difference directly on the distance between two points on the circle of fifths is simple; the first table contains tones in the order of the circle of fifths, the second on their standard pitch-based order:</p>
 <table style="border: 1px solid grey;">
@@ -85,10 +85,10 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 <tr><td style="width: 3em; color: ${offset_color};" py:for="i in tone_cycle(interval, offset)">${tones[i]}</td></tr></table>
 </td>
 <td>
-  <img src="${draw_tone_cycles(interval, 7)}"/>
+  <img src="${draw_tone_cycles.save(interval, 7)}"/>
 </td>
 <td>
-  <img src="${draw_tone_cycles(interval, 1)}"/>
+  <img src="${draw_tone_cycles.save(interval, 1)}"/>
 </td>
 </tr>
 </table>

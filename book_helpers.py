@@ -32,7 +32,20 @@ def figure_saver(f, *args, **kwargs):
     pyplot.close()
     return filename
 
-@figure_saver
+@decorator.decorator
+def figure_shower(f, *args, **kwargs):
+    fig = f(*args, **kwargs)
+    fig.show()
+    pyplot.show()
+    pyplot.close()
+
+def figure_function(f):
+    """decorator that adds .save and .show functions as attributes of the original function, whilst leaving it unchanged"""
+    f.save = figure_saver(f)
+    f.show = figure_shower(f)
+    return f
+
+@figure_function
 def draw_even_temper():
     """draws a diagram of the different rational frequences and how they related to the even-tempered twelve-tone scale"""
     fig = pyplot.figure(1, figsize=(8,4))
@@ -50,12 +63,7 @@ def draw_even_temper():
                 p += 1
             alpha = 1.0/(abs(j) + abs(p))
             ax.scatter([f], [i+1], alpha=alpha)
-            if p < 0:
-                ax.text(f, i+1, r"${%d^%d}{2^%d}$" % (quotient, j, -p), alpha=alpha)
-            elif p > 0:
-                ax.text(f, i+1, r"$\frac{%d^%d}{2^%d}$" % (quotient, j, p), alpha=alpha)
-            else:
-                ax.text(f, i+1, r"$%d^%d$" % (quotient, j), alpha=alpha)
+            ax.text(f, i+1, r"$%d^%d$" % (quotient, j), alpha=alpha)
     ax.scatter([2 ** (float(i)/12) for i in range(13)], [0]*13)
     ax.set_xlim((1, 2))
     return fig
@@ -76,7 +84,7 @@ def interval_circle_figure(base_interval):
     pyplot.axis('tight')
     return cycle, fig
 
-@figure_saver
+@figure_function
 def draw_tone_circle(interval):
     """A diagram of the circle of fifths/semitones with nothing drawn on it"""
     return interval_circle_figure(interval)[1]
@@ -99,7 +107,7 @@ def get_matplotlib_colors():
         colors_so_far.add(color)
     pyplot.close()
 
-@figure_saver
+@figure_function
 def draw_tone_cycles(interval, base_interval=7):
     base_cycle, fig = interval_circle_figure(base_interval)
     ax = fig.axes[0]
@@ -115,4 +123,13 @@ def draw_tone_cycles(interval, base_interval=7):
         ax.plot(theta, r)
     return fig
 
+if __name__ == "__main__":
+    import sys
+    L = locals()
+    for arg in sys.argv[1:]:
+        if arg in L and hasattr(L[arg], "show"):
+            print ("Running %s" % arg)
+            L[arg].show()
+        else:
+            print ("Could not find %s" % arg)
 
