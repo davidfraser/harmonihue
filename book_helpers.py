@@ -49,11 +49,12 @@ def figure_function(f):
 def draw_even_temper():
     """draws a diagram of the different rational frequences and how they related to the even-tempered twelve-tone scale"""
     fig = pyplot.figure(1, figsize=(8,4))
-    ax = fig.add_axes([0.2, 0.2, 0.8, 0.8])
+    ax = fig.add_axes([0.1, 0.1, 0.7, 0.7])
     ax.semilogx(basex=2)
-    for i, quotient in enumerate((2, 3, 5, 7, 9, 11, 13)):
+    bases = [2, 3, 5, 7, 9, 11, 13]
+    for i, base in enumerate(bases):
         for j in range(-12,12):
-            f = float(quotient) ** j
+            f = float(base) ** j
             p = 1
             while f < 1:
                 f *= 2
@@ -63,9 +64,15 @@ def draw_even_temper():
                 p += 1
             alpha = 1.0/(abs(j) + abs(p))
             ax.scatter([f], [i+1], alpha=alpha)
-            ax.text(f, i+1, r"$%d^%d$" % (quotient, j), alpha=alpha)
-    ax.scatter([2 ** (float(i)/12) for i in range(13)], [0]*13)
+            ax.text(f, i+1, r"$%d^{%d}$" % (base, j), alpha=math.sqrt(alpha))
+    ax.set_yticks(range(len(bases)+1))
+    ax.set_yticklabels(["even"] + [str(base) for base in bases])
+    even_temper = [2 ** (float(i)/12) for i in range(13)]
+    ax.scatter(even_temper, [0]*13)
+    ax.set_xticks(even_temper)
+    ax.set_xticklabels([str(i) for i in range(14)])
     ax.set_xlim((1, 2))
+    ax.xaxis.grid(True)
     return fig
 
 def interval_circle_figure(base_interval):
