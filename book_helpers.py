@@ -44,11 +44,19 @@ def web_color(rgb):
     r, g, b = [int(i*255) for i in rgb]
     return "#%02x%02x%02x" % (r, g, b)
 
-def get_matplotlib_color(i):
-    """Returns the default matplotlib color for the ith line drawn in a figure in html form"""
-    default_colors = ['b','g','r','c','m','y','k']
-    rgb = matplotlib.colors.colorConverter.to_rgb(default_colors[i])
-    return web_color(rgb)
+def get_matplotlib_colors():
+    """Returns the default matplotlib colors for the lines drawn in a figure in html form"""
+    fig = pyplot.figure(1)
+    ax = fig.add_axes([0, 0, 1, 1])
+    colors_so_far = set()
+    while True:
+        line = ax.plot([1], [1])[0]
+        color = line.get_color()
+        if color in colors_so_far:
+            break
+        yield web_color(matplotlib.colors.colorConverter.to_rgb(color))
+        colors_so_far.add(color)
+    pyplot.close()
 
 @figure_saver
 def draw_tone_cycles(interval):
