@@ -54,14 +54,15 @@ hd(a, 3a) = 1                   # perfect fifth set
 
 <h4>Distance around the circle of fifths</h4>
 <p>Basing the difference directly on the distance between two points on the circle of fifths is simple; the first table contains tones in the order of the circle of fifths, the second on their standard pitch-based order:</p>
-<table>
-<tr><td py:for="i in tone_cycle(7)">${tones[i]}</td></tr>
-<tr><td py:for="i in tone_cycle(7)">${i}</td></tr>
-<tr><td py:for="i in range(12)">${i}</td></tr>
+<table style="border: 1px solid grey;">
+<tr><th style="text-align: left;">Tone</th><td style="width: 3em;" py:for="i in tone_cycle(7)"><tt>${tones[i]}</tt></td></tr>
+<tr><th style="text-align: left;">Index</th><td py:for="i in tone_cycle(7)"><tt>${i}</tt></td></tr>
+<tr><th style="text-align: left;">Position</th><td py:for="i in range(12)"><tt>${i}</tt></td></tr>
 </table>
-<table>
-<tr><td py:for="tone in tones">${tone}</td></tr>
-<tr><td>7</td><td>2</td><td>9</td><td>4</td><td>11</td><td>6</td><td>1</td><td>8</td><td>3</td><td>10</td><td>5</td><td>0</td></tr>
+<table style="border: 1px solid grey;">
+<tr><th style="text-align: left;">Tone</th><td style="width: 3em;" py:for="tone in tones"><tt>${tone}</tt></td></tr>
+<tr><th style="text-align: left;">Index</th><td py:for="i in range(12)"><tt>${i}</tt></td></tr>
+<tr><th style="text-align: left;">Position</th><td py:for="i in range(12)"><tt>${tone_cycle_pos(i, 7)}</tt></td></tr>
 </table>
 <p>The equation <tt>hd(a, b) = p(a) - p(b) (mod 12)</tt> then trivially satisfies some of the above conditions for harmonic difference.</p>
 
