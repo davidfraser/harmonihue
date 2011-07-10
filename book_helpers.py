@@ -6,11 +6,24 @@ import math
 import os
 import matplotlib
 from matplotlib import pyplot
+from mpl_toolkits import mplot3d
+import numpy
 import decorator
 
 OUTPUT_DIR = "out"
 
 tones = ["A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab"]
+
+def mod_delta(a, b, m):
+    """simple function for calculating the delta of two numbers in a modulo space"""
+    d = (a - b)
+    while d < 0:
+        d += m
+    while d > m:
+        d -= m
+    if d > m/2:
+        d = m - d
+    return d
 
 def tone_cycle(interval, start=0):
     current = start
@@ -131,6 +144,29 @@ def draw_tone_cycles(interval, base_interval=7):
         theta = [s*i for i in cycle]
         r = [1 for i in cycle]
         ax.plot(theta, r)
+    return fig
+
+def torus_figure(R=10.0, r=3.0, alpha=0.3):
+    """Returns a (fig, ax, polyc) triple for a torus plot"""
+    fig = pyplot.figure(1, figsize=(10,10))
+    ax = mplot3d.Axes3D(fig)
+    u = numpy.linspace(0, 2*numpy.pi, 180)
+    v = numpy.linspace(0, 2*numpy.pi, 180)
+    x = numpy.outer(R + r*numpy.cos(v), numpy.cos(u))
+    y = numpy.outer(R + r*numpy.cos(v), numpy.sin(u))
+    z = numpy.outer(r*numpy.sin(v), numpy.ones(numpy.size(u)))
+    polyc = ax.plot_surface(x, y, z,  rstride=9, cstride=9, color='b', alpha=alpha)
+    polyc.set_linewidth(0)
+    polyc.set_edgecolor('b')
+    ax.set_xlim3d((-R-r, R+r))
+    ax.set_ylim3d((-R-r, R+r))
+    ax.set_zlim3d((-R-r, R+r))
+    return fig, ax, polyc
+
+@figure_function
+def draw_torus():
+    """Draws a torus"""
+    fig, ax, polyc = torus_figure()
     return fig
 
 if __name__ == "__main__":

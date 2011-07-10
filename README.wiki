@@ -10,5 +10,7 @@ Compiling the book requires:
 * Python, and the following Python modules:
 ** genshi
 ** matplotlib (with a backend that can produce image files)
+** mplot_toolkits.mplot3d
+** numpy
 ** decorator
 
