@@ -61,6 +61,7 @@ def draw_tone_cycles(interval):
     ax.set_xticklabels([tones[i] for i in cycle_7])
     ax.set_yticks([])
     ax.set_rmax(1)
+    ax.set_frame_on(False)
     for offset in range(0, (interval if (12 % interval == 0) else 1)):
         tone_indexes = list(tone_cycle(interval, offset))
         cycle = [cycle_7.index(i) for i in tone_indexes]
