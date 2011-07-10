@@ -53,7 +53,7 @@ def draw_even_temper():
     ax.semilogx(basex=2)
     bases = [2, 3, 5, 7, 11]
     for i, base in enumerate(bases):
-        for j in [0, 1] if (base == 2) else range(-6,6):
+        for j in [0, 1] if (base == 2) else range(-6,7):
             f = float(base) ** j
             p = 1
             while f < 1:
