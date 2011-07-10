@@ -164,9 +164,18 @@ def torus_figure(R=10.0, r=3.0, alpha=0.3):
     return fig, ax, polyc
 
 @figure_function
-def draw_torus():
+def draw_torus(R=10.0, r=3.0):
     """Draws a torus"""
-    fig, ax, polyc = torus_figure()
+    fig, ax, polyc = torus_figure(R, r)
+    u = numpy.linspace(0, 2*numpy.pi, 180)
+    v = numpy.linspace(0, 3*2*numpy.pi, 180)
+    x = (R + r*numpy.cos(v))*numpy.cos(u)
+    y = (R + r*numpy.cos(v))*numpy.sin(u)
+    z = r*numpy.sin(v)
+    ax.plot(x, y, z, color='pink')
+    ax.set_xlim3d((-R-r, R+r))
+    ax.set_ylim3d((-R-r, R+r))
+    ax.set_zlim3d((-R-r, R+r))
     return fig
 
 if __name__ == "__main__":
