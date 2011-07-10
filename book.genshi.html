@@ -152,6 +152,25 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
     </tr>
 </table>
 
+<h4>Geometry of scales and chords</h4>
+<p>Scales and chords also show interesting patterns on the circle of fifths (All these are based on A as the root note, but transposition is just a rotation operation so generates the same shapes):</p>
+<table>
+    <tr><th>Scale</th><th>Notes</th><th>Semitones</th><th>Fifths</th><th>Torus</th></tr>
+    <tr py:for="scale_name, scale_intervals in sorted(scales.items())">
+        <th>${scale_name.title()}</th>
+        <td><span py:strip="True" py:for="interval in scale_intervals">${tones[0+interval]} </span></td>
+        <td>
+          <img src="${draw_scale.save(scale_name, 1)}"/>
+        </td>
+        <td>
+          <img src="${draw_scale.save(scale_name, 7)}"/>
+        </td>
+        <td>
+          <img src="${draw_torus_scale.save(scale_name)}"/>
+        </td>
+    </tr>
+</table>
+
 <h3>Colour Mapping</h3>
 <p>The simplest way to map such a cyclical system to the colour space is to use the concept of "hue" (which corresponds to the most basic concept of colours - the rainbow is the most classic example of this, and it forms a cyclical space). Using the HSV colour space ...</p>
 <p>If we treat the pitch-space and the colour-space as two spaces, with a mapping between them, we can define this mathematically.</p>
