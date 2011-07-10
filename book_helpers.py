@@ -4,8 +4,8 @@
 
 import math
 import os
-import pylab
-import matplotlib.pyplot
+import matplotlib
+from matplotlib import pyplot
 
 OUTPUT_DIR = "out"
 
@@ -24,12 +24,12 @@ def tone_cycle_pos(i, interval, start=0):
     return c.index(i)
 
 def draw_tone_circle(filename, interval, start=0):
-    pylab.figure(1, figsize=(2,2))
-    ax = pylab.axes([0.05, 0.05, 0.95, 0.95])
+    fig = pyplot.figure(1, figsize=(2,2))
+    ax = fig.add_axes([0.05, 0.05, 0.95, 0.95])
     cycle_7 = list(reversed([tones[i] for i in tone_cycle(7)]))
-    pylab.pie([1.0/12]*12, colors=[(0.7,)*3, (0.9,)*3], labels=cycle_7)
-    pylab.savefig(os.path.join(OUTPUT_DIR, filename))
-    pylab.close()
+    pyplot.pie([1.0/12]*12, colors=[(0.7,)*3, (0.9,)*3], labels=cycle_7)
+    fig.savefig(os.path.join(OUTPUT_DIR, filename))
+    pyplot.close()
 
 def web_color(rgb):
     r, g, b = [int(i*255) for i in rgb]
@@ -42,8 +42,8 @@ def get_matplotlib_color(i):
     return web_color(rgb)
 
 def draw_tone_cycles(filename, interval):
-    fig = matplotlib.pyplot.figure(1, figsize=(2,2))
-    ax = fig.add_axes([0.2, 0.2, 0.8, 0.8], polar=True)
+    fig = pyplot.figure(1, figsize=(2,2))
+    ax = fig.add_axes([0.2, 0.2, 0.7, 0.7], polar=True)
     cycle_7 = list(tone_cycle(7))
     cycle_7.reverse()
     s = 2*math.pi/12
@@ -60,9 +60,9 @@ def draw_tone_cycles(filename, interval):
         theta = [s*i for i in cycle]
         r = [1 for i in cycle]
         ax.plot(theta, r)
-    matplotlib.pyplot.grid(False)
-    matplotlib.pyplot.axis('tight')
+    pyplot.grid(False)
+    pyplot.axis('tight')
     fig.savefig(os.path.join(OUTPUT_DIR, filename))
-    matplotlib.pyplot.close()
+    pyplot.close()
 
 
