@@ -182,6 +182,7 @@ def draw_torus(R=10.0, r=5.0):
     ax.set_xlim3d((-R-r, R+r))
     ax.set_ylim3d((-R-r, R+r))
     ax.set_zlim3d((-R-r, R+r))
+    ax.view_init(40, 40)
     return fig
 
 if __name__ == "__main__":
