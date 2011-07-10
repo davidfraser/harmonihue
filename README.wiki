@@ -1,0 +1,14 @@
+= harmonihue =
+
+== Book ==
+
+The main current focus is `book.genshi.html`. This is the source template for the documentation. It comprises of a [http://www.genshi.org/ genshi] template for a HTML page that is then processed by lilypond to include musical score. The Python code used to generate the diagrams and tables in the template is located in `book_helpers.py`. To compile the book run `./make-book` - the book is then produced in `out/book.html` with associated files that are required.
+
+=== Dependencies ===
+
+Compiling the book requires:
+* Python, and the following Python modules:
+** genshi
+** matplotlib (with a backend that can produce image files)
+** decorator
+
