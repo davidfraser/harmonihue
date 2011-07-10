@@ -35,18 +35,29 @@ def figure_saver(f, *args, **kwargs):
 @figure_saver
 def draw_even_temper():
     """draws a diagram of the different rational frequences and how they related to the even-tempered twelve-tone scale"""
-    fig = pyplot.figure(1, figsize=(8,2))
+    fig = pyplot.figure(1, figsize=(8,4))
     ax = fig.add_axes([0.2, 0.2, 0.8, 0.8])
     ax.semilogx(basex=2)
     for i, quotient in enumerate((2, 3, 5, 7, 9, 11, 13)):
-        for j in range(20):
-            f = float(quotient ** j)
+        for j in range(-12,12):
+            f = float(quotient) ** j
             p = 1
+            while f < 1:
+                f *= 2
+                p -= 1
             while f > 2:
                 f /= 2
                 p += 1
-            ax.scatter([f], [i+1], label=("%d^%d/2^%d" % (quotient, j, p)), alpha=1.0/(j + p))
+            alpha = 1.0/(abs(j) + abs(p))
+            ax.scatter([f], [i+1], alpha=alpha)
+            if p < 0:
+                ax.text(f, i+1, r"${%d^%d}{2^%d}$" % (quotient, j, -p), alpha=alpha)
+            elif p > 0:
+                ax.text(f, i+1, r"$\frac{%d^%d}{2^%d}$" % (quotient, j, p), alpha=alpha)
+            else:
+                ax.text(f, i+1, r"$%d^%d$" % (quotient, j), alpha=alpha)
     ax.scatter([2 ** (float(i)/12) for i in range(13)], [0]*13)
+    ax.set_xlim((1, 2))
     return fig
 
 def interval_circle_figure(base_interval):
