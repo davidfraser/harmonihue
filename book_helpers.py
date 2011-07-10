@@ -175,6 +175,10 @@ def draw_torus(R=10.0, r=5.0):
     ax.plot(x, y, z, color='yellow')
     x, y, z = x[::180/12], y[::180/12], z[::180/12]
     ax.scatter(x, y, z, color='orange')
+    cycle = list(tone_cycle(7))
+    cycle.reverse()
+    for n, i in enumerate(cycle):
+        ax.text(x[n], y[n], z[n], tones[i])
     ax.set_xlim3d((-R-r, R+r))
     ax.set_ylim3d((-R-r, R+r))
     ax.set_zlim3d((-R-r, R+r))
