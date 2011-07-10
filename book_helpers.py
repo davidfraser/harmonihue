@@ -33,10 +33,14 @@ def draw_tone_circle(filename, interval, start=0):
 
 def draw_tone_cycles(filename, interval):
     fig = matplotlib.pyplot.figure(1, figsize=(2,2))
-    ax = fig.add_axes([0.05, 0.05, 0.95, 0.95], polar=True)
+    ax = fig.add_axes([0.2, 0.2, 0.8, 0.8], polar=True)
     cycle_7 = list(tone_cycle(7))
     cycle_7.reverse()
     s = 2*math.pi/12
+    ax.set_xticks([s*i for i in range(12)])
+    ax.set_xticklabels([tones[i] for i in cycle_7])
+    ax.set_yticks([])
+    ax.set_rmax(1)
     for offset in range(0, (interval if (12 % interval == 0) else 1)):
         tone_indexes = list(tone_cycle(interval, offset))
         cycle = [cycle_7.index(i) for i in tone_indexes]
@@ -46,9 +50,8 @@ def draw_tone_cycles(filename, interval):
         theta = [s*i for i in cycle]
         r = [1 for i in cycle]
         ax.plot(theta, r)
-    ax.set_rmax(1)
     matplotlib.pyplot.grid(False)
-    matplotlib.pyplot.axis('off')
+    matplotlib.pyplot.axis('tight')
     fig.savefig(os.path.join(OUTPUT_DIR, filename))
     matplotlib.pyplot.close()
 
