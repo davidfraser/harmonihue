@@ -119,7 +119,7 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 
 <p>In order to modify the order whilst still retaining the same basic structure, let's consider an extension of the circle to a <i>torus</i> (or doughnut shape in 3 dimensions). The aim is to increase the distance for the whole tone (the second repeat of the perfect fifth), whilst reducing it for the major third and minor third (the third and fourth repeats). It's important that the whole structure needs to preserve the symmetries we discovered above.</p>
 
-<p>Define the distance between two points on the surface of the torus as the sum of their radial distance from the center (&theta;) and their radial distance from the original circle (&gamma;).</p>
+<p>Define the distance between two points on the surface of the torus as the sum of the differences of their radial angle from the center (&theta;) and their radial angle from the original circle (&gamma;). Then we want to maximize &gamma; for <tt>d(2)</tt> whilst minimizing it for <tt>d(4)</tt> and <tt>d(3)</tt>. This can be accomplished by arranging the points in a spiral around the "ring" of the doughnut so that a whole tone results in moving to the opposite side, but another whole tone comes back to the same &gamma;-position - which implies that each semitone will move 90&deg; around the ring.</p>
 
 <h3>Colour Mapping</h3>
 <p>The simplest way to map such a cyclical system to the colour space is to use the concept of "hue" (which corresponds to the most basic concept of colours - the rainbow is the most classic example of this, and it forms a cyclical space). Using the HSV colour space ...</p>
