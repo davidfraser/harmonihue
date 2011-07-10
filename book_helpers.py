@@ -146,10 +146,8 @@ def draw_tone_cycles(interval, base_interval=7):
         ax.plot(theta, r)
     return fig
 
-def torus_figure(R=10.0, r=3.0, alpha=0.3, color='b'):
-    """Returns a (fig, ax, polyc) triple for a torus plot"""
-    fig = pyplot.figure(1, figsize=(10,10))
-    ax = mplot3d.Axes3D(fig)
+def torus_figure(ax, R=10.0, r=3.0, alpha=0.3, color='b'):
+    """Returns a polyc for a torus plot on the given (3d) axes"""
     u = numpy.linspace(0, 2*numpy.pi, 180)
     v = numpy.linspace(0, 2*numpy.pi, 180)
     x = numpy.outer(R + r*numpy.cos(v), numpy.cos(u))
@@ -161,12 +159,14 @@ def torus_figure(R=10.0, r=3.0, alpha=0.3, color='b'):
     ax.set_xlim3d((-R-r, R+r))
     ax.set_ylim3d((-R-r, R+r))
     ax.set_zlim3d((-R-r, R+r))
-    return fig, ax, polyc
+    return polyc
 
 @figure_function
 def draw_torus(R=10.0, r=5.0):
     """Draws a torus"""
-    fig, ax, polyc = torus_figure(R, r, color='red')
+    fig = pyplot.figure(1, figsize=(10,10))
+    ax = mplot3d.Axes3D(fig)
+    polyc = torus_figure(ax, R, r, color='red')
     u = numpy.linspace(0, 2*numpy.pi, 180)
     v = numpy.linspace(0, 3*2*numpy.pi, 180)
     x = (R + r*numpy.cos(v))*numpy.cos(u)
