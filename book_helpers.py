@@ -32,13 +32,26 @@ def figure_saver(f, *args, **kwargs):
     pyplot.close()
     return filename
 
-@figure_saver
-def draw_tone_circle(interval, start=0):
+def circle_of_fifths_figure():
+    """sets up a matplotlib figure with a polar plot based on the circle of fifths"""
     fig = pyplot.figure(1, figsize=(2,2))
-    ax = fig.add_axes([0.05, 0.05, 0.95, 0.95])
-    cycle_7 = list(reversed([tones[i] for i in tone_cycle(7)]))
-    pyplot.pie([1.0/12]*12, colors=[(0.7,)*3, (0.9,)*3], labels=cycle_7)
+    ax = fig.add_axes([0.2, 0.2, 0.7, 0.7], polar=True)
+    cycle_7 = list(tone_cycle(7))
+    cycle_7.reverse()
+    s = 2*math.pi/12
+    ax.set_xticks([s*i for i in range(12)])
+    ax.set_xticklabels([tones[i] for i in cycle_7])
+    ax.set_yticks([])
+    ax.set_rmax(1)
+    ax.set_frame_on(False)
+    pyplot.grid(False)
+    pyplot.axis('tight')
     return fig
+
+@figure_saver
+def draw_tone_circle():
+    """A diagram of the circle of fifths with nothing drawn on it"""
+    return circle_of_fifths_figure()
 
 def web_color(rgb):
     r, g, b = [int(i*255) for i in rgb]
@@ -60,16 +73,11 @@ def get_matplotlib_colors():
 
 @figure_saver
 def draw_tone_cycles(interval):
-    fig = pyplot.figure(1, figsize=(2,2))
-    ax = fig.add_axes([0.2, 0.2, 0.7, 0.7], polar=True)
+    fig = circle_of_fifths_figure()
+    ax = fig.axes[0]
     cycle_7 = list(tone_cycle(7))
     cycle_7.reverse()
     s = 2*math.pi/12
-    ax.set_xticks([s*i for i in range(12)])
-    ax.set_xticklabels([tones[i] for i in cycle_7])
-    ax.set_yticks([])
-    ax.set_rmax(1)
-    ax.set_frame_on(False)
     for offset in range(0, (interval if (12 % interval == 0) else 1)):
         tone_indexes = list(tone_cycle(interval, offset))
         cycle = [cycle_7.index(i) for i in tone_indexes]
@@ -79,8 +87,6 @@ def draw_tone_cycles(interval):
         theta = [s*i for i in cycle]
         r = [1 for i in cycle]
         ax.plot(theta, r)
-    pyplot.grid(False)
-    pyplot.axis('tight')
     return fig
 
 
