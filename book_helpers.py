@@ -158,7 +158,7 @@ def torus_figure(ax, R=10.0, r=3.0, alpha=0.3, color='b'):
     polyc.set_edgecolor(color)
     return polyc
 
-def tone_spiral(ax, R, r, color='yellow'):
+def torus_tone_spiral(ax, R, r, color='yellow'):
     """Draws a tone spiral around a torus of given radii"""
     u = numpy.linspace(0, 2*numpy.pi, 180)
     v = numpy.linspace(0, 3*2*numpy.pi, 180)
@@ -167,18 +167,40 @@ def tone_spiral(ax, R, r, color='yellow'):
     z = r*numpy.sin(v)
     return ax.plot(x, y, z, color='yellow')
 
-def tone_points(ax, R, r, color='orange'):
-    """Draws tone points and labels them around a torus of given radii"""
+def torus_tone_coords(R, r):
+    """Returns the x, y, z vectors for 12 tone points around the torus"""
     u = numpy.linspace(0, 2*numpy.pi, 12)
     v = numpy.linspace(0, 3*2*numpy.pi, 12)
     x = (R + r*numpy.cos(v))*numpy.cos(u)
     y = (R + r*numpy.cos(v))*numpy.sin(u)
     z = r*numpy.sin(v)
+    return x, y, z
+
+def torus_tone_points(ax, R, r, color='orange'):
+    """Draws tone points and labels them around a torus of given radii"""
+    x, y, z = torus_tone_coords(R, r)
     cycle = list(tone_cycle(7))
     cycle.reverse()
     for n, i in enumerate(cycle):
         ax.text(x[n], y[n], z[n], tones[i])
     return ax.scatter(x, y, z, color='orange')
+
+def torus_tone_cycles(ax, interval, R, r, base_interval=7):
+    """Draws straight lines between tone points to show interval cycles on torus"""
+    base_cycle = list(tone_cycle(base_interval))
+    base_cycle.reverse()
+    x, y, z = torus_tone_coords(R, r)
+    s = 2*math.pi/12
+    for offset in range(0, (interval if (12 % interval == 0) else 1)):
+        tone_indexes = list(tone_cycle(interval, offset))
+        cycle = [base_cycle.index(i) for i in tone_indexes]
+        cycle.reverse()
+        l = len(cycle)
+        cycle.append(cycle[0])
+        xc = [x[c] for c in cycle]
+        yc = [y[c] for c in cycle]
+        zc = [z[c] for c in cycle]
+        ax.plot(xc, yc, zc)
 
 @figure_function
 def draw_torus(R=10.0, r=5.0):
@@ -186,8 +208,23 @@ def draw_torus(R=10.0, r=5.0):
     fig = pyplot.figure(1, figsize=(10,10))
     ax = mplot3d.Axes3D(fig)
     torus = torus_figure(ax, R, r, color='red')
-    spiral = tone_spiral(ax, R, r, color='yellow')
-    points = tone_points(ax, R, r, color='orange')
+    spiral = torus_tone_spiral(ax, R, r, color='yellow')
+    points = torus_tone_points(ax, R, r, color='orange')
+    ax.set_xlim3d((-R-r, R+r))
+    ax.set_ylim3d((-R-r, R+r))
+    ax.set_zlim3d((-R-r, R+r))
+    ax.view_init(40, 40)
+    return fig
+
+@figure_function
+def draw_torus_tone_cycles(interval=3, R=10.0, r=5.0):
+    """Draws a torus with the given tone cycles on"""
+    fig = pyplot.figure(1, figsize=(5,5))
+    ax = mplot3d.Axes3D(fig)
+    torus = torus_figure(ax, R, r, color='red')
+    spiral = torus_tone_spiral(ax, R, r, color='yellow')
+    points = torus_tone_points(ax, R, r, color='orange')
+    torus_tone_cycles(ax, interval, R, r)
     ax.set_xlim3d((-R-r, R+r))
     ax.set_ylim3d((-R-r, R+r))
     ax.set_zlim3d((-R-r, R+r))
