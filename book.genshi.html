@@ -76,8 +76,8 @@ draw_tone_circle('tone_circle_7.png', 7)
 <tr py:for="interval in range(1, 7)">
 <th>${interval}<span py:strip="True" py:if="interval != 6"> / ${12-interval}</span></th>
 <td>
-<table py:for="offset in range(0, (interval if (12 % interval == 0) else 1))">
-<tr><td style="width: 3em;" py:for="i in tone_cycle(interval, offset)">${tones[i]}</td></tr></table>
+<table py:for="offset in range(0, (interval if (12 % interval == 0) else 1))" py:with="offset_color=get_matplotlib_color(offset)">
+<tr><td style="width: 3em; color: ${offset_color};" py:for="i in tone_cycle(interval, offset)">${tones[i]}</td></tr></table>
 </td>
 <td>
   <img src="tone_cycles_${interval}.png">

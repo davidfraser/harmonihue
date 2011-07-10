@@ -31,6 +31,16 @@ def draw_tone_circle(filename, interval, start=0):
     pylab.savefig(os.path.join(OUTPUT_DIR, filename))
     pylab.close()
 
+def web_color(rgb):
+    r, g, b = [int(i*255) for i in rgb]
+    return "#%02x%02x%02x" % (r, g, b)
+
+def get_matplotlib_color(i):
+    """Returns the default matplotlib color for the ith line drawn in a figure in html form"""
+    default_colors = ['b','g','r','c','m','y','k']
+    rgb = matplotlib.colors.colorConverter.to_rgb(default_colors[i])
+    return web_color(rgb)
+
 def draw_tone_cycles(filename, interval):
     fig = matplotlib.pyplot.figure(1, figsize=(2,2))
     ax = fig.add_axes([0.2, 0.2, 0.8, 0.8], polar=True)
