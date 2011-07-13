@@ -139,6 +139,16 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 
 <p>Colours can also be modeled using "spaces". Two simple ways are through the RGB colour space (which comprises the levels of red, green, and blue light that our eyes perceive), and through the HSV colour space which rather uses the dimensions of Hue, Saturation and Value. A more sophisticated kind of colour space is represented by the CIELAB colour space, in which the distance between points in the space corresponds directly to the perceived difference between the colours to a human viewer.</p>
 
+<h4>Topology</h4>
+
+<p>The colour spaces are generally three-dimensional (given the three different kinds of cone cell receptors in the human eye, with sensitivies to different ranges of frequences), and are approximately cylindrical, spherical or cubic depending on the nature of the model:<br/>
+  <ul>
+    <li>The <b>RGB</b> colour space is <b>cubic</b> - each component varies from 0 to 1</li>
+    <li>The <b>HSV</b> colour space is <b>cylindrical</b> - the Hue component is circular (cycling around the colours of the rainbow), the Saturation value is usually taken from the center of the cylinder to the edge, and the Value parameter as from the bottom to the top of the cylinder</li>
+    <li>The <b>Lab</b> colour space can handle colours outside the human range of perception; the range of values meaningful to humans corresponds to a kind of distorted cube</li>
+  </ul>
+</p>
+
 <h3>Colour Mapping</h3>
 <p>The simplest way to map such a cyclical system to the colour space is to use the concept of "hue" (which corresponds to the most basic concept of colours - the rainbow is the most classic example of this, and it forms a cyclical space). Using the HSV colour space ...</p>
 <p>If we treat the pitch-space and the colour-space as two spaces, with a mapping between them, we can define this mathematically.</p>
