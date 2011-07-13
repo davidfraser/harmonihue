@@ -311,7 +311,21 @@ def draw_torus(R=10.0, r=5.0, figsize=(10,10)):
     spiral = torus_tone_spiral(ax, R, r, color='yellow')
     # stop the spiral from using the first default color
     ax._get_lines._clear_color_cycle()
-    points = torus_tone_points(ax, R, r, color='orange')
+    fig.points = torus_tone_points(ax, R, r, color='orange')
+    set_torus_view(ax, R, r)
+    return fig
+
+@figure_function
+def draw_hue_torus_tone_circle(R=10.0, r=5.0):
+    """draws the hues of the color map onto the torus"""
+    fig = draw_torus(R, r, figsize=(5,5))
+    fig.points.remove()
+    x, y, z = torus_tone_coords(R, r)
+    ax = fig.axes[0]
+    hue_cycle = list(tone_cycle(7))
+    hues = get_spread_hues()
+    for interval, hue in enumerate(hues):
+        ax.scatter([x[interval]], [y[interval]], [z[interval]], s=100, color=hue)
     set_torus_view(ax, R, r)
     return fig
 
