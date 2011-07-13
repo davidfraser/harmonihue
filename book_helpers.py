@@ -142,12 +142,21 @@ def get_spread_hues(count=12, saturation=1.0, value=0.8):
     """returns an evenly spread number of hues, with the given saturation and value, as rgb"""
     return [colorsys.hsv_to_rgb(float(count*2 - i)/count, saturation, value) for i in range(count)]
 
+def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
+    """returns a hsv color range corresponding roughly to the torus, as rgb"""
+    M_s, M_h = 0.1875, 0.1875
+    hsv_map = {0: (saturation+M_s, value+M_h), 1: (saturation+M_s, value-M_h), 2: (saturation-M_s, value-M_h), 3: (saturation-M_s, value+M_h)}
+    return [colorsys.hsv_to_rgb(float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1]) for i in range(count)]
+
 @figure_function
-def draw_hue_tone_circle(interval=7):
+def draw_hue_tone_circle(interval=7, hues_function=None):
     """A diagram of the circle of fifths/semitones with hue mapped on it"""
     cycle, fig = interval_circle_figure(interval)
     hue_cycle = list(tone_cycle(7))
-    hues = get_spread_hues()
+    if hues_function is None:
+        hues = get_spread_hues()
+    else:
+        hues = hues_function()
     ax = fig.axes[0]
     theta = numpy.arange(numpy.pi/12, 2*numpy.pi + numpy.pi/12, 2*numpy.pi/12)
     radii = [1 for i in range(12)]
