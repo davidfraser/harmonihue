@@ -280,14 +280,14 @@ def set_torus_view(ax, R, r):
     ax.set_xlim3d((-R-r, R+r))
     ax.set_ylim3d((-R-r, R+r))
     ax.set_zlim3d((-R-r, R+r))
-    ax.view_init(40, 40)
+    ax.view_init(50, 30) 
 
 @figure_function
 def draw_torus(R=10.0, r=5.0, figsize=(10,10)):
     """Draws a torus"""
     fig = pyplot.figure(1, figsize=figsize)
     ax = mplot3d.Axes3D(fig)
-    torus = torus_figure(ax, R, r, color='red')
+    torus = torus_figure(ax, R, r, color='grey')
     spiral = torus_tone_spiral(ax, R, r, color='yellow')
     points = torus_tone_points(ax, R, r, color='orange')
     set_torus_view(ax, R, r)
