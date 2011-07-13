@@ -158,10 +158,28 @@ def draw_hue_tone_circle(interval=7, hues_function=None):
     else:
         hues = hues_function()
     ax = fig.axes[0]
-    theta = numpy.arange(numpy.pi/12, 2*numpy.pi + numpy.pi/12, 2*numpy.pi/12)
+    gamma = numpy.arange(numpy.pi/12, 2*numpy.pi + numpy.pi/12, 2*numpy.pi/12)
     radii = [1 for i in range(12)]
     width = 2*numpy.pi/12
-    bars = ax.bar(theta, radii, width=width, bottom=0.0)
+    bars = ax.bar(gamma, radii, width=width, bottom=0.0)
+    for interval, bar in zip(cycle, bars):
+        bar.set_facecolor(hues[hue_cycle.index(interval)])
+    return fig
+
+@figure_function
+def draw_hue_rotation_tone_circle(interval=7):
+    """A diagram of the circle of fifths/semitones with hue mapped on it and rotation displayed with a superimposed line"""
+    cycle, fig = interval_circle_figure(interval)
+    hue_cycle = list(tone_cycle(7))
+    hues = get_spread_hues()
+    ax = fig.axes[0]
+    gamma = numpy.arange(numpy.pi/12, 2*numpy.pi + numpy.pi/12, 2*numpy.pi/12)
+    radii = [0.75 for i in range(12)]
+    width = 2*numpy.pi/12
+    scatter_gamma = numpy.arange(0, 2*numpy.pi, 2*numpy.pi/12)
+    for i in range(12):
+        ax.scatter(scatter_gamma[-i], 0.875, color=hues[i], s=100, marker=(2, 0, (i%4)*numpy.pi/4), linewidths=(4))
+    bars = ax.bar(gamma, radii, width=width, bottom=0.0)
     for interval, bar in zip(cycle, bars):
         bar.set_facecolor(hues[hue_cycle.index(interval)])
     return fig
@@ -187,9 +205,9 @@ def get_matplotlib_colors():
 def tone_sequence(ax, base_sequence, sequence):
     s = 2*math.pi/12
     l = len(sequence)
-    theta = [s*base_sequence.index(i) for i in sequence]
+    gamma = [s*base_sequence.index(i) for i in sequence]
     r = [1 for i in sequence]
-    ax.plot(theta, r)
+    ax.plot(gamma, r)
     return ax
 
 @figure_function
@@ -219,9 +237,9 @@ def draw_tone_cycles(interval, base_interval=7):
         cycle.reverse()
         l = len(cycle)
         cycle.append(cycle[0])
-        theta = [s*i for i in cycle]
+        gamma = [s*i for i in cycle]
         r = [1 for i in cycle]
-        ax.plot(theta, r)
+        ax.plot(gamma, r)
     return fig
 
 def torus_figure(ax, R=10.0, r=3.0, alpha=0.3, color='b'):

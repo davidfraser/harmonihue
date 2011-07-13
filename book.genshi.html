@@ -164,7 +164,7 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
  <tr><td><img src="${draw_hue_tone_circle.save(7)}"/></td><td><img src="${draw_hue_tone_circle.save(1)}"/></td><td><img src="${draw_hue_torus_tone_circle.save()}"/></td></tr>
 </table>
 
-<p>This has some obvious advantages - related tones seem fairly similar etc - along with the logical disadvantage that since the circle of fifths maps major seconds as closer than major thirds, these differences come through in the color space.</p>
+<p>This has some obvious advantages - related tones seem fairly similar etc - along with the logical disadvantage that since the circle of fifths maps major seconds as closer than major thirds, these differences come through in the color space. This is because we are mapping the &gamma; angle in the torus to hue, but doing nothing with the &theta; angle.</p>
 
 <h4>Adding another circular dimension</h4>
 
@@ -172,5 +172,11 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
  <img src="${draw_hue_tone_circle.save(hues_function=get_hsv_circle_hues)}"/>
 </p>
 
+<p>Another possibility is to use something other than color to represent the &theta; angle in the torus; a simple example is an actual rotation of a line</p>
+
+<table>
+ <tr><th>Fifths Order</th></tr>
+ <tr><td><img src="${draw_hue_rotation_tone_circle.save(7)}"/></td></tr>
+</table>
 </body>
 </html>
