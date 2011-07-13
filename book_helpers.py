@@ -122,7 +122,6 @@ def interval_circle_figure(base_interval):
     fig = pyplot.figure(1, figsize=(2,2))
     ax = fig.add_axes([0.1, 0.1, 0.8, 0.8], polar=True)
     cycle = list(tone_cycle(base_interval))
-    cycle.reverse()
     s = 2*math.pi/12
     ax.set_xticks([s*i for i in range(12)])
     ax.set_xticklabels([tones[i] for i in cycle])
@@ -149,7 +148,7 @@ def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
     return [colorsys.hsv_to_rgb(float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1]) for i in range(count)]
 
 @figure_function
-def draw_hue_tone_circle(interval=7, hues_function=None):
+def draw_hue_tone_circle(interval=7, hues_function=None, radius=1):
     """A diagram of the circle of fifths/semitones with hue mapped on it"""
     cycle, fig = interval_circle_figure(interval)
     hue_cycle = list(tone_cycle(7))
@@ -158,30 +157,26 @@ def draw_hue_tone_circle(interval=7, hues_function=None):
     else:
         hues = hues_function()
     ax = fig.axes[0]
-    gamma = numpy.arange(numpy.pi/12, 2*numpy.pi + numpy.pi/12, 2*numpy.pi/12)
-    radii = [1 for i in range(12)]
+    gamma = numpy.arange(-numpy.pi/12, 2*numpy.pi - numpy.pi/12, 2*numpy.pi/12)
+    radii = [radius for i in range(12)]
     width = 2*numpy.pi/12
     bars = ax.bar(gamma, radii, width=width, bottom=0.0)
-    for interval, bar in zip(cycle, bars):
-        bar.set_facecolor(hues[hue_cycle.index(interval)])
+    for i, bar in zip(cycle, bars):
+        bar.set_facecolor(hues[hue_cycle.index(i)])
     return fig
 
 @figure_function
 def draw_hue_rotation_tone_circle(interval=7):
     """A diagram of the circle of fifths/semitones with hue mapped on it and rotation displayed with a superimposed line"""
-    cycle, fig = interval_circle_figure(interval)
+    fig = draw_hue_tone_circle(interval, radius=0.75)
+    cycle = list(tone_cycle(interval))
     hue_cycle = list(tone_cycle(7))
     hues = get_spread_hues()
     ax = fig.axes[0]
-    gamma = numpy.arange(numpy.pi/12, 2*numpy.pi + numpy.pi/12, 2*numpy.pi/12)
-    radii = [0.75 for i in range(12)]
-    width = 2*numpy.pi/12
     scatter_gamma = numpy.arange(0, 2*numpy.pi, 2*numpy.pi/12)
     for i in range(12):
-        ax.scatter(scatter_gamma[-i], 0.875, color=hues[i], s=100, marker=(2, 0, (i%4)*numpy.pi/4), linewidths=(4))
-    bars = ax.bar(gamma, radii, width=width, bottom=0.0)
-    for interval, bar in zip(cycle, bars):
-        bar.set_facecolor(hues[hue_cycle.index(interval)])
+        hue_i = hue_cycle.index(cycle[i])
+        ax.scatter(scatter_gamma[i], 0.875, color=hues[hue_i], s=100, marker=(2, 0, (hue_i%4)*numpy.pi/4), linewidths=(4))
     return fig
 
 def web_color(rgb):
