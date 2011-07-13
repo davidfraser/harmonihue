@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:py="http://genshi.edgewall.org/">
+<head>
+<title>Harmonic Hues</title>
+<?python
+from book_helpers import *
+MATPLOTLIB_COLORS = list(get_matplotlib_colors())
+?>
+</head>
+<body>
+
+<h4>Geometry of scales and chords</h4>
+<p>Scales and chords show interesting patterns on the circle of fifths (All these are based on A as the root note, but transposition is just a rotation operation so generates the same shapes):</p>
+<table>
+    <tr><th>Scale</th><th>Notes</th><th>Semitones</th><th>Fifths</th><th>Torus</th></tr>
+    <tr py:for="scale_name, scale_intervals in sorted(scales.items())">
+        <th>${scale_name.title()}</th>
+        <td><span py:strip="True" py:for="interval in scale_intervals">${tones[0+interval]} </span></td>
+        <td>
+          <img src="${draw_scale.save(scale_name, 1)}"/>
+        </td>
+        <td>
+          <img src="${draw_scale.save(scale_name, 7)}"/>
+        </td>
+        <td>
+          <img src="${draw_torus_scale.save(scale_name)}"/>
+        </td>
+    </tr>
+    <tr><th>Chord</th><th>Notes</th><th>Semitones</th><th>Fifths</th><th>Torus</th></tr>
+    <tr py:for="chord_name, chord_intervals in sorted(chords.items())">
+        <th>${chord_name.title()}</th>
+        <td><span py:strip="True" py:for="interval in chord_intervals">${tones[0+interval]} </span></td>
+        <td>
+          <img src="${draw_chord.save(chord_name, 1)}"/>
+        </td>
+        <td>
+          <img src="${draw_chord.save(chord_name, 7)}"/>
+        </td>
+        <td>
+          <img src="${draw_torus_chord.save(chord_name)}"/>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
+

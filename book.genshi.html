@@ -133,57 +133,7 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
     </tr>
 </table>
 
-<p>Let's look at the geometrical patterns we saw earlier in this space:</p>
-
-<table>
-    <tr><th>Interval</th><th>Cycle</th><th>Circle of fifths</th><th>Torus Projection</th></tr>
-    <tr py:for="interval in range(1, 7)">
-        <th>${interval}<span py:strip="True" py:if="interval != 6"> / ${12-interval}</span></th>
-        <td>
-        <table py:for="offset in range(0, (interval if (12 % interval == 0) else 1))" py:with="offset_color=MATPLOTLIB_COLORS[offset]">
-        <tr><td style="width: 3em; color: ${offset_color};" py:for="i in tone_cycle(interval, offset)">${tones[i]}</td></tr></table>
-        </td>
-        <td>
-          <img src="${draw_tone_cycles.save(interval, 7)}"/>
-        </td>
-        <td>
-          <img src="${draw_torus_tone_cycles.save(interval)}"/>
-        </td>
-    </tr>
-</table>
-
-<h4>Geometry of scales and chords</h4>
-<p>Scales and chords also show interesting patterns on the circle of fifths (All these are based on A as the root note, but transposition is just a rotation operation so generates the same shapes):</p>
-<table>
-    <tr><th>Scale</th><th>Notes</th><th>Semitones</th><th>Fifths</th><th>Torus</th></tr>
-    <tr py:for="scale_name, scale_intervals in sorted(scales.items())">
-        <th>${scale_name.title()}</th>
-        <td><span py:strip="True" py:for="interval in scale_intervals">${tones[0+interval]} </span></td>
-        <td>
-          <img src="${draw_scale.save(scale_name, 1)}"/>
-        </td>
-        <td>
-          <img src="${draw_scale.save(scale_name, 7)}"/>
-        </td>
-        <td>
-          <img src="${draw_torus_scale.save(scale_name)}"/>
-        </td>
-    </tr>
-    <tr><th>Chord</th><th>Notes</th><th>Semitones</th><th>Fifths</th><th>Torus</th></tr>
-    <tr py:for="chord_name, chord_intervals in sorted(chords.items())">
-        <th>${chord_name.title()}</th>
-        <td><span py:strip="True" py:for="interval in chord_intervals">${tones[0+interval]} </span></td>
-        <td>
-          <img src="${draw_chord.save(chord_name, 1)}"/>
-        </td>
-        <td>
-          <img src="${draw_chord.save(chord_name, 7)}"/>
-        </td>
-        <td>
-          <img src="${draw_torus_chord.save(chord_name)}"/>
-        </td>
-    </tr>
-</table>
+<p>The geometrical patterns we saw earlier for tone cycles can also be <a href="torus-tone-geometry.html">visualized on this torus projection</a>. Scales and chords also show <a href="scale-diagrams.html">interesting patterns on the circle of fifths</a> in either space.</p>
 
 <h3>Colour Theory</h3>
 
