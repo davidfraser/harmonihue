@@ -218,8 +218,8 @@ def torus_tone_spiral(ax, R, r, color='yellow'):
 
 def torus_tone_coords(R, r):
     """Returns the x, y, z vectors for 12 tone points around the torus"""
-    u = numpy.linspace(0, 2*numpy.pi, 12)
-    v = numpy.linspace(0, 3*2*numpy.pi, 12)
+    u = numpy.linspace(0, 2*numpy.pi, 13)[:12]
+    v = numpy.linspace(0, 3*2*numpy.pi, 13)[:12]
     x = (R + r*numpy.cos(v))*numpy.cos(u)
     y = (R + r*numpy.cos(v))*numpy.sin(u)
     z = r*numpy.sin(v)
