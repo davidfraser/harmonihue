@@ -150,8 +150,10 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 </p>
 
 <h3>Colour Mapping</h3>
-<p>The simplest way to map such a cyclical system to the colour space is to use the concept of "hue" (which corresponds to the most basic concept of colours - the rainbow is the most classic example of this, and it forms a cyclical space). Using the HSV colour space ...</p>
-<p>If we treat the pitch-space and the colour-space as two spaces, with a mapping between them, we can define this mathematically.</p>
+
+<p>We have so far two spaces for <a title="You model tones with one L - they're not very L-ish">modeling</a> tones (the circle of fifths, and the more complex but satisfying torus space), and a number of spaces for <a title="You model colours with two Ls. Really">modelling</a> colours. Let's now consider appropriate mappings between the spaces.</p>
+
+<p>The key feature of the tone spaces is that they are cyclical. The only colour space that is directly cyclical is the HSV colour space, in the hue dimension. As a first attempt, let's map the circle of fifths onto the hue dimension whilst keeping saturation and value fixed.</p>
 
 </body>
 </html>
