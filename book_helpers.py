@@ -18,6 +18,17 @@ scales = {
     'minor': [0, 2, 3, 5, 7, 8, 11],
     'pentatonic': [0, 2, 4, 7, 9],
 }
+chords = {
+    'maj': [0, 4, 7],
+    'min': [0, 3, 7],
+    'maj7': [0, 4, 7, 11],
+    '7': [0, 4, 7, 10],
+    'min7': [0, 3, 7, 10],
+    'sus4': [0, 5, 7],
+    'sus2': [0, 2, 7],
+    'dim': [0, 3, 6],
+    'aug': [0, 4, 8],
+}
 
 def mod_delta(a, b, m):
     """simple function for calculating the delta of two numbers in a modulo space"""
@@ -45,9 +56,9 @@ def tone_cycle_pos(i, interval, start=0):
 def filename_part(x):
     if isinstance(x, basestring):
         return x
-    if isinstance(x, (int, float, None)):
+    if isinstance(x, (int, float, type(None))):
         return repr(x)
-    if isinstance(x, list):
+    if isinstance(x, (list, tuple)):
         return "_".join(filename_part(e) for e in x)
     return repr(x)
 
@@ -162,6 +173,13 @@ def draw_scale(scale_name, base_interval=7):
     return fig
 
 @figure_function
+def draw_chord(chord_name, base_interval=7):
+    base_cycle, fig = interval_circle_figure(base_interval)
+    ax = fig.axes[0]
+    tone_sequence(ax, base_cycle, chords[chord_name])
+    return fig
+
+@figure_function
 def draw_tone_cycles(interval, base_interval=7):
     base_cycle, fig = interval_circle_figure(base_interval)
     ax = fig.axes[0]
@@ -229,6 +247,18 @@ def torus_scale(ax, scale_name, R, r, base_interval=7):
     zc = [z[base_cycle.index(i)] for i in scale]
     ax.plot(xc, yc, zc)
 
+def torus_chord(ax, chord_name, R, r, base_interval=7):
+    """Draws straight lines between tone points to show chords on torus"""
+    base_cycle = list(tone_cycle(base_interval))
+    base_cycle.reverse()
+    x, y, z = torus_tone_coords(R, r)
+    s = 2*math.pi/12
+    chord = chords[chord_name]
+    xc = [x[base_cycle.index(i)] for i in chord]
+    yc = [y[base_cycle.index(i)] for i in chord]
+    zc = [z[base_cycle.index(i)] for i in chord]
+    ax.plot(xc, yc, zc)
+
 def torus_tone_cycles(ax, interval, R, r, base_interval=7):
     """Draws straight lines between tone points to show interval cycles on torus"""
     base_cycle = list(tone_cycle(base_interval))
@@ -246,48 +276,48 @@ def torus_tone_cycles(ax, interval, R, r, base_interval=7):
         zc = [z[c] for c in cycle]
         ax.plot(xc, yc, zc)
 
-@figure_function
-def draw_torus(R=10.0, r=5.0):
-    """Draws a torus"""
-    fig = pyplot.figure(1, figsize=(10,10))
-    ax = mplot3d.Axes3D(fig)
-    torus = torus_figure(ax, R, r, color='red')
-    spiral = torus_tone_spiral(ax, R, r, color='yellow')
-    points = torus_tone_points(ax, R, r, color='orange')
+def set_torus_view(ax, R, r):
     ax.set_xlim3d((-R-r, R+r))
     ax.set_ylim3d((-R-r, R+r))
     ax.set_zlim3d((-R-r, R+r))
     ax.view_init(40, 40)
+
+@figure_function
+def draw_torus(R=10.0, r=5.0, figsize=(10,10)):
+    """Draws a torus"""
+    fig = pyplot.figure(1, figsize=figsize)
+    ax = mplot3d.Axes3D(fig)
+    torus = torus_figure(ax, R, r, color='red')
+    spiral = torus_tone_spiral(ax, R, r, color='yellow')
+    points = torus_tone_points(ax, R, r, color='orange')
+    set_torus_view(ax, R, r)
     return fig
 
 @figure_function
 def draw_torus_tone_cycles(interval=3, R=10.0, r=5.0):
     """Draws a torus with the given tone cycles on"""
-    fig = pyplot.figure(1, figsize=(5,5))
-    ax = mplot3d.Axes3D(fig)
-    torus = torus_figure(ax, R, r, color='red')
-    spiral = torus_tone_spiral(ax, R, r, color='yellow')
-    points = torus_tone_points(ax, R, r, color='orange')
+    fig = draw_torus(R, r, figsize=(5,5))
+    ax = fig.axes[0]
     torus_tone_cycles(ax, interval, R, r)
-    ax.set_xlim3d((-R-r, R+r))
-    ax.set_ylim3d((-R-r, R+r))
-    ax.set_zlim3d((-R-r, R+r))
-    ax.view_init(40, 40)
+    set_torus_view(ax, R, r)
     return fig
 
 @figure_function
 def draw_torus_scale(scale_name, R=10.0, r=5.0):
     """Draws a torus with the given tone cycles on"""
-    fig = pyplot.figure(1, figsize=(5,5))
-    ax = mplot3d.Axes3D(fig)
-    torus = torus_figure(ax, R, r, color='red')
-    spiral = torus_tone_spiral(ax, R, r, color='yellow')
-    points = torus_tone_points(ax, R, r, color='orange')
+    fig = draw_torus(R, r, figsize=(5,5))
+    ax = fig.axes[0]
     torus_scale(ax, scale_name, R, r)
-    ax.set_xlim3d((-R-r, R+r))
-    ax.set_ylim3d((-R-r, R+r))
-    ax.set_zlim3d((-R-r, R+r))
-    ax.view_init(40, 40)
+    set_torus_view(ax, R, r)
+    return fig
+
+@figure_function
+def draw_torus_chord(chord_name, R=10.0, r=5.0):
+    """Draws a torus with the given tone cycles on"""
+    fig = draw_torus(R, r, figsize=(5,5))
+    ax = fig.axes[0]
+    torus_chord(ax, chord_name, R, r)
+    set_torus_view(ax, R, r)
     return fig
 
 if __name__ == "__main__":

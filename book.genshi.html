@@ -169,6 +169,20 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
           <img src="${draw_torus_scale.save(scale_name)}"/>
         </td>
     </tr>
+    <tr><th>Chord</th><th>Notes</th><th>Semitones</th><th>Fifths</th><th>Torus</th></tr>
+    <tr py:for="chord_name, chord_intervals in sorted(chords.items())">
+        <th>${chord_name.title()}</th>
+        <td><span py:strip="True" py:for="interval in chord_intervals">${tones[0+interval]} </span></td>
+        <td>
+          <img src="${draw_chord.save(chord_name, 1)}"/>
+        </td>
+        <td>
+          <img src="${draw_chord.save(chord_name, 7)}"/>
+        </td>
+        <td>
+          <img src="${draw_torus_chord.save(chord_name)}"/>
+        </td>
+    </tr>
 </table>
 
 <h3>Colour Mapping</h3>
