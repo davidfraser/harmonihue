@@ -2,6 +2,7 @@
 
 """A set of functions that are called from within book.genshi.html"""
 
+import colorsys
 import math
 import os
 import matplotlib
@@ -136,6 +137,25 @@ def interval_circle_figure(base_interval):
 def draw_tone_circle(interval):
     """A diagram of the circle of fifths/semitones with nothing drawn on it"""
     return interval_circle_figure(interval)[1]
+
+def get_spread_hues(count=12, saturation=1.0, value=0.8):
+    """returns an evenly spread number of hues, with the given saturation and value, as rgb"""
+    return [colorsys.hsv_to_rgb(float(count*2 - i)/count, saturation, value) for i in range(count)]
+
+@figure_function
+def draw_hue_tone_circle(interval=7):
+    """A diagram of the circle of fifths/semitones with hue mapped on it"""
+    cycle, fig = interval_circle_figure(interval)
+    hue_cycle = list(tone_cycle(7))
+    hues = get_spread_hues()
+    ax = fig.axes[0]
+    theta = numpy.arange(numpy.pi/12, 2*numpy.pi + numpy.pi/12, 2*numpy.pi/12)
+    radii = [1 for i in range(12)]
+    width = 2*numpy.pi/12
+    bars = ax.bar(theta, radii, width=width, bottom=0.0)
+    for interval, bar in zip(cycle, bars):
+        bar.set_facecolor(hues[hue_cycle.index(interval)])
+    return fig
 
 def web_color(rgb):
     r, g, b = [int(i*255) for i in rgb]
