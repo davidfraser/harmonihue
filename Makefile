@@ -1,4 +1,4 @@
-all: out/book.html out/scale-diagrams.html out/torus-tone-geometry.html
+all: out/book.html out/scale-diagrams.html out/torus-tone-geometry.html out/color-theory.html out/musical-maths.html out/color-mapping.html
 
 clean:
 	rm -fr out
