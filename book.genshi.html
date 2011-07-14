@@ -178,5 +178,22 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
  <tr><th>Fifths Order</th><th>Semitone Order</th></tr>
  <tr><td><img src="${draw_hue_rotation_tone_circle.save(7)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1)}"/></td></tr>
 </table>
+
+<h4>Using the Lab color space</h4>
+
+<p>Visually, there is still an issue though - the greens are not as spread out as the other colors and are harder to distinguish. This can be addressed by using the Lab color space to select colors with the same saturation and value, but with hue values chosen to optimize the distance in that space:<br/>
+ <img src="${draw_lab_hues.save()}"/>
+</p>
+
+<p>These selections then result in more easily differentiated hues:<br/>
+ <img src="${draw_hue_tone_circle.save(hues_function=get_lab_spread_hues)}"/>
+</p>
+
+<p>Combining this with the rotation we had earlier gives the following:</p>
+<table>
+ <tr><th>Fifths Order</th><th>Semitone Order</th></tr>
+ <tr><td><img src="${draw_hue_rotation_tone_circle.save(7, hues_function=get_lab_spread_hues)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1, hues_function=get_lab_spread_hues)}"/></td></tr>
+</table>
+
 </body>
 </html>

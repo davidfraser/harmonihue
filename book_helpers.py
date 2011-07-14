@@ -5,6 +5,7 @@
 import colorsys
 import math
 import os
+import grapefruit
 import matplotlib
 from matplotlib import pyplot
 from mpl_toolkits import mplot3d
@@ -141,6 +142,45 @@ def get_spread_hues(count=12, saturation=1.0, value=0.8):
     """returns an evenly spread number of hues, with the given saturation and value, as rgb"""
     return [colorsys.hsv_to_rgb(float(count*2 - i)/count, saturation, value) for i in range(count)]
 
+def get_lab_spread_colors(count=12, saturation=1.0, value=0.8):
+    """returns an evenly spread number of colors around the lab color space, with the given saturation and value, as rgb"""
+    points = count*10
+    hues = numpy.linspace(360.0, 0.0, points)
+    colors = numpy.array([grapefruit.Color.NewFromHsv(hue, saturation, value) for hue in hues])
+    labs = numpy.array([color.lab for color in colors])
+    lab_delta = numpy.diff(labs, axis=0) * points * (1, 50, 50) # scale up a and b so the ranges are comparable
+    lab_delta_norm = numpy.apply_along_axis(numpy.linalg.norm, 1, lab_delta)
+    desired_deltas = numpy.linspace(0.0, numpy.sum(lab_delta_norm), count+1)[:count]
+    cum_delta_norm = numpy.cumsum(lab_delta_norm, axis=0)
+    desired_indexes = [numpy.abs(cum_delta_norm-delta).argmin() for delta in desired_deltas]
+    desired_colors = colors.take(desired_indexes)
+    return desired_colors
+
+def get_lab_spread_hues(count=12, saturation=1.0, value=0.8):
+    """returns an evenly spread number of hues around the lab color space, with the given saturation and value, as rgb"""
+    return [color.rgb for color in get_lab_spread_colors(count, saturation, value)]
+
+@figure_function
+def draw_lab_hues(R=10.0, r=5.0, figsize=(5,5)):
+    """Draws the spread hue values in the Lab color space"""
+    fig = pyplot.figure(1, figsize=figsize)
+    ax = mplot3d.Axes3D(fig)
+    count = 12
+    points = count * 10
+    saturation, value = 1.0, 0.8
+    hues = numpy.linspace(360.0, 0.0, points)
+    colors = [grapefruit.Color.NewFromHsv(hue, saturation, value) for hue in hues]
+    lab_colors = numpy.array([color.lab for color in colors])
+    rgb_colors = [color.rgb for color in colors]
+    L, a, b = lab_colors.transpose()
+    ax.scatter(L, a, b, s=20, color=rgb_colors)
+    new_colors = get_lab_spread_colors()
+    lab_colors = numpy.array([color.lab for color in new_colors])
+    rgb_colors = [color.rgb for color in new_colors]
+    L, a, b = lab_colors.transpose()
+    ax.scatter(L, a, b, s=200, color=rgb_colors)
+    return fig
+
 def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
     """returns a hsv color range corresponding roughly to the torus, as rgb"""
     M_s, M_h = 0.1875, 0.1875
@@ -166,9 +206,9 @@ def draw_hue_tone_circle(interval=7, hues_function=None, radius=1):
     return fig
 
 @figure_function
-def draw_hue_rotation_tone_circle(interval=7):
+def draw_hue_rotation_tone_circle(interval=7, hues_function=None):
     """A diagram of the circle of fifths/semitones with hue mapped on it and rotation displayed with a superimposed line"""
-    fig = draw_hue_tone_circle(interval, radius=0.75)
+    fig = draw_hue_tone_circle(interval, hues_function=hues_function, radius=0.75)
     cycle = list(tone_cycle(interval))
     hue_cycle = list(tone_cycle(7))
     hues = get_spread_hues()
