@@ -1,4 +1,4 @@
-all: out/book.html out/scale-diagrams.html out/torus-tone-geometry.html out/color-theory.html out/musical-maths.html out/color-mapping.html
+all: $(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html)) $(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
 
 clean:
 	rm -fr out
@@ -10,11 +10,14 @@ out/:
 tmp/:
 	mkdir tmp
 
+.PRECIOUS: tmp/%.html
+
+out/%.html: %.genshi.html book_helpers.py tmp/
+	./genshify $< > $@
+
 out/%.html: tmp/%.html out/
 	lilypond-book --output out/ $<
 
-.PRECIOUS: tmp/%.html
-
-tmp/%.html: %.genshi.html book_helpers.py tmp/
+tmp/%.html: %.lilypond-genshi.html book_helpers.py tmp/
 	./genshify $< > $@
 
