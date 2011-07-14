@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:py="http://genshi.edgewall.org/">
+<head>
+<title>Harmonic Hues</title>
+<?python
+from book_helpers import *
+MATPLOTLIB_COLORS = list(get_matplotlib_colors())
+?>
+</head>
+<body>
+
+<h3>Color Notation</h3>
+
+<h4>Musical Notation</h4>
+
+<p>Modern musical notation has a rich and interesting history; it is generally based on the concept of scales, so that vertically-arranged notes on a staff (a set of horizontal grid lines) from the indicated key signature correspond to the desired scale.</p>
+
+<h5>Sample - Single Melody: Amazing Grace</h5>
+<lilypond>
+{
+  \key d \major
+  \time 3/4
+  \partial 4
+  a'8. d''16
+  d''2 fis''8[ e''32 d''16.]
+  fis''2 fis''8 e''
+  d''2 b'4
+  a'2 a'8. d''16
+  d''2 fis''8[ e''32 d''16.]
+  fis''2 e''8. fis''16
+  a''2 r4
+  r2 fis''8. a''16
+  a''2 fis''8[ e''32 d''16.]
+  fis''2 fis''8 e''
+  d''2 b'4
+  a'2 a'8. d''16
+  d''2 fis''8[ e''32 d''16.]
+  fis''2 e''4
+  d''2.
+  r2
+  \bar "|."
+}
+</lilypond>
+
+</body>
+</html>
