@@ -1,5 +1,9 @@
 all: out/book.html out/scale-diagrams.html out/torus-tone-geometry.html
 
+clean:
+	rm -fr out
+	rm -fr tmp
+
 out/:
 	mkdir out
 
