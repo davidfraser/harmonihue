@@ -161,7 +161,7 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 
 <table>
  <tr><th>Fifths Order</th><th>Semitone Order</th><th>Torus Plot</th></tr>
- <tr><td><img src="${draw_hue_tone_circle.save(7)}"/></td><td><img src="${draw_hue_tone_circle.save(1)}"/></td><td><img src="${draw_hue_torus_tone_circle.save()}"/></td></tr>
+ <tr><td><img src="${draw_hue_tone_circle.save(7, hues_function=get_spread_hues)}"/></td><td><img src="${draw_hue_tone_circle.save(1, hues_function=get_spread_hues)}"/></td><td><img src="${draw_hue_torus_tone_circle.save(hues_function=get_spread_hues)}"/></td></tr>
 </table>
 
 <p>This has some obvious advantages - related tones seem fairly similar etc - along with the logical disadvantage that since the circle of fifths maps major seconds as closer than major thirds, these differences come through in the color space. This is because we are mapping the &gamma; angle in the torus to hue, but doing nothing with the &theta; angle.</p>
@@ -176,7 +176,7 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 
 <table>
  <tr><th>Fifths Order</th><th>Semitone Order</th></tr>
- <tr><td><img src="${draw_hue_rotation_tone_circle.save(7)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1)}"/></td></tr>
+ <tr><td><img src="${draw_hue_rotation_tone_circle.save(7, hues_function=get_spread_hues)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1, hues_function=get_spread_hues)}"/></td></tr>
 </table>
 
 <h4>Using the Lab color space</h4>
@@ -185,9 +185,11 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
  <img src="${draw_lab_hues.save()}"/>
 </p>
 
-<p>These selections then result in more easily differentiated hues:<br/>
- <img src="${draw_hue_tone_circle.save(hues_function=get_lab_spread_hues)}"/>
-</p>
+<p>These selections then result in more easily differentiated hues:</p>
+<table>
+ <tr><th>Fifths Order</th><th>Torus Plot</th></tr>
+ <tr><td><img src="${draw_hue_tone_circle.save(hues_function=get_lab_spread_hues)}"/></td><td><img src="${draw_hue_torus_tone_circle.save(hues_function=get_spread_hues)}"/></td></tr>
+</table>
 
 <p>Combining this with the rotation we had earlier gives the following:</p>
 <table>

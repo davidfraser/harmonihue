@@ -14,6 +14,9 @@ import decorator
 
 OUTPUT_DIR = "out"
 
+DEFAULT_SATURATION = 1.0
+DEFAULT_VALUE = 1.0
+
 tones = ["A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab"]
 scales = {
     'major': [0, 2, 4, 5, 7, 9, 11],
@@ -138,13 +141,19 @@ def draw_tone_circle(interval):
     """A diagram of the circle of fifths/semitones with nothing drawn on it"""
     return interval_circle_figure(interval)[1]
 
-def get_spread_hues(count=12, saturation=1.0, value=0.8):
+def get_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of hues, with the given saturation and value, as rgb"""
     return [colorsys.hsv_to_rgb(float(count*2 - i)/count, saturation, value) for i in range(count)]
 
-def get_lab_spread_colors(count=12, saturation=1.0, value=0.8):
+def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
+    """returns a hsv color range corresponding roughly to the torus, as rgb"""
+    M_s, M_h = 0.1875, 0.1875
+    hsv_map = {0: (saturation+M_s, value+M_h), 1: (saturation+M_s, value-M_h), 2: (saturation-M_s, value-M_h), 3: (saturation-M_s, value+M_h)}
+    return [colorsys.hsv_to_rgb(float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1]) for i in range(count)]
+
+def get_lab_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of colors around the lab color space, with the given saturation and value, as rgb"""
-    points = count*10
+    points = count*100
     hues = numpy.linspace(360.0, 0.0, points)
     colors = numpy.array([grapefruit.Color.NewFromHsv(hue, saturation, value) for hue in hues])
     labs = numpy.array([color.lab for color in colors])
@@ -156,7 +165,7 @@ def get_lab_spread_colors(count=12, saturation=1.0, value=0.8):
     desired_colors = colors.take(desired_indexes)
     return desired_colors
 
-def get_lab_spread_hues(count=12, saturation=1.0, value=0.8):
+def get_lab_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of hues around the lab color space, with the given saturation and value, as rgb"""
     return [color.rgb for color in get_lab_spread_colors(count, saturation, value)]
 
@@ -167,35 +176,26 @@ def draw_lab_hues(R=10.0, r=5.0, figsize=(5,5)):
     ax = mplot3d.Axes3D(fig)
     count = 12
     points = count * 10
-    saturation, value = 1.0, 0.8
+    saturation, value = DEFAULT_SATURATION, DEFAULT_VALUE
     hues = numpy.linspace(360.0, 0.0, points)
     colors = [grapefruit.Color.NewFromHsv(hue, saturation, value) for hue in hues]
     lab_colors = numpy.array([color.lab for color in colors])
     rgb_colors = [color.rgb for color in colors]
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=20, color=rgb_colors)
-    new_colors = get_lab_spread_colors()
+    new_colors = get_lab_spread_colors(count, saturation, value)
     lab_colors = numpy.array([color.lab for color in new_colors])
     rgb_colors = [color.rgb for color in new_colors]
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=200, color=rgb_colors)
     return fig
 
-def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
-    """returns a hsv color range corresponding roughly to the torus, as rgb"""
-    M_s, M_h = 0.1875, 0.1875
-    hsv_map = {0: (saturation+M_s, value+M_h), 1: (saturation+M_s, value-M_h), 2: (saturation-M_s, value-M_h), 3: (saturation-M_s, value+M_h)}
-    return [colorsys.hsv_to_rgb(float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1]) for i in range(count)]
-
 @figure_function
 def draw_hue_tone_circle(interval=7, hues_function=None, radius=1):
     """A diagram of the circle of fifths/semitones with hue mapped on it"""
     cycle, fig = interval_circle_figure(interval)
     hue_cycle = list(tone_cycle(7))
-    if hues_function is None:
-        hues = get_spread_hues()
-    else:
-        hues = hues_function()
+    hues = get_lab_spread_hues() if hues_function is None else hues_function()
     ax = fig.axes[0]
     gamma = numpy.arange(-numpy.pi/12, 2*numpy.pi - numpy.pi/12, 2*numpy.pi/12)
     radii = [radius for i in range(12)]
@@ -211,7 +211,7 @@ def draw_hue_rotation_tone_circle(interval=7, hues_function=None):
     fig = draw_hue_tone_circle(interval, hues_function=hues_function, radius=0.75)
     cycle = list(tone_cycle(interval))
     hue_cycle = list(tone_cycle(7))
-    hues = get_spread_hues()
+    hues = get_lab_spread_hues() if hues_function is None else hues_function()
     ax = fig.axes[0]
     scatter_gamma = numpy.arange(0, 2*numpy.pi, 2*numpy.pi/12)
     for i in range(12):
@@ -378,14 +378,14 @@ def draw_torus(R=10.0, r=5.0, figsize=(10,10)):
     return fig
 
 @figure_function
-def draw_hue_torus_tone_circle(R=10.0, r=5.0):
+def draw_hue_torus_tone_circle(R=10.0, r=5.0, hues_function=None):
     """draws the hues of the color map onto the torus"""
     fig = draw_torus(R, r, figsize=(5,5))
     fig.points.remove()
     x, y, z = torus_tone_coords(R, r)
     ax = fig.axes[0]
     hue_cycle = list(tone_cycle(7))
-    hues = get_spread_hues()
+    hues = get_lab_spread_hues() if hues_function is None else hues_function()
     for interval, hue in enumerate(hues):
         ax.scatter([x[interval]], [y[interval]], [z[interval]], s=100, color=hue)
     set_torus_view(ax, R, r)
