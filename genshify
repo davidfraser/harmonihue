@@ -4,9 +4,11 @@ import genshi.template
 import os
 import sys
 
+EXTENSION_CLASSES = {"ly": genshi.template.NewTextTemplate}
 script_dir = os.path.dirname(os.path.abspath(__file__))
 loader = genshi.template.TemplateLoader([script_dir])
 for filename in sys.argv[1:]:
-    template = loader.load(filename)
+    extension = filename[(filename.rfind(".") if "." in filename else -1) + 1:]
+    template = loader.load(filename, cls=EXTENSION_CLASSES.get(extension, None))
     sys.stdout.write(template.generate().render())
 

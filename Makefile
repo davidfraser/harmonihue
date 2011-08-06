@@ -1,4 +1,4 @@
-all: $(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html)) $(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
+all: chromaturn.ly $(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html)) $(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
 
 clean:
 	rm -fr out
@@ -11,6 +11,9 @@ tmp/:
 	mkdir tmp
 
 .PRECIOUS: tmp/%.html
+
+%.ly: %.genshi.ly
+	./genshify $< > $@
 
 out/%.html: %.genshi.html book_helpers.py tmp/
 	./genshify $< > $@
