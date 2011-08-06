@@ -18,29 +18,36 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 
 <h5>Sample - Single Melody: Amazing Grace</h5>
 <lilypond>
+{
+  \key d \major
+  \time 3/4
+  \partial 4
+  a'8. d''16 d''2 fis''8[ e''32 d''16.] fis''2 fis''8 e'' d''2 b'4 a'2
+  a'8. d''16 d''2 fis''8[ e''32 d''16.] fis''2 e''8. fis''16 a''2 r4
+  r2 fis''8. a''16 a''2 fis''8[ e''32 d''16.] fis''2 fis''8 e'' d''2 b'4 a'2
+  a'8. d''16 d''2 fis''8[ e''32 d''16.] fis''2 e''4 d''2.  r2
+  \bar "|."
+}
+</lilypond>
+
+<h4>Simple Hue-based Coloring</h4>
+
+<p>Applying the hues to the heads of the notes gives the following:<br/>
+ <img style="float: right;" src="${draw_hue_tone_circle.save(7, hues_function=get_lab_spread_hues)}"/>
+</p>
+
+<h5>Sample - Single Melody: Amazing Grace</h5>
+<lilypond>
 \include "chromaturn.ly"
 {
   \chromaNotesOn
   \key d \major
   \time 3/4
   \partial 4
-  a'8. d''16
-  d''2 fis''8[ e''32 d''16.]
-  fis''2 fis''8 e''
-  d''2 b'4
-  a'2 a'8. d''16
-  d''2 fis''8[ e''32 d''16.]
-  fis''2 e''8. fis''16
-  a''2 r4
-  r2 fis''8. a''16
-  a''2 fis''8[ e''32 d''16.]
-  fis''2 fis''8 e''
-  d''2 b'4
-  a'2 a'8. d''16
-  d''2 fis''8[ e''32 d''16.]
-  fis''2 e''4
-  d''2.
-  r2
+  a'8. d''16 d''2 fis''8[ e''32 d''16.] fis''2 fis''8 e'' d''2 b'4 a'2
+  a'8. d''16 d''2 fis''8[ e''32 d''16.] fis''2 e''8. fis''16 a''2 r4
+  r2 fis''8. a''16 a''2 fis''8[ e''32 d''16.] fis''2 fis''8 e'' d''2 b'4 a'2
+  a'8. d''16 d''2 fis''8[ e''32 d''16.] fis''2 e''4 d''2.  r2
   \bar "|."
 }
 </lilypond>
