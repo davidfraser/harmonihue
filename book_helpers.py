@@ -15,7 +15,7 @@ import decorator
 OUTPUT_DIR = "out"
 
 DEFAULT_SATURATION = 1.0
-DEFAULT_VALUE = 1.0
+DEFAULT_VALUE = 0.8
 
 tones = ["A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab"]
 scales = {
@@ -417,6 +417,24 @@ def draw_torus_chord(chord_name, R=10.0, r=5.0):
     torus_chord(ax, chord_name, R, r)
     set_torus_view(ax, R, r)
     return fig
+
+def lilypond_pitch_colors(hue_function=None):
+    """generates tuples of lilypond pitch definitions and grapefruit colors"""
+    # hues = get_lab_spread_hues() if hues_function is None else hues_function()
+    colors = get_lab_spread_colors()
+    hue_cycle = list(tone_cycle(7))
+    count = len(tones)
+    for note, tone in enumerate("abcdefg"):
+        base_tone_index = tones.index(tone.upper())
+        for offset, accidental in [(0, ""), (-1, "es"), (+1, "is"), (-2, "eses"), (+2, "isis")]:
+            tone_index = (base_tone_index + offset + count) % count
+            hue_index = hue_cycle.index(tone_index)
+            # lilypond pitches are C-based
+            lilypond_note = (note + 7 - 2) % 7
+            if offset:
+                yield ("0 %d %d/2" % (lilypond_note, offset), colors[hue_index])
+            else:
+                yield ("0 %d %d" % (lilypond_note, offset), colors[hue_index])
 
 if __name__ == "__main__":
     import sys

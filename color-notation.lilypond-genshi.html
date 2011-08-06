@@ -18,7 +18,9 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 
 <h5>Sample - Single Melody: Amazing Grace</h5>
 <lilypond>
+\include "chromaturn.ly"
 {
+  \chromaNotesOn
   \key d \major
   \time 3/4
   \partial 4
@@ -39,6 +41,18 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
   fis''2 e''4
   d''2.
   r2
+  \bar "|."
+}
+</lilypond>
+
+<h5>Chromatic Scale</h5>
+<lilypond>
+\include "chromaturn.ly"
+\relative {
+  \chromaNotesOn
+  \key c \major
+  \time 3/4
+  c'4 cis4 d4 ees4 e4 f4 fis4 g4 aes4 a4 bes4 b4 c2.
   \bar "|."
 }
 </lilypond>

@@ -1,4 +1,6 @@
-%% This file is in the public domain.
+{% python
+from book_helpers import *
+%}
 \version "2.12.3"
 
 \header {
@@ -17,27 +19,9 @@ to distinguish enharmonics.
 %TODO: handle double-sharps, double-flats, etc
 #(define color-mapping
   (list
-    (cons (ly:make-pitch 0 0 0)    (rgb-color 0.8 0.8 0.0)) 
-    (cons (ly:make-pitch 0 0 1/2)  (rgb-color 0.0 0.4 0.8)) 
-    (cons (ly:make-pitch 0 1 -1/2) (rgb-color 0.0 0.4 0.8)) 
-    (cons (ly:make-pitch 0 1 0)    (rgb-color 0.8 0.0 0.0)) 
-    (cons (ly:make-pitch 0 1 1/2)  (rgb-color 0.0 0.8 0.4)) 
-    (cons (ly:make-pitch 0 2 -1/2) (rgb-color 0.0 0.8 0.4)) 
-    (cons (ly:make-pitch 0 2 0)    (rgb-color 0.8 0.0 0.8)) 
-    (cons (ly:make-pitch 0 3 -1/2) (rgb-color 0.8 0.0 0.8)) 
-    (cons (ly:make-pitch 0 3 0)    (rgb-color 0.4 0.8 0.0)) 
-    (cons (ly:make-pitch 0 2 1/2)  (rgb-color 0.4 0.8 0.0)) 
-    (cons (ly:make-pitch 0 3 1/2)  (rgb-color 0.0 0.0 0.8)) 
-    (cons (ly:make-pitch 0 4 -1/2) (rgb-color 0.0 0.0 0.8)) 
-    (cons (ly:make-pitch 0 4 0)    (rgb-color 0.8 0.4 0.0)) 
-    (cons (ly:make-pitch 0 4 1/2)  (rgb-color 0.0 0.8 0.8)) 
-    (cons (ly:make-pitch 0 5 -1/2) (rgb-color 0.0 0.8 0.8)) 
-    (cons (ly:make-pitch 0 5 0)    (rgb-color 0.8 0.0 0.4)) 
-    (cons (ly:make-pitch 0 5 1/2)  (rgb-color 0.0 0.8 0.0)) 
-    (cons (ly:make-pitch 0 6 -1/2) (rgb-color 0.0 0.8 0.0)) 
-    (cons (ly:make-pitch 0 6 0)    (rgb-color 0.4 0.0 0.8)) 
-    (cons (ly:make-pitch 1 0 -1/2) (rgb-color 0.4 0.0 0.8)) 
-    (cons (ly:make-pitch 0 6 1/2)  (rgb-color 0.8 0.8 0.0)) 
+{% for pitch_str, color in lilypond_pitch_colors() %}
+    (cons (ly:make-pitch ${pitch_str})	(rgb-color ${color.rgb[0]} ${color.rgb[1]} ${color.rgb[2]}))
+{% end %}
   )
  )
 
@@ -55,6 +39,12 @@ to distinguish enharmonics.
 #(define (color-notehead grob)
   (pitch-to-color
     (ly:event-property (event-cause grob) 'pitch)))
+
+chromaNotesOn = {
+  \override NoteHead #'color = #color-notehead
+}
+
+{% if False %}
 
 % brew_chromaturn_stencil is a modified form of brew_ez_stencil from easyHeadsOn
 % TODO: make this draw lines instead of using letters, and add intelligence for different note types
@@ -75,6 +65,5 @@ chromaTurnOff = {
   \revert NoteHead #'note-names
 }
 
-
-
+{% end %}
 
