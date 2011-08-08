@@ -15,11 +15,14 @@ fret_height = fretboard_height
 fret_pos = [string_length/(2**(fret/12.)) for fret in range( frets+1)]
 sticker_width = 0.5
 sticker_height = 0.6
+hue_cycle = list(tone_cycle(7))
+colors = get_lab_spread_colors(saturation=1.0, value=0.6)
+hue_colors = [colors[hue_cycle.index((index+3)%12)] for index in range(12)]
 ?>
 <rect id="fretboard" style="fill: #552200;" x="${fret_pos[-1]}${units}" y="0${units}" width="${string_length - fret_pos[-1]}${units}" height="${fretboard_height}${units}"/>
 <div py:for="s, string in enumerate(strings)" py:strip="True">
-    <div py:for="fret in range(frets)" py:strip="True">
-        <rect id="sticker_${string}${s}_${fret}" style="fill: white; stroke: black;" x="${(fret_pos[fret]+fret_pos[fret+1]-sticker_width)/2}${units}" y="${string_pos[s]-sticker_height/2}${units}" width="${sticker_width}${units}" height="${sticker_height}${units}"/>
+    <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret)%12">
+        <rect id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black;" x="${(fret_pos[fret]+fret_pos[fret+1]-sticker_width)/2}${units}" y="${string_pos[s]-sticker_height/2}${units}" width="${sticker_width}${units}" height="${sticker_height}${units}"/>
     </div>
 </div>
 <rect id="" style="fill: white; stroke: white;" x="${string_length}${units}" y="${fret_pos[0]}${units}" width="${fret_width*2}${units}" height="${fret_height}${units}"/>
