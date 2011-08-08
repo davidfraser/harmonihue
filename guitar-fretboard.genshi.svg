@@ -39,24 +39,27 @@ fret_cpos = [(fret_pos[fret]+fret_pos[fret+1])/2 for fret in range(frets)]
 hue_cycle = list(tone_cycle(7))
 colors = get_lab_spread_colors(saturation=1.0, value=0.6)
 hue_colors = [colors[hue_cycle.index((index)%12)] for index in range(12)]
-dot_colour = "white" if show_guitar else "black"
 figure_width = string_length + saddle_width + nut_width
 figure_height = saddle_string_gap + edge_string_gap*2 + dot_radius*2
 ?>
 <svg xmlns:py="http://genshi.edgewall.org/" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="${-saddle_width} ${saddle_string_gap-figure_height} ${figure_width-saddle_width} ${saddle_string_gap}">
-<polygon py:if="show_guitar" id="fretboard" style="fill: black; stroke: none;" points="${fret_pos[-1]} ${string_pos(0, fret_pos[-1])-edge_string_gap},${fret_pos[0]} ${string_pos(0, fret_pos[0])-edge_string_gap},${fret_pos[0]} ${string_pos(string_count-1, fret_pos[0])+edge_string_gap},${fret_pos[-1]} ${string_pos(string_count-1, fret_pos[-1])+edge_string_gap}"/>
-<rect id="sticker_bg_${fret}" py:if="not show_guitar" py:for="fret in range(frets)" style="fill: black; stroke: none;" x="${fret_cpos[fret]-sticker_radius*2}" y="${string_pos(0, fret_cpos[fret]) - edge_string_gap}" width="${sticker_radius*4}" height="${string_gap(fret_cpos[fret]) + 2*edge_string_gap}"/>
-<div py:for="s, string in enumerate(strings)" py:strip="True">
-    <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret)%12">
-        <circle id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" cx="${fret_cpos[fret]}" cy="${string_pos(s, fret_cpos[fret])}" r="${sticker_radius}"/>
-    </div>
-</div>
 <div py:if="show_guitar" py:strip="True">
+    <polygon id="fretboard" style="fill: black; stroke: none;" points="${fret_pos[-1]} ${string_pos(0, fret_pos[-1])-edge_string_gap},${fret_pos[0]} ${string_pos(0, fret_pos[0])-edge_string_gap},${fret_pos[0]} ${string_pos(string_count-1, fret_pos[0])+edge_string_gap},${fret_pos[-1]} ${string_pos(string_count-1, fret_pos[-1])+edge_string_gap}"/>
     <rect id="saddle" style="fill: white; stroke: none;" x="${-saddle_width}" y="${string_pos(0, 0) - edge_string_gap}" width="${saddle_width}" height="${string_pos(string_count-1, 0) + edge_string_gap}"/>
     <rect id="nut" style="fill: white; stroke: none;" x="${string_length}" y="${string_pos(0, string_width) - edge_string_gap}" width="${nut_width}" height="${string_pos(string_count-1, string_width) + edge_string_gap}"/>
     <line id="fret_${fret}" py:for="fret in range(1, frets)" style="stroke: gold; stroke-width: ${fret_width};" x1="${fret_pos[fret]}" y1="${string_pos(0, fret_pos[fret]) - edge_string_gap}" x2="${fret_pos[fret]}" y2="${string_pos(string_count-1, fret_pos[fret]) + edge_string_gap}"/>
-    <line py:for="s, string in enumerate(strings)" id="string_${string}${s}" style="stroke: silver; stroke-width: ${string_width};" x1="0" y1="${string_pos(s, 0)}" x2="${string_length}" y2="${string_pos(s, string_length)}"/>
 </div>
-<circle id="fret_dot_${fret}" py:for="fret in dotted_frets" style="fill: ${dot_colour}; stroke: black; stroke-width: 0.05;" cx="${fret_cpos[fret]}" cy="${string_pos(0, fret_cpos[fret])-edge_string_gap-dot_radius}" r="${dot_radius}"/>
+<circle id="fret_dot_${fret}" py:for="fret in dotted_frets" style="fill: white; stroke: black; stroke-width: 0.05;" cx="${fret_cpos[fret]}" cy="${string_pos(0, fret_cpos[fret])-edge_string_gap-dot_radius}" r="${dot_radius}"/>
+<div py:if="not show_guitar" py:strip="True">
+    <rect id="sticker_bg_${fret}" py:for="fret in range(frets)" style="fill: black; stroke: none;" x="${fret_cpos[fret]-sticker_radius*2}" y="${string_pos(0, fret_cpos[fret]) - edge_string_gap}" width="${sticker_radius*4}" height="${string_gap(fret_cpos[fret]) + 2*edge_string_gap}"/>
+    <rect id="sticker_bg_nut" style="fill: black; stroke: none;" x="${string_length + nut_width/2 - sticker_radius*2}" y="${string_pos(0, string_length) - edge_string_gap}" width="${sticker_radius*4}" height="${string_gap(string_length) + 2*edge_string_gap}"/>
+</div>
+<div py:for="s, string in enumerate(strings)" py:strip="True">
+    <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret+11)%12">
+        <circle id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" cx="${fret_cpos[fret]}" cy="${string_pos(s, fret_cpos[fret])}" r="${sticker_radius}"/>
+    </div>
+    <circle id="sticker_${string}${s}_nut" style="fill: ${hue_colors[tones.index(string)].html}; stroke: black; stroke-width: 0.05;" cx="${string_length + nut_width/2}" cy="${string_pos(s, string_length)}" r="${sticker_radius}"/>
+</div>
+<line py:if="show_guitar" py:for="s, string in enumerate(strings)" id="string_${string}${s}" style="stroke: silver; stroke-width: ${string_width};" x1="0" y1="${string_pos(s, 0)}" x2="${string_length}" y2="${string_pos(s, string_length)}"/>
 </svg>
 
