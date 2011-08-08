@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns:py="http://genshi.edgewall.org/" xml:space="preserve">
+<?python
+from book_helpers import *
+strings = ["E", "A", "D", "G", "B", "E"]
+units = "cm"
+string_gap = 1.1
+string_length = 65
+string_width = 0.1
+frets = 19
+fret_width = 0.2
+string_pos = [(0.6 + string_gap*s) for s in range(len(strings))]
+fretboard_height = (0.6*2) + string_gap*(len(strings)-1)
+fret_height = fretboard_height
+fret_pos = [string_length/(2**(fret/12.)) for fret in range(1, frets+1)]
+?>
+<rect style="fill: brown;" x="${fret_pos[-1]}${units}" y="0${units}" width="${string_length - fret_pos[-1]}${units}" height="${fretboard_height}${units}"/>
+<rect py:for="s, string in enumerate(strings)" style="fill: black; stroke: black;" x="0${units}" y="${string_pos[s]}${units}" width="${string_length}${units}" height="${string_width}${units}"/>
+<rect py:for="fret in range(frets)" style="fill: gold; stroke: gold;" x="${fret_pos[fret]}${units}" y="0${units}" width="${fret_width}${units}" height="${fret_height}${units}"/>
+</svg>
