@@ -14,8 +14,8 @@ string_width = 0.1
 frets = 19
 dotted_frets = [5, 7, 9, 12]
 fret_width = 0.2
-sticker_width = 0.5
-sticker_height = 0.6
+sticker_radius = 0.4
+dot_radius = 0.2
 show_guitar = True
 
 vcenter = saddle_string_gap/2
@@ -42,7 +42,7 @@ dot_colour = "white" if show_guitar else "black"
 <polygon py:if="show_guitar" id="fretboard" style="fill: #552200; stroke: none;" points="${fret_pos[-1]} ${string_pos(0, fret_pos[-1])-edge_string_gap},${fret_pos[0]} ${string_pos(0, fret_pos[0])-edge_string_gap},${fret_pos[0]} ${string_pos(string_count-1, fret_pos[0])+edge_string_gap},${fret_pos[-1]} ${string_pos(string_count-1, fret_pos[-1])+edge_string_gap}"/>
 <div py:for="s, string in enumerate(strings)" py:strip="True">
     <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret)%12">
-        <rect id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" x="${fret_cpos[fret]-sticker_width/2}" y="${string_pos(s, fret_cpos[fret])-sticker_height/2}" width="${sticker_width}" height="${sticker_height}"/>
+        <circle id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" cx="${fret_cpos[fret]}" cy="${string_pos(s, fret_cpos[fret])}" r="${sticker_radius}"/>
     </div>
 </div>
 <div py:if="show_guitar" py:strip="True">
@@ -50,6 +50,6 @@ dot_colour = "white" if show_guitar else "black"
     <line id="fret_${fret}" py:for="fret in range(1, frets)" style="stroke: gold; stroke-width: ${fret_width};" x1="${fret_pos[fret]}" y1="${string_pos(0, fret_pos[fret]) - edge_string_gap}" x2="${fret_pos[fret]}" y2="${string_pos(string_count-1, fret_pos[fret]) + edge_string_gap}"/>
     <line py:for="s, string in enumerate(strings)" id="string_${string}${s}" style="stroke: silver; stroke-width: ${string_width};" x1="0" y1="${string_pos(s, 0)}" x2="${string_length}" y2="${string_pos(s, string_length)}"/>
 </div>
-<rect id="fret_dot_${fret}" py:for="fret in dotted_frets" style="fill: ${dot_colour}; stroke: none;" x="${fret_cpos[fret]-0.1}" y="${string_pos(0, fret_cpos[fret])-edge_string_gap+0.1}" width="0.2" height="0.1"/>
+<circle id="fret_dot_${fret}" py:for="fret in dotted_frets" style="fill: ${dot_colour}; stroke: black; stroke-width: 0.05;" cx="${fret_cpos[fret]}" cy="${string_pos(0, fret_cpos[fret])-edge_string_gap-dot_radius}" r="${dot_radius}"/>
 </svg>
 
