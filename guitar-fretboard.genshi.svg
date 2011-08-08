@@ -6,16 +6,16 @@ string_count = len(strings)
 units = "cm"
 edge_string_gap = 0.5
 # the gap between strings is the distance between the top and bottom strings divided by the gaps
-nut_string_gap = 4.4
-saddle_string_gap = 6.0
-string_length = 65
+nut_string_gap = 3.2
+saddle_string_gap = 4.6
+string_length = 48
 string_width = 0.1
-frets = 19
+frets = 18
 dotted_frets = [5, 7, 9, 12]
 fret_width = 0.2
-sticker_radius = 0.4
-dot_radius = 0.2
-show_guitar = True
+sticker_radius = 0.3
+dot_radius = 0.15
+show_guitar = False
 
 nut_width = fret_width * 2
 saddle_width = fret_width * 2
@@ -44,7 +44,8 @@ figure_width = string_length + saddle_width + nut_width
 figure_height = saddle_string_gap + edge_string_gap*2 + dot_radius*2
 ?>
 <svg xmlns:py="http://genshi.edgewall.org/" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="${-saddle_width} ${saddle_string_gap-figure_height} ${figure_width-saddle_width} ${saddle_string_gap}">
-<polygon py:if="show_guitar" id="fretboard" style="fill: #552200; stroke: none;" points="${fret_pos[-1]} ${string_pos(0, fret_pos[-1])-edge_string_gap},${fret_pos[0]} ${string_pos(0, fret_pos[0])-edge_string_gap},${fret_pos[0]} ${string_pos(string_count-1, fret_pos[0])+edge_string_gap},${fret_pos[-1]} ${string_pos(string_count-1, fret_pos[-1])+edge_string_gap}"/>
+<polygon py:if="show_guitar" id="fretboard" style="fill: black; stroke: none;" points="${fret_pos[-1]} ${string_pos(0, fret_pos[-1])-edge_string_gap},${fret_pos[0]} ${string_pos(0, fret_pos[0])-edge_string_gap},${fret_pos[0]} ${string_pos(string_count-1, fret_pos[0])+edge_string_gap},${fret_pos[-1]} ${string_pos(string_count-1, fret_pos[-1])+edge_string_gap}"/>
+<rect id="sticker_bg_${fret}" py:if="not show_guitar" py:for="fret in range(frets)" style="fill: black; stroke: none;" x="${fret_cpos[fret]-sticker_radius*2}" y="${string_pos(0, fret_cpos[fret]) - edge_string_gap}" width="${sticker_radius*4}" height="${string_gap(fret_cpos[fret]) + 2*edge_string_gap}"/>
 <div py:for="s, string in enumerate(strings)" py:strip="True">
     <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret)%12">
         <circle id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" cx="${fret_cpos[fret]}" cy="${string_pos(s, fret_cpos[fret])}" r="${sticker_radius}"/>
