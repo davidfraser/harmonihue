@@ -8,11 +8,13 @@ string_gap = 1.1
 string_length = 65
 string_width = 0.1
 frets = 19
+dotted_frets = [5, 7, 9, 12]
 fret_width = 0.2
 string_pos = [(0.6 + string_gap*s) for s in range(len(strings))]
 fretboard_height = (0.6*2) + string_gap*(len(strings)-1)
 fret_height = fretboard_height
-fret_pos = [string_length/(2**(fret/12.)) for fret in range( frets+1)]
+fret_pos = [string_length/(2**(fret/12.)) for fret in range(frets+1)]
+fret_cpos = [(fret_pos[fret]+fret_pos[fret+1])/2 for fret in range(frets)]
 sticker_width = 0.5
 sticker_height = 0.6
 hue_cycle = list(tone_cycle(7))
@@ -22,11 +24,12 @@ hue_colors = [colors[hue_cycle.index((index+3)%12)] for index in range(12)]
 <rect id="fretboard" style="fill: #552200;" x="${fret_pos[-1]}${units}" y="0${units}" width="${string_length - fret_pos[-1]}${units}" height="${fretboard_height}${units}"/>
 <div py:for="s, string in enumerate(strings)" py:strip="True">
     <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret)%12">
-        <rect id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black;" x="${(fret_pos[fret]+fret_pos[fret+1]-sticker_width)/2}${units}" y="${string_pos[s]-sticker_height/2}${units}" width="${sticker_width}${units}" height="${sticker_height}${units}"/>
+        <rect id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black;" x="${fret_cpos[fret]-sticker_width/2}${units}" y="${string_pos[s]-sticker_height/2}${units}" width="${sticker_width}${units}" height="${sticker_height}${units}"/>
     </div>
 </div>
 <rect id="" style="fill: white; stroke: white;" x="${string_length}${units}" y="${fret_pos[0]}${units}" width="${fret_width*2}${units}" height="${fret_height}${units}"/>
 <rect id="fret_${fret}" py:for="fret in range(1, frets)" style="fill: gold; stroke: gold;" x="${fret_pos[fret]}${units}" y="0${units}" width="${fret_width}${units}" height="${fret_height}${units}"/>
+<rect id="fret_dot_${fret}" py:for="fret in dotted_frets" style="fill: white; stroke: white;" x="${fret_cpos[fret-1]-0.1}${units}" y="0.1${units}" width="0.2${units}" height="0.1${units}"/>
 <rect py:for="s, string in enumerate(strings)" id="string_${string}${s}" style="fill: silver; stroke: silver;" x="0${units}" y="${string_pos[s]}${units}" width="${string_length}${units}" height="${string_width}${units}"/>
 </svg>
 
