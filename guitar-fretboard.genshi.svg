@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns:py="http://genshi.edgewall.org/" xml:space="preserve">
+<svg xmlns:py="http://genshi.edgewall.org/" xml:space="preserve" width="65cm" height="7.2cm" viewBox="0 0 65 7.2">
 <?python
 from book_helpers import *
 strings = ["E", "A", "D", "G", "B", "E"]
+string_count = len(strings)
 units = "cm"
 edge_string_gap = 0.5
 # the gap between strings is the distance between the top and bottom strings divided by the gaps
-string_gap = 4.4/(len(strings)-1)
+nut_string_gap = 4.4
+saddle_string_gap = 6.0
 string_length = 65
 string_width = 0.1
 frets = 19
@@ -14,10 +16,21 @@ dotted_frets = [5, 7, 9, 12]
 fret_width = 0.2
 sticker_width = 0.5
 sticker_height = 0.6
-show_guitar = False
+show_guitar = True
 
-string_pos = [(edge_string_gap + string_gap*s) for s in range(len(strings))]
-fretboard_height = (edge_string_gap*2) + string_gap*(len(strings)-1)
+vcenter = saddle_string_gap/2
+
+def string_gap(hpos):
+    """calculated the gap between strings at this distance along the guitar"""
+    ratio = hpos/string_length
+    return saddle_string_gap * (1-ratio) + nut_string_gap * ratio
+
+def string_pos(s, hpos):
+    """returns the vertical position of the given string at that horizontal position"""
+    gap = string_gap(hpos)
+    return vcenter - (gap/2) + (s*gap/(string_count-1))
+
+fretboard_height = (edge_string_gap*2) + string_gap(nut_string_gap)*(string_count-1)
 fret_height = fretboard_height
 fret_pos = [string_length/(2**(fret/12.)) for fret in range(frets+1)]
 fret_cpos = [(fret_pos[fret]+fret_pos[fret+1])/2 for fret in range(frets)]
@@ -26,17 +39,17 @@ colors = get_lab_spread_colors(saturation=1.0, value=0.6)
 hue_colors = [colors[hue_cycle.index((index)%12)] for index in range(12)]
 dot_colour = "white" if show_guitar else "black"
 ?>
-<rect py:if="show_guitar" id="fretboard" style="fill: #552200;" x="${fret_pos[-1]}${units}" y="0${units}" width="${string_length - fret_pos[-1]}${units}" height="${fretboard_height}${units}"/>
+<polygon py:if="show_guitar" id="fretboard" style="fill: #552200; stroke: none;" points="${fret_pos[-1]} ${string_pos(0, fret_pos[-1])-edge_string_gap},${fret_pos[0]} ${string_pos(0, fret_pos[0])-edge_string_gap},${fret_pos[0]} ${string_pos(string_count-1, fret_pos[0])+edge_string_gap},${fret_pos[-1]} ${string_pos(string_count-1, fret_pos[-1])+edge_string_gap}"/>
 <div py:for="s, string in enumerate(strings)" py:strip="True">
     <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret)%12">
-        <rect id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black;" x="${fret_cpos[fret]-sticker_width/2}${units}" y="${string_pos[s]-sticker_height/2}${units}" width="${sticker_width}${units}" height="${sticker_height}${units}"/>
+        <rect id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" x="${fret_cpos[fret]-sticker_width/2}" y="${string_pos(s, fret_cpos[fret])-sticker_height/2}" width="${sticker_width}" height="${sticker_height}"/>
     </div>
 </div>
 <div py:if="show_guitar" py:strip="True">
-    <rect id="" style="fill: white; stroke: white;" x="${string_length}${units}" y="${fret_pos[0]}${units}" width="${fret_width*2}${units}" height="${fret_height}${units}"/>
-    <rect id="fret_${fret}" py:for="fret in range(1, frets)" style="fill: gold; stroke: gold;" x="${fret_pos[fret]}${units}" y="0${units}" width="${fret_width}${units}" height="${fret_height}${units}"/>
-    <rect py:for="s, string in enumerate(strings)" id="string_${string}${s}" style="fill: silver; stroke: silver;" x="0${units}" y="${string_pos[s]}${units}" width="${string_length}${units}" height="${string_width}${units}"/>
+    <rect id="nut" style="fill: white; stroke: none;" x="${string_length}" y="${string_pos(0, string_width) - edge_string_gap}" width="${fret_width*2}" height="${string_pos(string_count-1, string_width) + edge_string_gap}"/>
+    <line id="fret_${fret}" py:for="fret in range(1, frets)" style="stroke: gold; stroke-width: ${fret_width};" x1="${fret_pos[fret]}" y1="${string_pos(0, fret_pos[fret]) - edge_string_gap}" x2="${fret_pos[fret]}" y2="${string_pos(string_count-1, fret_pos[fret]) + edge_string_gap}"/>
+    <line py:for="s, string in enumerate(strings)" id="string_${string}${s}" style="stroke: silver; stroke-width: ${string_width};" x1="0" y1="${string_pos(s, 0)}" x2="${string_length}" y2="${string_pos(s, string_length)}"/>
 </div>
-<rect id="fret_dot_${fret}" py:for="fret in dotted_frets" style="fill: ${dot_colour}; stroke: ${dot_colour};" x="${fret_cpos[fret]-0.1}${units}" y="0.1${units}" width="0.2${units}" height="0.1${units}"/>
+<rect id="fret_dot_${fret}" py:for="fret in dotted_frets" style="fill: ${dot_colour}; stroke: none;" x="${fret_cpos[fret]-0.1}" y="${string_pos(0, fret_cpos[fret])-edge_string_gap+0.1}" width="0.2" height="0.1"/>
 </svg>
 
