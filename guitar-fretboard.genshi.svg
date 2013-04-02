@@ -10,6 +10,7 @@ from guitar_layout import *
     <rect id="sticker_bg_${fret}" py:for="fret in range(frets)" style="fill: black; stroke: none;" x="${fret_cpos[fret]-sticker_radius*2}" y="${string_pos(0, fret_cpos[fret]) - edge_string_gap}" width="${sticker_radius*4}" height="${string_gap(fret_cpos[fret]) + 2*edge_string_gap}"/>
     <rect id="sticker_bg_nut" style="fill: black; stroke: none;" x="${string_length + nut_width/2 - sticker_radius*2}" y="${string_pos(0, string_length) - edge_string_gap}" width="${sticker_radius*4}" height="${string_gap(string_length) + 2*edge_string_gap}"/>
 </div>
+<xi:include href="guitar-strings.genshi.xml" />
 <div py:for="s, string in enumerate(strings)" py:strip="True">
     <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret+11)%12; cx=fret_cpos[fret]; cy=string_pos(s, fret_cpos[fret]); rw=sticker_radius*1.333; rh=sticker_radius*.5; rr=sticker_radius*.25">
         <circle id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" cx="${cx}" cy="${cy}" r="${sticker_radius}"/>
@@ -20,6 +21,5 @@ from guitar_layout import *
         <rect id="sticker_bar_${string}${s}_${fret}" style="fill: black; stroke: none;" rx="${rh}" ry="${rh}" x="${cx-rw/2}" y="${cy-rh/2}" width="${rw}" height="${rh}" transform="rotate(${hue_rotations[note_index]*45} ${cx} ${cy})"/>
     </div>
 </div>
-<xi:include href="guitar-strings.genshi.xml" />
 </svg>
 
