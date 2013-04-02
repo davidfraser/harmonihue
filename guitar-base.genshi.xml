@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xml:space="preserve">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xml:space="preserve" py:strip="True">
     <div py:if="show_guitar" py:strip="True">
         <polygon id="fretboard" style="fill: black; stroke: none;" points="${fret_pos[-1]} ${string_pos(0, fret_pos[-1])-edge_string_gap},${fret_pos[0]} ${string_pos(0, fret_pos[0])-edge_string_gap},${fret_pos[0]} ${string_pos(string_count-1, fret_pos[0])+edge_string_gap},${fret_pos[-1]} ${string_pos(string_count-1, fret_pos[-1])+edge_string_gap}"/>
         <rect id="saddle" style="fill: gray; stroke: none;" x="${-saddle_width}" y="${string_pos(0, 0) - edge_string_gap}" width="${saddle_width}" height="${saddle_string_gap + 2*edge_string_gap}"/>
