@@ -13,5 +13,5 @@ extension = input_filename[(input_filename.rfind(".") if "." in input_filename e
 template = loader.load(input_filename, cls=EXTENSION_CLASSES.get(extension, None))
 result = template.generate().render()
 with open(output_filename, "w") as output_file:
-    output_file.write(result)
+    output_file.write(result.encode("UTF-8"))
 
