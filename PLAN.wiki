@@ -5,18 +5,39 @@
 Need to understand:
 
 * Topology and metrics (in a sphere, you can have |AC| < |AB| + |BC| even where ABC is a straight line; what is the nature of this space?)
-* Different colour spaces (RGB, HSV, HSL, Lab etc) and how they work
+* Different colour spaces (RGB, HSV, HSL, Lab, CMYK etc) and how they work
 * Experimenting with the Munsell hues could be a quick path to a workable solution
-* How colour spaces correspond to displays (sRGB etc)
+* How colour spaces correspond to displays (sRGB etc) - gamut etc
 
-Then need to work out a methodology to explore this:
+== Research Results ==
 
-* Comparitive difference (which difference is greater?) should be measurable
-* Creating equivalent differences (make the once difference the same as the other by moving along a colour arc) should be possible
-* Trying to measure ratios of difference is more tricky unless there's a consistent standard to measure against. The gray scale could be useful here, especially if it can be demonstrated (how?) that it's linear (i.e. twice the difference looks twice as different).
-* Then need to establish that perceived colour difference (especially at larger differences) *is* really a metric - i.e. if a set of |AiBi| differences seem the same when compared between i and i+1, does it apply that they'll all seem the same side by side? And if |AB| == 2|CD| == |EF| (where CD is on the gray scale), then will |AB| seem like half |EF|? I hope so :)
+* Document the fact that CIELAB* has been discovered to not yield uniform perceptual distances over larger distances
+* Document CIEDE2000 and CIECAM02, and the distance metrics on them
 
-=== Experiments ===
+ - http://onlinelibrary.wiley.com/doi/10.1002/col.1049/abstract
+ - Already have code to calculate deltas using colormath library
+ - Add sample distributed hue set using the above spaces and the Delta E function (if not already done)
+ - Switch other grapefruit usage to use colormath
 
-* Grayscale: three colours side by side; ask user to adjust until difference is identical. Repeat over different differences (binary division?)
+* Reference the attempts to create color spaces with Euclidean distance functions based on them:
+
+ - A Perception-based Color Space for Illumination-invariant Image Processing at http://gvi.seas.harvard.edu/paper/perceptionbased-color-space-illuminationinvariant-image-processing
+ - Constructing Euclidean Color Spaces based on Color Difference Formulas at http://www.idd.tu-darmstadt.de/media/fachgebiet_idd/forschungdienstleistung/color/publikationen_6/constructingeuclideancolorspacesbasedoncolordifferenceformulas.pdf
+
+* Note the existence of sample data based on human experimental difference perception (RIT-Dupont, Witt, Qiao) referenced in the above papers, and the large % error that accumulates even in the above spaces compared to that sample data
+* Also note the perceptual non-uniformity of hue as saturation increases etc including
+
+ - The Abney Effect at http://en.wikipedia.org/wiki/Abney_effect
+ - The Helmholtz-Kohlrausch effect
+ - Color constancy with differing illumination levels
+ - Contextual effects such as Bartleson Breneman
+
+* Research whether there's a sufficient sample data set to construct the set of 12 colors directly from the sample data
+
+=== Further Reading ===
+
+* Helpful conceptual articles on color
+
+ - http://www.handprint.com/HP/WCL/color7.html and related pages
+ - http://boronine.com/2012/03/26/Color-Spaces-for-Human-Beings/
 
