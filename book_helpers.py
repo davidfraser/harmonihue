@@ -2,7 +2,6 @@
 
 """A set of functions that are called from within book.genshi.html"""
 
-import colorsys
 import math
 import os
 import matplotlib
@@ -158,13 +157,13 @@ def draw_tone_circle(interval):
 
 def get_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of hues, with the given saturation and value, as rgb"""
-    return [colorsys.hsv_to_rgb(float(count*2 - i)/count, saturation, value) for i in range(count)]
+    return [rgb_float_tuple(colormath.color_objects.HSVColor(360*float(count*2 - i)/count, saturation, value)) for i in range(count)]
 
 def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
     """returns a hsv color range corresponding roughly to the torus, as rgb"""
     M_s, M_h = 0.1875, 0.1875
     hsv_map = {0: (saturation+M_s, value+M_h), 1: (saturation+M_s, value-M_h), 2: (saturation-M_s, value-M_h), 3: (saturation-M_s, value+M_h)}
-    return [colorsys.hsv_to_rgb(float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1]) for i in range(count)]
+    return [rgb_float_tuple(colormath.color_objects.HSVColor(360*float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1])) for i in range(count)]
 
 def get_hue_spread(points, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """Returns a set of colors distributed in a circle around the Hsv space with fixed saturation and value"""
