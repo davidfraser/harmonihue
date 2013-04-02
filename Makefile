@@ -24,12 +24,14 @@ TMP=tmp/.d
 %.ly: %.genshi.ly
 	./genshify $< > $@
 
+out/guitar-fretboard.svg: guitar_layout.py
+
 out/%.svg: %.genshi.svg book_helpers.py $(OUT)
 	./genshify $< > $@
 
 out/%.png: out/%.svg
-	# rasterizer -d $@ -m image/png $<
-	convert $< $@
+	rasterizer -d $@ -m image/png $<
+	# convert $< $@
 
 out/%.html: %.genshi.html book_helpers.py $(OUT)
 	./genshify $< > $@
