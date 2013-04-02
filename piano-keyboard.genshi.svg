@@ -3,9 +3,9 @@
 from book_helpers import *
 from piano_layout import *
 ?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" xml:space="preserve">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="0 0 ${total_width} ${height}">
 <div py:for="octave in range(octaves)" py:strip="True">
-    <rect py:for="index in white_notes[:-1]" style="fill: white; stroke: black;" x="${octave*total_width + (width_white)*white_notes.index(index)}" y="0" width="${width_white_inner}" height="${height}"/>
+    <rect py:for="index in white_notes[:-1]" style="fill: white; stroke: black;" x="${octave*total_width + (width_white)*white_notes.index(index)}" y="0" width="${width_white}" height="${height}"/>
     <rect py:for="index in white_notes[:-1]" style="fill: ${hue_colors[index].html}; stroke: ${hue_colors[index].html};" x="${octave*total_width + (width_white)*white_notes.index(index)}" y="${height*7/9}" width="${width_white}" height="${height/9}"/>
     <rect py:for="index in black_notes" style="fill: black; stroke: black;" x="${octave*total_width + (width_white)*white_notes.index(index+1) - width_black/2}" y="0" width="${width_black}" height="${height_black}"/>
     <rect py:for="index in black_notes" style="fill: ${hue_colors[index].html}; stroke: ${hue_colors[index].html};" x="${octave*total_width + (width_white)*white_notes.index(index+1) - width_black/2}" y="${height_black*7/9}" width="${width_black}" height="${height_black/9}"/>
