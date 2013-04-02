@@ -24,6 +24,9 @@ out/%.svg: %.genshi.svg book_helpers.py out_dir
 out/%.html: %.genshi.html book_helpers.py out_dir
 	./genshify $< > $@
 
+out/%.txt: %.genshi.txt book_helpers.py out_dir
+	./genshify $< > $@
+
 out/%.html: tmp/%.html out_dir tmp_dir
 	lilypond-book --output out/ $<
 

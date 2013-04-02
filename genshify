@@ -4,7 +4,7 @@ import genshi.template
 import os
 import sys
 
-EXTENSION_CLASSES = {"ly": genshi.template.NewTextTemplate}
+EXTENSION_CLASSES = {"ly": genshi.template.NewTextTemplate, "txt": genshi.template.NewTextTemplate}
 script_dir = os.path.dirname(os.path.abspath(__file__))
 loader = genshi.template.TemplateLoader([script_dir])
 for filename in sys.argv[1:]:

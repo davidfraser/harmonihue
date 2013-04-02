@@ -223,6 +223,16 @@ def web_color(rgb):
     r, g, b = [int(i*255) for i in rgb]
     return "#%02x%02x%02x" % (r, g, b)
 
+def hue_tone_rotation_table(interval=1, hues_function=None):
+    hues = get_lab_spread_hues() if hues_function is None else hues_function()
+    cycle = list(tone_cycle(interval))
+    hue_cycle = list(tone_cycle(7))
+    for i in range(12):
+        hue_i = hue_cycle.index(cycle[i])
+        r, g, b = (int(l*255) for l in hues[hue_i])
+        rot = (hue_i % 4)
+        yield tones[i], (r, g, b), rot
+
 def get_matplotlib_colors():
     """Returns the default matplotlib colors for the lines drawn in a figure in html form"""
     fig = pyplot.figure(1)

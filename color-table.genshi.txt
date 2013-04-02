@@ -1,0 +1,10 @@
+{% python
+from book_helpers import *
+rot_chars = '|/-\\'
+%}\
+{% for tone, rgb, rot in hue_tone_rotation_table() %}\
+ * ${tone.ljust(2)} ${str(rgb[0]).rjust(3)} ${str(rgb[1]).rjust(3)} ${str(rgb[2]).rjust(3)} ${rot_chars[rot]}
+{% end %}
+{% for tone, rgb, rot in hue_tone_rotation_table() %}\
+ RGB(${str(rgb[0]).rjust(3)}, ${str(rgb[1]).rjust(3)}, ${str(rgb[2]).rjust(3)}), // ${tone}
+{% end %}
