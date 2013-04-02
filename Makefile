@@ -1,4 +1,4 @@
-.PHONY: all out_dir tmp_dir clean
+.PHONY: all clean
 
 all: chromaturn.ly $(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html)) $(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
 
@@ -7,29 +7,30 @@ clean:
 	rm -fr tmp
 	rm chromaturn.ly
 
-out_dir:
-	mkdir -p out
+OUT=out/.d
+TMP=tmp/.d
 
-tmp_dir:
-	mkdir -p tmp
+%/.d:
+	mkdir -p $(@D)
+	touch $@
 
-.PRECIOUS: tmp/%.html
+.PRECIOUS: %/.d tmp/%.html
 
 %.ly: %.genshi.ly
 	./genshify $< > $@
 
-out/%.svg: %.genshi.svg book_helpers.py out_dir
+out/%.svg: %.genshi.svg book_helpers.py $(OUT)
 	./genshify $< > $@
 
-out/%.html: %.genshi.html book_helpers.py out_dir
+out/%.html: %.genshi.html book_helpers.py $(OUT)
 	./genshify $< > $@
 
-out/%.txt: %.genshi.txt book_helpers.py out_dir
+out/%.txt: %.genshi.txt book_helpers.py $(OUT)
 	./genshify $< > $@
 
-out/%.html: tmp/%.html out_dir tmp_dir
+out/%.html: tmp/%.html $(OUT) $(TMP)
 	lilypond-book --output out/ $<
 
-tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly tmp_dir
+tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly $(TMP)
 	./genshify $< > $@
 
