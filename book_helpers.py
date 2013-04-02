@@ -181,18 +181,47 @@ def calculate_colormath_delta(colors):
     """calculates the norm of the deltas between each color in Lab space"""
     points = len(colors)
     labs = [colormath.color_objects.LabColor(*color.lab) for color in colors]
-    deltas = [labs[i].delta_e(labs[(i+1) % points]) for i in range(points)]
+    # deltas = [labs[i].delta_e(labs[(i+1) % points], mode='cmc', pl=1, pc=1) for i in range(points)]
+    deltas = [labs[i].delta_e(labs[(i+1) % points], mode='cie1976') for i in range(points)]
+    return numpy.array(deltas)
+
+def calculate_colormath_delta_matrix(colors):
+    """calculates a matrix of the deltas between each pair of points"""
+    points = len(colors)
+    labs = [colormath.color_objects.LabColor(*color.lab) for color in colors]
+    # deltas = [labs[i].delta_e(labs[(i+1) % points], mode='cmc', pl=1, pc=1) for i in range(points)]
+    deltas = [[labs[i].delta_e(labs[j]) for i in range(points)] for j in range(points)]
     return numpy.array(deltas)
 
 def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of colors around the lab color space, using the colormath delta function, with the given saturation and value"""
-    points = count*1000
-    colors = get_hue_spread(points, saturation, value)
-    delta = calculate_colormath_delta(colors)
-    desired_deltas = numpy.linspace(0.0, numpy.sum(delta), count+1)[:count]
-    cum_delta = numpy.cumsum(delta, axis=0)
-    desired_indexes = [numpy.abs(cum_delta - desired_delta).argmin() for desired_delta in desired_deltas]
-    desired_colors = colors.take(desired_indexes)
+    points = count
+    hues = numpy.linspace(0.0, 360.0, points+1)[:points]
+    resolved = False
+    while not resolved:
+        hue_deltas = numpy.array([(360 + hues[(i+1) % points] - hues[i]) % 360 for i in range(points)])
+        colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
+        deltas = numpy.array([colors[i].delta_e(colors[(i+1) % points]) for i in range(points)])
+        print "D ", deltas
+        delta_variance = deltas / numpy.average(deltas)
+        print "dv", delta_variance
+        in_range = 0
+        for i in range(0, points):
+            dv = delta_variance[i]
+            if dv < 0.95:
+                hue_deltas[i] += 1
+            elif dv > 1.05:
+                hue_deltas[i] -= 1
+            else:
+                in_range += 1
+        if in_range == points:
+            break
+        # print hue_deltas
+        hue_deltas *= 360.0 / sum(hue_deltas)
+        print "hd", hue_deltas
+        hues = [numpy.sum(hue_deltas[:i]) for i in range(points)]
+        print "H ", hues
+    desired_colors = [grapefruit.Color.NewFromHsv(hue, saturation, value) for hue in hues]
     return desired_colors
 
 def get_lab_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
@@ -246,7 +275,7 @@ def draw_hue_tone_circle(interval=7, hues_function=None, radius=1):
     """A diagram of the circle of fifths/semitones with hue mapped on it"""
     cycle, fig = interval_circle_figure(interval)
     hue_cycle = list(tone_cycle(7))
-    hues = get_lab_spread_hues() if hues_function is None else hues_function()
+    hues = get_delta_spread_hues() if hues_function is None else hues_function()
     ax = fig.axes[0]
     gamma = numpy.arange(-numpy.pi/12, 2*numpy.pi - numpy.pi/12, 2*numpy.pi/12)
     radii = [radius for i in range(12)]
@@ -262,7 +291,7 @@ def draw_hue_rotation_tone_circle(interval=7, hues_function=None):
     fig = draw_hue_tone_circle(interval, hues_function=hues_function, radius=0.75)
     cycle = list(tone_cycle(interval))
     hue_cycle = list(tone_cycle(7))
-    hues = get_lab_spread_hues() if hues_function is None else hues_function()
+    hues = get_delta_spread_hues() if hues_function is None else hues_function()
     ax = fig.axes[0]
     scatter_gamma = numpy.arange(0, 2*numpy.pi, 2*numpy.pi/12)
     for i in range(12):
@@ -275,7 +304,7 @@ def web_color(rgb):
     return "#%02x%02x%02x" % (r, g, b)
 
 def hue_tone_rotation_table(interval=1, hues_function=None):
-    hues = get_lab_spread_hues() if hues_function is None else hues_function()
+    hues = get_delta_spread_hues() if hues_function is None else hues_function()
     cycle = list(tone_cycle(interval))
     hue_cycle = list(tone_cycle(7))
     for i in range(12):
@@ -446,7 +475,7 @@ def draw_hue_torus_tone_circle(R=10.0, r=5.0, hues_function=None):
     x, y, z = torus_tone_coords(R, r)
     ax = fig.axes[0]
     hue_cycle = list(tone_cycle(7))
-    hues = get_lab_spread_hues() if hues_function is None else hues_function()
+    hues = get_delta_spread_hues() if hues_function is None else hues_function()
     for interval, hue in enumerate(hues):
         ax.scatter([x[interval]], [y[interval]], [z[interval]], s=100, color=hue)
     set_torus_view(ax, R, r)
@@ -481,7 +510,7 @@ def draw_torus_chord(chord_name, R=10.0, r=5.0):
 
 def lilypond_pitch_colors(hue_function=None):
     """generates tuples of lilypond pitch definitions and grapefruit colors"""
-    # hues = get_lab_spread_hues() if hues_function is None else hues_function()
+    # hues = get_delta_spread_hues() if hues_function is None else hues_function()
     colors = get_lab_spread_colors()
     hue_cycle = list(tone_cycle(7))
     count = len(tones)
