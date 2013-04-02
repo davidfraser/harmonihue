@@ -24,7 +24,7 @@ TMP=tmp/.d
 %.ly: %.genshi.ly
 	./genshify $< > $@
 
-out/guitar-fretboard.svg: guitar_layout.py
+out/guitar-fretboard.svg: guitar_layout.py guitar-base.genshi.xml guitar-strings.genshi.xml
 
 out/%.svg: %.genshi.svg book_helpers.py $(OUT)
 	./genshify $< > $@
