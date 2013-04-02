@@ -7,8 +7,11 @@ import sys
 EXTENSION_CLASSES = {"ly": genshi.template.NewTextTemplate, "txt": genshi.template.NewTextTemplate}
 script_dir = os.path.dirname(os.path.abspath(__file__))
 loader = genshi.template.TemplateLoader([script_dir])
-for filename in sys.argv[1:]:
-    extension = filename[(filename.rfind(".") if "." in filename else -1) + 1:]
-    template = loader.load(filename, cls=EXTENSION_CLASSES.get(extension, None))
-    sys.stdout.write(template.generate().render())
+input_filename = sys.argv[1]
+output_filename = sys.argv[2]
+extension = input_filename[(input_filename.rfind(".") if "." in input_filename else -1) + 1:]
+template = loader.load(input_filename, cls=EXTENSION_CLASSES.get(extension, None))
+result = template.generate().render()
+with open(output_filename, "w") as output_file:
+    output_file.write(result)
 

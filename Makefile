@@ -22,26 +22,26 @@ TMP=tmp/.d
 .PRECIOUS: %/.d tmp/%.html
 
 %.ly: %.genshi.ly
-	./genshify $< > $@
+	./genshify $< $@
 
 out/guitar-fretboard.svg: guitar_layout.py sticker-def.genshi.xml guitar-base.genshi.xml guitar-strings.genshi.xml
 
 out/%.svg: %.genshi.svg book_helpers.py $(OUT)
-	./genshify $< > $@
+	./genshify $< $@
 
 out/%.png: out/%.svg
 	rasterizer -d $@ -m image/png $<
 	# convert $< $@
 
 out/%.html: %.genshi.html book_helpers.py $(OUT)
-	./genshify $< > $@
+	./genshify $< $@
 
 out/%.txt: %.genshi.txt book_helpers.py $(OUT)
-	./genshify $< > $@
+	./genshify $< $@
 
 out/%.html: tmp/%.html $(OUT) $(TMP)
 	lilypond-book --output out/ $<
 
 tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly $(TMP)
-	./genshify $< > $@
+	./genshify $< $@
 
