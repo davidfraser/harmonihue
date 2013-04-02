@@ -3,14 +3,9 @@
 from book_helpers import *
 from guitar_layout import *
 ?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="${-saddle_width} ${saddle_string_gap-figure_height} ${figure_width-saddle_width} ${saddle_string_gap}">
-<div py:if="show_guitar" py:strip="True">
-    <polygon id="fretboard" style="fill: black; stroke: none;" points="${fret_pos[-1]} ${string_pos(0, fret_pos[-1])-edge_string_gap},${fret_pos[0]} ${string_pos(0, fret_pos[0])-edge_string_gap},${fret_pos[0]} ${string_pos(string_count-1, fret_pos[0])+edge_string_gap},${fret_pos[-1]} ${string_pos(string_count-1, fret_pos[-1])+edge_string_gap}"/>
-    <rect id="saddle" style="fill: white; stroke: none;" x="${-saddle_width}" y="${string_pos(0, 0) - edge_string_gap}" width="${saddle_width}" height="${string_pos(string_count-1, 0) + edge_string_gap}"/>
-    <rect id="nut" style="fill: white; stroke: none;" x="${string_length}" y="${string_pos(0, string_width) - edge_string_gap}" width="${nut_width}" height="${string_pos(string_count-1, string_width) + edge_string_gap}"/>
-    <line id="fret_${fret}" py:for="fret in range(1, frets)" style="stroke: gold; stroke-width: ${fret_width};" x1="${fret_pos[fret]}" y1="${string_pos(0, fret_pos[fret]) - edge_string_gap}" x2="${fret_pos[fret]}" y2="${string_pos(string_count-1, fret_pos[fret]) + edge_string_gap}"/>
-</div>
-<circle id="fret_dot_${fret}" py:for="fret in dotted_frets" style="fill: white; stroke: black; stroke-width: 0.05;" cx="${fret_cpos[fret]}" cy="${string_pos(0, fret_cpos[fret])-edge_string_gap-dot_radius}" r="${dot_radius}"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="${-saddle_width} ${saddle_string_gap-figure_height} ${figure_width-saddle_width} ${saddle_string_gap}">
+<xi:include href="guitar-base.genshi.xml" />
+<!-- background black rectangles for stickers when printing -->
 <div py:if="not show_guitar" py:strip="True">
     <rect id="sticker_bg_${fret}" py:for="fret in range(frets)" style="fill: black; stroke: none;" x="${fret_cpos[fret]-sticker_radius*2}" y="${string_pos(0, fret_cpos[fret]) - edge_string_gap}" width="${sticker_radius*4}" height="${string_gap(fret_cpos[fret]) + 2*edge_string_gap}"/>
     <rect id="sticker_bg_nut" style="fill: black; stroke: none;" x="${string_length + nut_width/2 - sticker_radius*2}" y="${string_pos(0, string_length) - edge_string_gap}" width="${sticker_radius*4}" height="${string_gap(string_length) + 2*edge_string_gap}"/>
@@ -21,6 +16,6 @@ from guitar_layout import *
     </div>
     <circle id="sticker_${string}${s}_nut" style="fill: ${hue_colors[tones.index(string)].html}; stroke: black; stroke-width: 0.05;" cx="${string_length + nut_width/2}" cy="${string_pos(s, string_length)}" r="${sticker_radius}"/>
 </div>
-<line py:if="show_guitar" py:for="s, string in enumerate(strings)" id="string_${string}${s}" style="stroke: silver; stroke-width: ${string_width};" x1="0" y1="${string_pos(s, 0)}" x2="${string_length}" y2="${string_pos(s, string_length)}"/>
+<xi:include href="guitar-strings.genshi.xml" />
 </svg>
 

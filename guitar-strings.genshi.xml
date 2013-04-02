@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xml:space="preserve">
+    <line py:if="show_guitar" py:for="s, string in enumerate(strings)" id="string_${string}${s}" style="stroke: silver; stroke-width: ${string_width};" x1="0" y1="${string_pos(s, 0)}" x2="${string_length}" y2="${string_pos(s, string_length)}"/>
+</svg>
+

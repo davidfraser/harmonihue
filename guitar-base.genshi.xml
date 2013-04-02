@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xml:space="preserve">
+    <div py:if="show_guitar" py:strip="True">
+        <polygon id="fretboard" style="fill: black; stroke: none;" points="${fret_pos[-1]} ${string_pos(0, fret_pos[-1])-edge_string_gap},${fret_pos[0]} ${string_pos(0, fret_pos[0])-edge_string_gap},${fret_pos[0]} ${string_pos(string_count-1, fret_pos[0])+edge_string_gap},${fret_pos[-1]} ${string_pos(string_count-1, fret_pos[-1])+edge_string_gap}"/>
+        <rect id="saddle" style="fill: white; stroke: none;" x="${-saddle_width}" y="${string_pos(0, 0) - edge_string_gap}" width="${saddle_width}" height="${string_pos(string_count-1, 0) + edge_string_gap}"/>
+        <rect id="nut" style="fill: white; stroke: none;" x="${string_length}" y="${string_pos(0, string_width) - edge_string_gap}" width="${nut_width}" height="${string_pos(string_count-1, string_width) + edge_string_gap}"/>
+        <line id="fret_${fret}" py:for="fret in range(1, frets)" style="stroke: gold; stroke-width: ${fret_width};" x1="${fret_pos[fret]}" y1="${string_pos(0, fret_pos[fret]) - edge_string_gap}" x2="${fret_pos[fret]}" y2="${string_pos(string_count-1, fret_pos[fret]) + edge_string_gap}"/>
+    </div>
+    <circle id="fret_dot_${fret}" py:for="fret in dotted_frets" style="fill: white; stroke: black; stroke-width: 0.05;" cx="${fret_cpos[fret]}" cy="${string_pos(0, fret_cpos[fret])-edge_string_gap-dot_radius}" r="${dot_radius}"/>
+</svg>
+

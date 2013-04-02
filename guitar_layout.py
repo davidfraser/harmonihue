@@ -18,7 +18,7 @@ dotted_frets = [5, 7, 9, 12]
 fret_width = 0.2
 sticker_radius = 0.3
 dot_radius = 0.15
-show_guitar = False
+show_guitar = True
 
 nut_width = fret_width * 2
 saddle_width = fret_width * 2
