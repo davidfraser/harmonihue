@@ -3,7 +3,7 @@
 from book_helpers import *
 from guitar_layout import *
 ?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="${-saddle_width} ${saddle_string_gap-figure_height} ${figure_width-saddle_width} ${saddle_string_gap}">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="${figure_left} ${figure_top} ${figure_right} ${figure_bottom}">
 <xi:include href="guitar-base.genshi.xml" />
 <!-- background black rectangles for stickers when printing -->
 <div py:if="not show_guitar" py:strip="True">

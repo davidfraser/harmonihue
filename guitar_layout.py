@@ -7,6 +7,7 @@ from book_helpers import *
 strings = ["E", "A", "D", "G", "B", "E"]
 string_count = len(strings)
 units = "cm"
+# the distance from the outermost strings to the edge of the fretboard
 edge_string_gap = 0.5
 # the gap between strings is the distance between the top and bottom strings divided by the gaps
 nut_string_gap = 3.2
@@ -35,13 +36,21 @@ def string_pos(s, hpos):
     gap = string_gap(hpos)
     return vcenter - (gap/2) + (s*gap/(string_count-1))
 
-fretboard_height = (edge_string_gap*2) + string_gap(nut_string_gap)*(string_count-1)
-fret_height = fretboard_height
+def fretboard_height(hpos):
+    """calculates the top of the fretboard at the horizontal position"""
+    return edge_string_gap*2 + string_gap(hpos)
+
 fret_pos = [string_length/(2**(fret/12.)) for fret in range(frets+1)]
 fret_cpos = [(fret_pos[fret]+fret_pos[fret+1])/2 for fret in range(frets)]
 hue_cycle = list(tone_cycle(7))
 colors = get_lab_spread_colors(saturation=1.0, value=0.6)
 hue_colors = [colors[hue_cycle.index((index)%12)] for index in range(12)]
-figure_width = string_length + saddle_width + nut_width
-figure_height = saddle_string_gap + edge_string_gap*2 + dot_radius*2
+fretboard_left = string_length/(2**((frets+1)/12.))
+# compare the top of the saddle, the top left of the fretboard, and the highest fret dot
+figure_top = min(string_pos(0, 0) - edge_string_gap, vcenter - fretboard_height(fretboard_left)/2, vcenter - fretboard_height(fret_pos[max(dotted_frets)])/2 - dot_radius*2)
+figure_bottom = max(saddle_string_gap + edge_string_gap, vcenter + fretboard_height(fretboard_left)/2)
+figure_height = figure_bottom - figure_top
+figure_left = -saddle_width
+figure_right = string_length + nut_width + sticker_radius * 2
+figure_width = figure_right - figure_left
 
