@@ -4,6 +4,7 @@ from book_helpers import *
 from guitar_layout import *
 ?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="${figure_left} ${figure_top} ${figure_width} ${figure_height}">
+<xi:include href="sticker-def.genshi.xml" />
 <xi:include href="guitar-base.genshi.xml" />
 <!-- background black rectangles for stickers when printing -->
 <div py:if="not show_guitar" py:strip="True">
@@ -12,13 +13,11 @@ from guitar_layout import *
 </div>
 <xi:include href="guitar-strings.genshi.xml" />
 <div py:for="s, string in enumerate(strings)" py:strip="True">
-    <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret+11)%12; cx=fret_cpos[fret]; cy=string_pos(s, fret_cpos[fret]); rw=sticker_radius*1.333; rh=sticker_radius*.5; rr=sticker_radius*.25">
-        <circle id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" cx="${cx}" cy="${cy}" r="${sticker_radius}"/>
-        <rect id="sticker_bar_${string}${s}_${fret}" style="fill: black; stroke: none;" rx="${rh}" ry="${rh}" x="${cx-rw/2}" y="${cy-rh/2}" width="${rw}" height="${rh}" transform="rotate(${hue_rotations[note_index]*45} ${cx} ${cy})"/>
+    <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret+11)%12; cx=fret_cpos[fret]; cy=string_pos(s, fret_cpos[fret])">
+        ${sticker(note_index, cx, cy, sticker_radius, '%s%d_%s' % (string, s, fret))}
     </div>
-    <div py:strip="True" py:with="note_index=tones.index(string); cx=string_length + nut_width/2; cy=string_pos(s, string_length); rw=sticker_radius*1.333; rh=sticker_radius*.5; rr=sticker_radius*.25">
-        <circle id="sticker_${string}${s}_nut" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" cx="${cx}" cy="${cy}" r="${sticker_radius}"/>
-        <rect id="sticker_bar_${string}${s}_${fret}" style="fill: black; stroke: none;" rx="${rh}" ry="${rh}" x="${cx-rw/2}" y="${cy-rh/2}" width="${rw}" height="${rh}" transform="rotate(${hue_rotations[note_index]*45} ${cx} ${cy})"/>
+    <div py:strip="True" py:with="note_index=tones.index(string); cx=string_length + nut_width/2; cy=string_pos(s, string_length)">
+        ${sticker(note_index, cx, cy, sticker_radius, '%s%d_nut' % (string, s))}
     </div>
 </div>
 </svg>
