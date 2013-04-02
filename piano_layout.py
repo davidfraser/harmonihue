@@ -4,7 +4,7 @@
 
 from book_helpers import *
 
-octaves = 3
+octaves = 2 
 height = 120.0
 octave_width = 160.0
 total_width = octaves * octave_width
