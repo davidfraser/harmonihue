@@ -1,0 +1,22 @@
+= Plan =
+
+== Colour Spaces ==
+
+Need to understand:
+
+* Topology and metrics (in a sphere, you can have |AC| < |AB| + |BC| even where ABC is a straight line; what is the nature of this space?)
+* Different colour spaces (RGB, HSV, HSL, Lab etc) and how they work
+* Experimenting with the Munsell hues could be a quick path to a workable solution
+* How colour spaces correspond to displays (sRGB etc)
+
+Then need to work out a methodology to explore this:
+
+* Comparitive difference (which difference is greater?) should be measurable
+* Creating equivalent differences (make the once difference the same as the other by moving along a colour arc) should be possible
+* Trying to measure ratios of difference is more tricky unless there's a consistent standard to measure against. The gray scale could be useful here, especially if it can be demonstrated (how?) that it's linear (i.e. twice the difference looks twice as different).
+* Then need to establish that perceived colour difference (especially at larger differences) *is* really a metric - i.e. if a set of |AiBi| differences seem the same when compared between i and i+1, does it apply that they'll all seem the same side by side? And if |AB| == 2|CD| == |EF| (where CD is on the gray scale), then will |AB| seem like half |EF|? I hope so :)
+
+=== Experiments ===
+
+* Grayscale: three colours side by side; ask user to adjust until difference is identical. Repeat over different differences (binary division?)
+
