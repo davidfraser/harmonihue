@@ -30,7 +30,9 @@ Need to understand:
  - Color constancy with differing illumination levels
  - Contextual effects such as Bartleson Breneman
 
-* Research whether there's a sufficient sample data set to construct the set of 12 colors directly from the sample data
+* Try and use the Jab colorspace of CIECAM02 - see https://github.com/igd-geo/pcolor/
+
+* Research whether there's a sufficient experimental sample data set to construct the set of 12 colors directly from the sample data
 
 === Further Reading ===
 
