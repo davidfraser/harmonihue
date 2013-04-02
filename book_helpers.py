@@ -11,6 +11,7 @@ from matplotlib import pyplot
 from mpl_toolkits import mplot3d
 import numpy
 import decorator
+import colormath.color_objects
 
 OUTPUT_DIR = "out"
 
@@ -166,19 +167,41 @@ def calculate_lab_delta_norm(colors, scale=(1, 50, 50)):
     return lab_delta_norm
 
 def get_lab_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
-    """returns an evenly spread number of colors around the lab color space, with the given saturation and value, as rgb"""
+    """returns an evenly spread number of colors around the lab color space, with the given saturation and value"""
     points = count*100
     colors = get_hue_spread(points, saturation, value)
     lab_delta_norm = calculate_lab_delta_norm(colors)
     desired_deltas = numpy.linspace(0.0, numpy.sum(lab_delta_norm), count+1)[:count]
     cum_delta_norm = numpy.cumsum(lab_delta_norm, axis=0)
-    desired_indexes = [numpy.abs(cum_delta_norm-delta).argmin() for delta in desired_deltas]
+    desired_indexes = [numpy.abs(cum_delta_norm - delta).argmin() for delta in desired_deltas]
+    desired_colors = colors.take(desired_indexes)
+    return desired_colors
+
+def calculate_colormath_delta(colors):
+    """calculates the norm of the deltas between each color in Lab space"""
+    points = len(colors)
+    labs = [colormath.color_objects.LabColor(*color.lab) for color in colors]
+    deltas = [labs[i].delta_e(labs[(i+1) % points]) for i in range(points)]
+    return numpy.array(deltas)
+
+def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
+    """returns an evenly spread number of colors around the lab color space, using the colormath delta function, with the given saturation and value"""
+    points = count*1000
+    colors = get_hue_spread(points, saturation, value)
+    delta = calculate_colormath_delta(colors)
+    desired_deltas = numpy.linspace(0.0, numpy.sum(delta), count+1)[:count]
+    cum_delta = numpy.cumsum(delta, axis=0)
+    desired_indexes = [numpy.abs(cum_delta - desired_delta).argmin() for desired_delta in desired_deltas]
     desired_colors = colors.take(desired_indexes)
     return desired_colors
 
 def get_lab_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of hues around the lab color space, with the given saturation and value, as rgb"""
     return [color.rgb for color in get_lab_spread_colors(count, saturation, value)]
+
+def get_delta_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
+    """returns an evenly spread number of hues around the lab color space by measuring deltas, with the given saturation and value, as rgb"""
+    return [color.rgb for color in get_delta_spread_colors(count, saturation, value)]
 
 @figure_function
 def draw_lab_hues(R=10.0, r=5.0, figsize=(5,5)):
@@ -193,6 +216,25 @@ def draw_lab_hues(R=10.0, r=5.0, figsize=(5,5)):
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=20, color=rgb_colors)
     new_colors = get_lab_spread_colors(count)
+    lab_colors = numpy.array([color.lab for color in new_colors])
+    rgb_colors = [color.rgb for color in new_colors]
+    L, a, b = lab_colors.transpose()
+    ax.scatter(L, a, b, s=200, color=rgb_colors)
+    return fig
+
+@figure_function
+def draw_lab_delta_hues(R=10.0, r=5.0, figsize=(5,5)):
+    """Draws the delta-spread hue values in the Lab color space"""
+    fig = pyplot.figure(1, figsize=figsize)
+    ax = mplot3d.Axes3D(fig)
+    count = 12
+    points = count * 10
+    colors = get_hue_spread(points)
+    lab_colors = numpy.array([color.lab for color in colors])
+    rgb_colors = [color.rgb for color in colors]
+    L, a, b = lab_colors.transpose()
+    ax.scatter(L, a, b, s=20, color=rgb_colors)
+    new_colors = get_delta_spread_colors(count)
     lab_colors = numpy.array([color.lab for color in new_colors])
     rgb_colors = [color.rgb for color in new_colors]
     L, a, b = lab_colors.transpose()
