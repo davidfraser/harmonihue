@@ -26,6 +26,8 @@ TMP=tmp/.d
 
 out/guitar-fretboard.svg: guitar_layout.py sticker-def.genshi.xml guitar-base.genshi.xml guitar-strings.genshi.xml
 
+out/piano-keyboard.svg: piano_layout.py
+
 out/%.svg: %.genshi.svg book_helpers.py $(OUT)
 	./genshify $< $@
 
