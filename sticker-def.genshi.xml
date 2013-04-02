@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xml:space="preserve" py:strip="True">
     <py:def function="sticker(note_index, cx, cy, radius, label)" py:with="rw=radius*1.333; rh=radius*.5; rr=radius*.25">
-        <circle id="sticker_${label}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" cx="${cx}" cy="${cy}" r="${sticker_radius}"/>
+        <circle id="sticker_${label}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" cx="${cx}" cy="${cy}" r="${radius}"/>
         <rect id="sticker_bar_${label}" style="fill: black; stroke: none;" rx="${rh}" ry="${rh}" x="${cx-rw/2}" y="${cy-rh/2}" width="${rw}" height="${rh}" transform="rotate(${hue_rotations[note_index]*45} ${cx} ${cy})"/>
     </py:def>
 </svg>
