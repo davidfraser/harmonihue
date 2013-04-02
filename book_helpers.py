@@ -151,14 +151,25 @@ def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
     hsv_map = {0: (saturation+M_s, value+M_h), 1: (saturation+M_s, value-M_h), 2: (saturation-M_s, value-M_h), 3: (saturation-M_s, value+M_h)}
     return [colorsys.hsv_to_rgb(float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1]) for i in range(count)]
 
+def get_hue_spread(points, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
+    """Returns a set of colors distributed in a circle around the Hsv space with fixed saturation and value"""
+    hues = numpy.linspace(360.0, 0.0, points)
+    colors = numpy.array([grapefruit.Color.NewFromHsv(hue, saturation, value) for hue in hues])
+    return colors
+
+def calculate_lab_delta_norm(colors, scale=(1, 50, 50)):
+    """calculates the norm of the deltas between each color in Lab space"""
+    points = len(colors)
+    labs = numpy.array([color.lab for color in colors])
+    lab_delta = numpy.diff(labs, axis=0) * points * scale # scale up a and b so the ranges are comparable
+    lab_delta_norm = numpy.apply_along_axis(numpy.linalg.norm, 1, lab_delta)
+    return lab_delta_norm
+
 def get_lab_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of colors around the lab color space, with the given saturation and value, as rgb"""
     points = count*100
-    hues = numpy.linspace(360.0, 0.0, points)
-    colors = numpy.array([grapefruit.Color.NewFromHsv(hue, saturation, value) for hue in hues])
-    labs = numpy.array([color.lab for color in colors])
-    lab_delta = numpy.diff(labs, axis=0) * points * (1, 50, 50) # scale up a and b so the ranges are comparable
-    lab_delta_norm = numpy.apply_along_axis(numpy.linalg.norm, 1, lab_delta)
+    colors = get_hue_spread(points, saturation, value)
+    lab_delta_norm = calculate_lab_delta_norm(colors)
     desired_deltas = numpy.linspace(0.0, numpy.sum(lab_delta_norm), count+1)[:count]
     cum_delta_norm = numpy.cumsum(lab_delta_norm, axis=0)
     desired_indexes = [numpy.abs(cum_delta_norm-delta).argmin() for delta in desired_deltas]
@@ -176,14 +187,12 @@ def draw_lab_hues(R=10.0, r=5.0, figsize=(5,5)):
     ax = mplot3d.Axes3D(fig)
     count = 12
     points = count * 10
-    saturation, value = DEFAULT_SATURATION, DEFAULT_VALUE
-    hues = numpy.linspace(360.0, 0.0, points)
-    colors = [grapefruit.Color.NewFromHsv(hue, saturation, value) for hue in hues]
+    colors = get_hue_spread(points)
     lab_colors = numpy.array([color.lab for color in colors])
     rgb_colors = [color.rgb for color in colors]
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=20, color=rgb_colors)
-    new_colors = get_lab_spread_colors(count, saturation, value)
+    new_colors = get_lab_spread_colors(count)
     lab_colors = numpy.array([color.lab for color in new_colors])
     rgb_colors = [color.rgb for color in new_colors]
     L, a, b = lab_colors.transpose()
