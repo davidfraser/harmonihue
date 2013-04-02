@@ -45,6 +45,7 @@ fret_cpos = [(fret_pos[fret]+fret_pos[fret+1])/2 for fret in range(frets)]
 hue_cycle = list(tone_cycle(7))
 colors = get_lab_spread_colors(saturation=1.0, value=0.6)
 hue_colors = [colors[hue_cycle.index((index)%12)] for index in range(12)]
+hue_rotations = [index % 4 for index in range(12)]
 fretboard_left = string_length/(2**((frets+1)/12.))
 # compare the top of the saddle, the top left of the fretboard, and the highest fret dot
 figure_top = min(string_pos(0, 0) - edge_string_gap, vcenter - fretboard_height(fretboard_left)/2, vcenter - fretboard_height(fret_pos[max(dotted_frets)])/2 - dot_radius*2)

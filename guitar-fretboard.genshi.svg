@@ -13,6 +13,7 @@ from guitar_layout import *
 <div py:for="s, string in enumerate(strings)" py:strip="True">
     <div py:for="fret in range(frets)" py:strip="True" py:with="note_index=(tones.index(string)+fret+11)%12">
         <circle id="sticker_${string}${s}_${fret}" style="fill: ${hue_colors[note_index].html}; stroke: black; stroke-width: 0.05;" cx="${fret_cpos[fret]}" cy="${string_pos(s, fret_cpos[fret])}" r="${sticker_radius}"/>
+        <rect id="sticker_bar_${string}${s}_${fret}" style="fill: black; stroke: none;" x="${fret_cpos[fret]-sticker_radius*.75}" y="${string_pos(s, fret_cpos[fret])-sticker_radius*.3}" width="${sticker_radius*1.5}" height="${sticker_radius*.6}" transform="rotate(${hue_rotations[note_index]*45} ${fret_cpos[fret]} ${string_pos(s, fret_cpos[fret])})"/>
     </div>
     <circle id="sticker_${string}${s}_nut" style="fill: ${hue_colors[tones.index(string)].html}; stroke: black; stroke-width: 0.05;" cx="${string_length + nut_width/2}" cy="${string_pos(s, string_length)}" r="${sticker_radius}"/>
 </div>
