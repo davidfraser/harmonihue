@@ -6,10 +6,12 @@ from book_helpers import *
 
 octaves = 3
 height = 120.0
+octave_width = 160.0
+total_width = octaves * octave_width
+
 height_black = height * 2/3
-total_width = 160.0
-width_black = total_width / 12
-width_white = total_width / 7
+width_black = octave_width / 12
+width_white = octave_width / 7
 c_tones = tones[3:] + tones[:3]
 white_notes = [index for index, tone in enumerate(c_tones + [c_tones[0]]) if len(tone) == 1]
 black_notes = [index for index, tone in enumerate(c_tones) if len(tone) >  1]
