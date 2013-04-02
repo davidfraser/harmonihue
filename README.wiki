@@ -13,5 +13,4 @@ Compiling the book requires:
 ** mplot_toolkits.mplot3d
 ** numpy
 ** decorator
-** grapefruit
-
+** colormath

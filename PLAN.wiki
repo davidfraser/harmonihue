@@ -16,8 +16,6 @@ Need to understand:
 
  - http://onlinelibrary.wiley.com/doi/10.1002/col.1049/abstract
  - Already have code to calculate deltas using colormath library
- - Add sample distributed hue set using the above spaces and the Delta E function (if not already done)
- - Switch other grapefruit usage to use colormath
 
 * Reference the attempts to create color spaces with Euclidean distance functions based on them:
 

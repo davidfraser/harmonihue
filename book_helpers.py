@@ -5,7 +5,6 @@
 import colorsys
 import math
 import os
-import grapefruit
 import matplotlib
 from matplotlib import pyplot
 from mpl_toolkits import mplot3d
@@ -35,6 +34,21 @@ chords = {
     'dim': [0, 3, 6],
     'aug': [0, 4, 8],
 }
+
+def rgb_float_tuple(c):
+    """converts a colormath color object to an rgb tuple in the range [0, 1)"""
+    r, g, b = c.convert_to('rgb').get_value_tuple()
+    return (r/255., g/255., b/255.)
+
+def rgb_hex(c):
+    """converts a colormath color object to an rgb hex string for html like #30bf30"""
+    return c.convert_to('rgb').get_rgb_hex()
+
+def lighter_color(c, level):
+    """lightens the color by increasing the HSL lightness value by the given amount"""
+    c2 = c.convert_to('hsl')
+    c2.hsl_l = min(1, c2.hsl_l + level)
+    return c2
 
 def mod_delta(a, b, m):
     """simple function for calculating the delta of two numbers in a modulo space"""
@@ -155,13 +169,13 @@ def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
 def get_hue_spread(points, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """Returns a set of colors distributed in a circle around the Hsv space with fixed saturation and value"""
     hues = numpy.linspace(360.0, 0.0, points)
-    colors = numpy.array([grapefruit.Color.NewFromHsv(hue, saturation, value) for hue in hues])
+    colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
     return colors
 
-def calculate_lab_delta_norm(colors, scale=(1, 50, 50)):
+def calculate_lab_delta_norm(colors, scale=(1, 0.5, 0.5)):
     """calculates the norm of the deltas between each color in Lab space"""
     points = len(colors)
-    labs = numpy.array([color.lab for color in colors])
+    labs = numpy.array([color.convert_to('lab').get_value_tuple() for color in colors])
     lab_delta = numpy.diff(labs, axis=0) * points * scale # scale up a and b so the ranges are comparable
     lab_delta_norm = numpy.apply_along_axis(numpy.linalg.norm, 1, lab_delta)
     return lab_delta_norm
@@ -180,17 +194,17 @@ def get_lab_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT
 def calculate_colormath_delta(colors):
     """calculates the norm of the deltas between each color in Lab space"""
     points = len(colors)
-    labs = [colormath.color_objects.LabColor(*color.lab) for color in colors]
+    labs = [colormath.color_objects.LabColor(*color.convert_to('lab').get_value_tuple()) for color in colors]
     # deltas = [labs[i].delta_e(labs[(i+1) % points], mode='cmc', pl=1, pc=1) for i in range(points)]
-    deltas = [labs[i].delta_e(labs[(i+1) % points], mode='cie1976') for i in range(points)]
+    deltas = [labs[i].delta_e(labs[(i+1) % points], mode='cie2000') for i in range(points)]
     return numpy.array(deltas)
 
 def calculate_colormath_delta_matrix(colors):
     """calculates a matrix of the deltas between each pair of points"""
     points = len(colors)
-    labs = [colormath.color_objects.LabColor(*color.lab) for color in colors]
+    labs = [colormath.color_objects.LabColor(*color.convert_to('lab').get_value_tuple()) for color in colors]
     # deltas = [labs[i].delta_e(labs[(i+1) % points], mode='cmc', pl=1, pc=1) for i in range(points)]
-    deltas = [[labs[i].delta_e(labs[j]) for i in range(points)] for j in range(points)]
+    deltas = [[labs[i].delta_e(labs[j], mode='cie2000') for i in range(points)] for j in range(points)]
     return numpy.array(deltas)
 
 def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
@@ -201,7 +215,7 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
     while not resolved:
         hue_deltas = numpy.array([(360 + hues[(i+1) % points] - hues[i]) % 360 for i in range(points)])
         colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
-        deltas = numpy.array([colors[i].delta_e(colors[(i+1) % points]) for i in range(points)])
+        deltas = numpy.array([colors[i].delta_e(colors[(i+1) % points], mode='cie2000') for i in range(points)])
         print "D ", deltas
         delta_variance = deltas / numpy.average(deltas)
         print "dv", delta_variance
@@ -221,16 +235,16 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
         print "hd", hue_deltas
         hues = [numpy.sum(hue_deltas[:i]) for i in range(points)]
         print "H ", hues
-    desired_colors = [grapefruit.Color.NewFromHsv(hue, saturation, value) for hue in hues]
+    desired_colors = [colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues]
     return desired_colors
 
 def get_lab_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of hues around the lab color space, with the given saturation and value, as rgb"""
-    return [color.rgb for color in get_lab_spread_colors(count, saturation, value)]
+    return [rgb_float_tuple(color) for color in get_lab_spread_colors(count, saturation, value)]
 
 def get_delta_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of hues around the lab color space by measuring deltas, with the given saturation and value, as rgb"""
-    return [color.rgb for color in get_delta_spread_colors(count, saturation, value)]
+    return [rgb_float_tuple(color) for color in get_delta_spread_colors(count, saturation, value)]
 
 @figure_function
 def draw_lab_hues(R=10.0, r=5.0, figsize=(5,5)):
@@ -240,13 +254,13 @@ def draw_lab_hues(R=10.0, r=5.0, figsize=(5,5)):
     count = 12
     points = count * 10
     colors = get_hue_spread(points)
-    lab_colors = numpy.array([color.lab for color in colors])
-    rgb_colors = [color.rgb for color in colors]
+    lab_colors = numpy.array([color.convert_to('lab').get_value_tuple() for color in colors])
+    rgb_colors = [rgb_float_tuple(color) for color in colors]
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=20, color=rgb_colors)
     new_colors = get_lab_spread_colors(count)
-    lab_colors = numpy.array([color.lab for color in new_colors])
-    rgb_colors = [color.rgb for color in new_colors]
+    lab_colors = numpy.array([color.convert_to('lab').get_value_tuple() for color in new_colors])
+    rgb_colors = [rgb_float_tuple(color) for color in new_colors]
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=200, color=rgb_colors)
     return fig
@@ -259,13 +273,13 @@ def draw_lab_delta_hues(R=10.0, r=5.0, figsize=(5,5)):
     count = 12
     points = count * 10
     colors = get_hue_spread(points)
-    lab_colors = numpy.array([color.lab for color in colors])
-    rgb_colors = [color.rgb for color in colors]
+    lab_colors = numpy.array([color.convert_to('lab').get_value_tuple() for color in colors])
+    rgb_colors = [rgb_float_tuple(color) for color in colors]
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=20, color=rgb_colors)
     new_colors = get_delta_spread_colors(count)
-    lab_colors = numpy.array([color.lab for color in new_colors])
-    rgb_colors = [color.rgb for color in new_colors]
+    lab_colors = numpy.array([color.convert_to('lab').get_value_tuple() for color in new_colors])
+    rgb_colors = [rgb_float_tuple(color) for color in new_colors]
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=200, color=rgb_colors)
     return fig
@@ -509,7 +523,7 @@ def draw_torus_chord(chord_name, R=10.0, r=5.0):
     return fig
 
 def lilypond_pitch_colors(hue_function=None):
-    """generates tuples of lilypond pitch definitions and grapefruit colors"""
+    """generates tuples of lilypond pitch definitions and colors"""
     # hues = get_delta_spread_hues() if hues_function is None else hues_function()
     colors = get_lab_spread_colors()
     hue_cycle = list(tone_cycle(7))
