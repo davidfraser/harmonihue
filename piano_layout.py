@@ -18,7 +18,7 @@ c_tones = tones[3:] + tones[:3]
 white_notes = [index for index, tone in enumerate(c_tones + [c_tones[0]]) if len(tone) == 1]
 black_notes = [index for index, tone in enumerate(c_tones) if len(tone) >  1]
 hue_cycle = list(tone_cycle(7))
-colors = get_lab_spread_colors(saturation=1.0, value=0.6)
+colors = get_delta_spread_colors(saturation=1.0, value=0.6)
 hue_colors = [colors[hue_cycle.index((index+3)%12)] for index in range(12)]
 hue_rotations = [index % 4 for index in range(12)]
 bg_colors = [color.LighterColor(0.6) for color in hue_colors]
