@@ -42,7 +42,7 @@ hue_colors = [colors[hue_cycle.index((index)%12)] for index in range(12)]
 figure_width = string_length + saddle_width + nut_width
 figure_height = saddle_string_gap + edge_string_gap*2 + dot_radius*2
 ?>
-<svg xmlns:py="http://genshi.edgewall.org/" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="${-saddle_width} ${saddle_string_gap-figure_height} ${figure_width-saddle_width} ${saddle_string_gap}">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="${-saddle_width} ${saddle_string_gap-figure_height} ${figure_width-saddle_width} ${saddle_string_gap}">
 <div py:if="show_guitar" py:strip="True">
     <polygon id="fretboard" style="fill: black; stroke: none;" points="${fret_pos[-1]} ${string_pos(0, fret_pos[-1])-edge_string_gap},${fret_pos[0]} ${string_pos(0, fret_pos[0])-edge_string_gap},${fret_pos[0]} ${string_pos(string_count-1, fret_pos[0])+edge_string_gap},${fret_pos[-1]} ${string_pos(string_count-1, fret_pos[-1])+edge_string_gap}"/>
     <rect id="saddle" style="fill: white; stroke: none;" x="${-saddle_width}" y="${string_pos(0, 0) - edge_string_gap}" width="${saddle_width}" height="${string_pos(string_count-1, 0) + edge_string_gap}"/>
