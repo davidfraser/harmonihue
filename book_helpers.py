@@ -462,7 +462,7 @@ def draw_torus(R=10.0, r=5.0, figsize=(10,10)):
     torus = torus_figure(ax, R, r, color='grey')
     spiral = torus_tone_spiral(ax, R, r, color='yellow')
     # stop the spiral from using the first default color
-    ax._get_lines._clear_color_cycle()
+    ax._get_lines.set_color_cycle([])
     fig.points = torus_tone_points(ax, R, r, color='orange')
     set_torus_view(ax, R, r)
     return fig
