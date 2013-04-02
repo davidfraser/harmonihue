@@ -48,10 +48,16 @@ hue_colors = [colors[hue_cycle.index((index)%12)] for index in range(12)]
 hue_rotations = [index % 4 for index in range(12)]
 fretboard_left = string_length/(2**((frets+1)/12.))
 # compare the top of the saddle, the top left of the fretboard, and the highest fret dot
-figure_top = min(string_pos(0, 0) - edge_string_gap, vcenter - fretboard_height(fretboard_left)/2, vcenter - fretboard_height(fret_pos[max(dotted_frets)])/2 - dot_radius*2)
-figure_bottom = max(saddle_string_gap + edge_string_gap, vcenter + fretboard_height(fretboard_left)/2)
+if show_guitar:
+    figure_top = min(string_pos(0, 0) - edge_string_gap, vcenter - fretboard_height(fretboard_left)/2, vcenter - fretboard_height(fret_pos[max(dotted_frets)])/2 - dot_radius*2)
+    figure_bottom = max(saddle_string_gap + edge_string_gap, vcenter + fretboard_height(fretboard_left)/2)
+    figure_left = -saddle_width
+    figure_right = string_length + nut_width + sticker_radius * 2
+else:
+    figure_top = min(vcenter - fretboard_height(fretboard_left)/2, vcenter - fretboard_height(fret_pos[max(dotted_frets)])/2 - dot_radius*2)
+    figure_bottom = vcenter + fretboard_height(fretboard_left)/2
+    figure_left = fretboard_left
+    figure_right = string_length + nut_width + sticker_radius * 2
 figure_height = figure_bottom - figure_top
-figure_left = -saddle_width
-figure_right = string_length + nut_width + sticker_radius * 2
 figure_width = figure_right - figure_left
 
