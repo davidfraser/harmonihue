@@ -12,6 +12,7 @@ from mpl_toolkits import mplot3d
 import numpy
 import decorator
 import colormath.color_objects
+import types
 
 OUTPUT_DIR = "out"
 
@@ -66,6 +67,8 @@ def filename_part(x):
         return repr(x)
     if isinstance(x, (list, tuple)):
         return "_".join(filename_part(e) for e in x)
+    if isinstance(x, types.FunctionType):
+        return x.__name__
     return repr(x)
 
 @decorator.decorator
