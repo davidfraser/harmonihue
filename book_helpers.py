@@ -296,7 +296,7 @@ def draw_hue_rotation_tone_circle(interval=7, hues_function=None):
     scatter_gamma = numpy.arange(0, 2*numpy.pi, 2*numpy.pi/12)
     for i in range(12):
         hue_i = hue_cycle.index(cycle[i])
-        ax.scatter(scatter_gamma[i], 0.875, color=hues[hue_i], s=100, marker=(2, 0, (hue_i%4)*numpy.pi/4), linewidths=(4))
+        ax.scatter(scatter_gamma[i], 0.875, color=hues[hue_i], s=100, marker=(2, 0, (hue_i%4)*45), linewidths=(4))
     return fig
 
 def web_color(rgb):
