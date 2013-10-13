@@ -1,5 +1,7 @@
 .PHONY: all clean
 
+export PATH := /home/davidf/frasergo-upstream/lilypond/bin/:$(PATH)
+
 output_genshi=$(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html))
 output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
 output_svg=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.svg))
@@ -42,7 +44,7 @@ out/%.txt: %.genshi.txt book_helpers.py $(OUT)
 	./genshify $< $@
 
 out/%.html: tmp/%.html $(OUT) $(TMP)
-	lilypond-book --output out/ $<
+	lilypond-book --process "lilypond -dbackend=eps" --output out/ $<
 
 tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly $(TMP)
 	./genshify $< $@
