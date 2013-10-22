@@ -10,6 +10,7 @@ from mpl_toolkits import mplot3d
 import numpy
 import decorator
 import colormath.color_objects
+import types
 
 OUTPUT_DIR = "out"
 
@@ -79,6 +80,8 @@ def filename_part(x):
         return repr(x)
     if isinstance(x, (list, tuple)):
         return "_".join(filename_part(e) for e in x)
+    if isinstance(x, types.FunctionType):
+        return x.__name__
     return repr(x)
 
 @decorator.decorator
@@ -309,7 +312,7 @@ def draw_hue_rotation_tone_circle(interval=7, hues_function=None):
     scatter_gamma = numpy.arange(0, 2*numpy.pi, 2*numpy.pi/12)
     for i in range(12):
         hue_i = hue_cycle.index(cycle[i])
-        ax.scatter(scatter_gamma[i], 0.875, color=hues[hue_i], s=100, marker=(2, 0, (hue_i%4)*numpy.pi/4), linewidths=(4))
+        ax.scatter(scatter_gamma[i], 0.875, color=hues[hue_i], s=100, marker=(2, 0, (hue_i%4)*45), linewidths=(4))
     return fig
 
 def web_color(rgb):
@@ -339,6 +342,8 @@ def get_matplotlib_colors():
         yield web_color(matplotlib.colors.colorConverter.to_rgb(color))
         colors_so_far.add(color)
     pyplot.close()
+
+matplotlib_colors = list(get_matplotlib_colors())
 
 def tone_sequence(ax, base_sequence, sequence):
     s = 2*math.pi/12
@@ -430,7 +435,7 @@ def torus_scale(ax, scale_name, R, r, base_interval=7):
     xc = [x[base_cycle.index(i)] for i in scale]
     yc = [y[base_cycle.index(i)] for i in scale]
     zc = [z[base_cycle.index(i)] for i in scale]
-    ax.plot(xc, yc, zc)
+    ax.plot(xc, yc, zc, color='blue')
 
 def torus_chord(ax, chord_name, R, r, base_interval=7):
     """Draws straight lines between tone points to show chords on torus"""
@@ -442,7 +447,7 @@ def torus_chord(ax, chord_name, R, r, base_interval=7):
     xc = [x[base_cycle.index(i)] for i in chord]
     yc = [y[base_cycle.index(i)] for i in chord]
     zc = [z[base_cycle.index(i)] for i in chord]
-    ax.plot(xc, yc, zc)
+    ax.plot(xc, yc, zc, color='black')
 
 def torus_tone_cycles(ax, interval, R, r, base_interval=7):
     """Draws straight lines between tone points to show interval cycles on torus"""
@@ -450,6 +455,7 @@ def torus_tone_cycles(ax, interval, R, r, base_interval=7):
     base_cycle.reverse()
     x, y, z = torus_tone_coords(R, r)
     s = 2*math.pi/12
+    color_sequence = iter(matplotlib_colors)
     for offset in range(0, (interval if (12 % interval == 0) else 1)):
         tone_indexes = list(tone_cycle(interval, offset))
         cycle = [base_cycle.index(i) for i in tone_indexes]
@@ -459,7 +465,7 @@ def torus_tone_cycles(ax, interval, R, r, base_interval=7):
         xc = [x[c] for c in cycle]
         yc = [y[c] for c in cycle]
         zc = [z[c] for c in cycle]
-        ax.plot(xc, yc, zc)
+        ax.plot(xc, yc, zc, color=color_sequence.next())
 
 def set_torus_view(ax, R, r):
     ax.set_xlim3d((-R-r, R+r))
