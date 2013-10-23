@@ -19,9 +19,9 @@ to distinguish enharmonics.
 %TODO: handle double-sharps, double-flats, etc
 #(define color-mapping
   (list
-{% for pitch_str, color in lilypond_pitch_colors() %}
-    (cons (ly:make-pitch ${pitch_str})	(rgb-color ${color.rgb[0]} ${color.rgb[1]} ${color.rgb[2]}))
-{% end %}
+{% for pitch_str, color in lilypond_pitch_colors() %}{% with rgb=color.convert_to('rgb') %}
+    (cons (ly:make-pitch ${pitch_str})	(rgb-color ${rgb.rgb_r} ${rgb.rgb_g} ${rgb.rgb_b}))
+{% end %}{% end %}
   )
  )
 
