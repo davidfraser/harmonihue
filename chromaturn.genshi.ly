@@ -44,7 +44,7 @@ chromaNotesOn = {
   \override NoteHead #'color = #color-notehead
 }
 
-{% if False %}
+{% if lilypond_has_chromaturn() %}
 
 % brew_chromaturn_stencil is a modified form of brew_ez_stencil from easyHeadsOn
 % TODO: make this draw lines instead of using letters, and add intelligence for different note types
