@@ -12,6 +12,7 @@ import decorator
 import colormath.color_objects
 import subprocess
 import types
+import genshi
 
 OUTPUT_DIR = "out"
 
@@ -556,6 +557,12 @@ def lilypond_has_chromaturn():
     if response in _lilypond_bool:
         return _lilypond_bool[response]
     raise ValueError("Unexpected response trying to check for chromaturn presence in lilypond: %s" % response)
+
+
+def head_contents():
+    with open(os.path.join(BASE_DIR, "head_contents.html")) as head_file:
+        HEAD_CONTENTS = head_file.read()
+    return genshi.Markup(HEAD_CONTENTS)
 
 if __name__ == "__main__":
     import sys
