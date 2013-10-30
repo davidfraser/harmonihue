@@ -49,3 +49,7 @@ out/%.html: tmp/%.html $(OUT) $(TMP)
 tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly $(TMP)
 	./genshify $< $@
 
+upload:
+	ssh longlake.frasergo.org "mkdir -p .virtualenv/frasergo/project/static/projects/harmonihue/"
+	rsync -avzP out/ longlake.frasergo.org:.virtualenv/frasergo/project/static/projects/harmonihue/
+
