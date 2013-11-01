@@ -11,6 +11,8 @@ ${head_contents()}
 </head>
 <body>
 
+${header()}
+
 <h3>Color Mapping</h3>
 
 <p>We have so far two spaces for <a title="You model tones with one L - they're not very L-ish">modeling</a> tones (the circle of fifths, and the more complex but satisfying torus space), and a number of spaces for <a title="You model colors with two Ls. Really">modelling</a> colors. Let's now consider appropriate mappings between the spaces.</p>
@@ -56,6 +58,8 @@ ${head_contents()}
  <tr><th>Fifths Order</th><th>Semitone Order</th></tr>
  <tr><td><img src="${draw_hue_rotation_tone_circle.save(7, hues_function=get_delta_spread_hues)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1, hues_function=get_delta_spread_hues)}"/></td></tr>
 </table>
+
+${footer()}
 
 </body>
 </html>

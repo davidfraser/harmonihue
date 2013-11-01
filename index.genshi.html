@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:py="http://genshi.edgewall.org/">
+<head>
+<title>Harmonic Hues</title>
+<?python
+from book_helpers import *
+MATPLOTLIB_COLORS = list(get_matplotlib_colors())
+?>
+${head_contents()}
+</head>
+<body>
+
+${header()}
+
+<p><a href="index.html">HarmoniHue</a> is a system for relating musical pitch to visual phenomenen (especially colour). The aim is to find a correspondence between these different concepts that will function intuitively, especially in conveying the harmonic relationships between different pitches.</p>
+
+<ul>
+   <li>The <a href="book.html">HarmoniHue book</a>, describing the concepts and ideas behind the project</li>
+</ul>
+${footer()}
+
+</body>
+</html>

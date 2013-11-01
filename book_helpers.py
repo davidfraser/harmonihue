@@ -560,9 +560,19 @@ def lilypond_has_chromaturn():
 
 
 def head_contents():
-    with open(os.path.join(BASE_DIR, "head_contents.html")) as head_file:
-        HEAD_CONTENTS = head_file.read()
-    return genshi.Markup(HEAD_CONTENTS)
+    with open(os.path.join(BASE_DIR, "head_contents.html")) as html_file:
+        CONTENTS = html_file.read()
+    return genshi.Markup(CONTENTS)
+
+def header():
+    with open(os.path.join(BASE_DIR, "header.html")) as html_file:
+        CONTENTS = html_file.read()
+    return genshi.Markup(CONTENTS)
+
+def footer():
+    with open(os.path.join(BASE_DIR, "footer.html")) as html_file:
+        CONTENTS = html_file.read()
+    return genshi.Markup(CONTENTS)
 
 if __name__ == "__main__":
     import sys

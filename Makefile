@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean build_all upload local
 
 export PATH := /home/davidf/frasergo-upstream/lilypond/bin/:$(PATH)
 
@@ -7,7 +7,9 @@ output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),out
 output_svg=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.svg))
 output_png=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.png))
 
-all: chromaturn.ly $(output_genshi) $(output_lilypond_genshi) $(output_svg) $(output_png)
+all: build_all
+
+build_all: chromaturn.ly $(output_genshi) $(output_lilypond_genshi) $(output_svg) $(output_png)
 
 clean:
 	rm -fr out
@@ -49,7 +51,11 @@ out/%.html: tmp/%.html $(OUT) $(TMP)
 tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly $(TMP)
 	./genshify $< $@
 
-upload:
+local: build_all
+	mkdir -p ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
+	rsync -avzP out/ ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
+
+upload: build_all
 	ssh longlake.frasergo.org "mkdir -p .virtualenv/frasergo/project/static/projects/harmonihue/"
 	rsync -avzP out/ longlake.frasergo.org:.virtualenv/frasergo/project/static/projects/harmonihue/
 
