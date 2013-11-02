@@ -6,6 +6,7 @@ output_genshi=$(foreach filename,$(wildcard *.genshi.html),out/$(filename:.gensh
 output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
 output_svg=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.svg))
 output_png=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.png))
+html_includes=header.html footer.html head_contents.html
 
 all: build_all
 
@@ -39,7 +40,7 @@ out/%.png: out/%.svg
 	rasterizer -d $@ -m image/png $<
 	# convert $< $@
 
-out/%.html: %.genshi.html book_helpers.py $(OUT)
+out/%.html: %.genshi.html book_helpers.py $(html_includes) $(OUT)
 	./genshify $< $@
 
 out/%.txt: %.genshi.txt book_helpers.py $(OUT)
