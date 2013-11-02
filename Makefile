@@ -46,7 +46,9 @@ out/%.txt: %.genshi.txt book_helpers.py $(OUT)
 	./genshify $< $@
 
 out/%.html: tmp/%.html $(OUT) $(TMP)
-	lilypond-book --process "lilypond -dbackend=eps" --output out/ $<
+	# Remove temporary files to ensure regeneration of lilypond pictures, since lilypond-book does its own incomplete dependency check
+	rm -r out/lily/
+	lilypond-book --lily-output-dir out/lily/ --process "lilypond -dbackend=eps" --output out/ $<
 
 tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly $(TMP)
 	./genshify $< $@
