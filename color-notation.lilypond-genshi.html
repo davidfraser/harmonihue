@@ -69,6 +69,8 @@ ${header()}
 }
 </lilypond>
 
+<py:if test="lilypond_has_chromaturn()">
+
 <h4>Hues and Rotation Indicators</h4>
 
 <p>Applying the hues to the heads of the notes <i>and</i> indicating the rotation around the torus with a line gives the following:</p>
@@ -102,6 +104,8 @@ ${header()}
   \bar "|."
 }
 </lilypond>
+
+</py:if>
 
 ${footer()}
 
