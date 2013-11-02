@@ -48,6 +48,7 @@ chromaNotesOn = {
 
 % brew_chromaturn_stencil is a modified form of brew_ez_stencil from easyHeadsOn
 % TODO: make this draw lines instead of using letters, and add intelligence for different note types
+% FIXME: this makes sharps and flats overlay the notes
 chromaTurnOn = {
   \override NoteHead #'color = #color-notehead
   \override NoteHead #'stencil = #ly:note-head::brew-chromaturn-stencil
