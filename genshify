@@ -33,7 +33,7 @@ def main():
             form_context.update(urlparse.parse_qsl(args.form_data.read().decode("UTF-8")))
     for variable, value in args.variable:
         context[variable] = json.loads(value)
-    result = template.generate(context).render().encode("UTF-8")
+    result = template.generate(context).render(encoding="UTF-8")
     if args.output is None:
         output_filename = input_filename.replace(".genshi", "")
         output_file = open(output_filename, 'w')
