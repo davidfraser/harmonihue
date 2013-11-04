@@ -51,6 +51,7 @@ out/%.html: tmp/%.html $(OUT) $(TMP)
 	# Remove temporary files to ensure regeneration of lilypond pictures, since lilypond-book does its own incomplete dependency check
 	if [ -d out/lily/ ] ; then rm -r out/lily/ ; fi
 	lilypond-book --lily-output-dir out/lily/ --process "lilypond -dbackend=eps" --output out/ $<
+	if [ -d out/lily/ ] ; then rm -r out/lily/ ; fi
 
 tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly $(TMP)
 	./genshify -o $@ $< ${genshify_args}
