@@ -11,7 +11,7 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 </head>
 <body py:strip="target=='mezzanine_include'">
 
-${header()}
+<xi:include href="header.html"/>
 
 
 <h3>Color Mapping</h3>
@@ -60,7 +60,7 @@ ${header()}
  <tr><td><img src="${draw_hue_rotation_tone_circle.save(7, hues_function=get_delta_spread_hues)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1, hues_function=get_delta_spread_hues)}"/></td></tr>
 </table>
 
-${footer()}
+<xi:include href="footer.html"/>
 
 </body>
 </html>
