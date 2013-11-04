@@ -27,24 +27,24 @@ TMP=tmp/.d
 .PRECIOUS: %/.d tmp/%.html
 
 %.ly: %.genshi.ly
-	./genshify $< $@
+	./genshify $< -o $@
 
 out/guitar-fretboard.svg: guitar_layout.py sticker-def.genshi.xml guitar-base.genshi.xml guitar-strings.genshi.xml
 
 out/piano-keyboard.svg: piano_layout.py
 
 out/%.svg: %.genshi.svg book_helpers.py $(OUT)
-	./genshify $< $@
+	./genshify $< -o $@
 
 out/%.png: out/%.svg
 	rasterizer -d $@ -m image/png $<
 	# convert $< $@
 
 out/%.html: %.genshi.html book_helpers.py $(html_includes) $(OUT)
-	./genshify $< $@
+	./genshify $< -o $@
 
 out/%.txt: %.genshi.txt book_helpers.py $(OUT)
-	./genshify $< $@
+	./genshify $< -o $@
 
 out/%.html: tmp/%.html $(OUT) $(TMP)
 	# Remove temporary files to ensure regeneration of lilypond pictures, since lilypond-book does its own incomplete dependency check
@@ -52,7 +52,7 @@ out/%.html: tmp/%.html $(OUT) $(TMP)
 	lilypond-book --lily-output-dir out/lily/ --process "lilypond -dbackend=eps" --output out/ $<
 
 tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly $(TMP)
-	./genshify $< $@
+	./genshify $< -o $@
 
 local: build_all
 	mkdir -p ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
