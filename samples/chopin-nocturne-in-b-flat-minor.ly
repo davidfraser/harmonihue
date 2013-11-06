@@ -1,4 +1,4 @@
-\version "2.6.0"
+\version "2.16.0"
 
 % Nocturne No. 1 in B-flat minor
 % F. Chopin - Op. 9, No. 1
@@ -30,17 +30,20 @@ sreset = {\stemNeutral \slurNeutral \tieNeutral \phrasingSlurNeutral}
 % don't display the numbers (or brackets) on tuplets
 tupletNumbersOff = {
 	\override TupletBracket #'bracket-visibility = ##f
-	\override TupletBracket #'number-visibility = ##f
+	\override TupletBracket #'number-visibility % number-visibility is deprecated. Tune the TupletNumber instead
+ = ##f
 }
 
 % reset \tupletNumbersOff
 tupletNumbersOn = {
 	\revert TupletBracket #'bracket-visibility
-	\revert TupletBracket #'number-visibility
+	\revert TupletBracket #'number-visibility % number-visibility is deprecated. Tune the TupletNumber instead
+
 }
 
 % display the tuplet number for this next tuplet only
-tupletNumbersOnce = { \once \override TupletBracket #'number-visibility = ##t }
+tupletNumbersOnce = { \once \override TupletBracket #'number-visibility % number-visibility is deprecated. Tune the TupletNumber instead
+ = ##t }
 
 % options for breaking up tuplets
 quarterTuplets = { \set tupletSpannerDuration = #(ly:make-moment 1 4) }
@@ -48,8 +51,8 @@ halfBarTuplets = { \set tupletSpannerDuration = #(ly:make-moment 3 4) }
 wholeBarTuplets = { \set tupletSpannerDuration = #(ly:make-moment 6 4) }
 
 % shorter versions of the pedal commands
-pd = \sustainDown
-pu = \sustainUp
+pd = \sustainOn
+pu = \sustainOff
 
 %%
 %% MUSIC
@@ -89,8 +92,8 @@ rightNotes = \relative c'''{
 		\once \override TextScript #'extra-offset = #'(0.0 . 0.8)
 		\once \override OttavaBracket #'extra-offset = #'(0.0 . 1.0)
 		\tupletNumbersOff \quarterTuplets \times 2/3 { f8-|-\!-\>_\markup{\italic legatissimo}[
-			#(set-octavation 1) f''( e] ees[ des c] bes[ ges f] e[ ees des] c-\![ bes a]
-			#(set-octavation 0) ges-\>[ f c-\!]) } \tupletNumbersOn
+			\ottava #1 f''( e] ees[ des c] bes[ ges f] e[ ees des] c-\![ bes a]
+			\ottava #0 ges-\>[ f c-\!]) } \tupletNumbersOn
 		des2-\>( bes4-\!) bes'4-.-\<( bes-. bes-.-\!)
 		bes2->( d,4) ees-\trill( d8 ees ges8.-> f16)
 		f2-\>( e4-\!) \acciaccatura { f16[ ges] } \halfBarTuplets \times 6/7 { f8-\<\( e f g a-. bes-. c-.-\! }
@@ -98,8 +101,8 @@ rightNotes = \relative c'''{
 		\tupletNumbersOff des2_\markup{\dynamic f \italic appassionato} \times 2/3 { bes8( ges? bes,)\) } des2->( c4)
 			\tupletNumbersOn
 		\acciaccatura bes8 f''4.->_\markup{\italic cresc.}( des8 \noBeam \times 2/3 { bes ges bes,) }  des2->( c4)
-		\acciaccatura bes8 #(set-octavation 1) des''4_\markup{\italic{con forza}} ~ \tupletNumbersOff
-			\times 2/3 { des8[ bes-. ges-.] #(set-octavation 0) des-.[ bes-. bes,-.] } ces2->( a4-\p \tupletNumbersOn
+		\acciaccatura bes8 \ottava #1 des''4_\markup{\italic{con forza}} ~ \tupletNumbersOff
+			\times 2/3 { des8[ bes-. ges-.] \ottava #0 des-.[ bes-. bes,-.] } ces2->( a4-\p \tupletNumbersOn
 		bes2.) r2 r4
 		\once \override TextScript #'extra-offset = #'(0.0 . 1.6)
 		<f f'>2.-\pp^\markup{\italic{sotto voce}}( <fes fes'>
@@ -190,17 +193,17 @@ rightNotes = \relative c'''{
 		\once \override TextScript #'extra-offset = #'(0.0 . 1.4)
 		f4-.^\markup{\italic{a tempo}}( f-. f-.) f( ges8 f ees c
 		des2 bes4) bes'8( c des a \times 2/3 { c8 bes ges) }
-		\tupletNumbersOff \times 2/3 { f8[( ges e] f[) #(set-octavation 1) f''_\markup{\italic legatissimo}( e]
+		\tupletNumbersOff \times 2/3 { f8[( ges e] f[) \ottava #1 f''_\markup{\italic legatissimo}( e]
 			ees[ des c] } \tupletNumbersOn \halfBarTuplets \times 6/20 { bes a ges f e ees des c bes a ges
-			#(set-octavation 0) f ges e? f b, c e ees des) }
+			\ottava #0 f ges e? f b, c e ees des) }
 		des2( bes4-\<) bes'4-.( bes-. bes-.-\!)
 		% measure 75
 		bes2-\>( d,4-\!) \times 6/7 { ees8( f ees d ees ges8.-> f16) }
 		f2-\>( e4-\!) f4^\trill^\markup{\flat} \grace { e16[( f] } g8-\<)-.( a-. bes-. c-.-\!)
 		des2-\f( \times 2/3 { bes8 ges? bes,) } des2->( c4)
 		\acciaccatura bes8 f''4._\markup{\italic cresc.}( des8 \noBeam \times 2/3 { bes ges bes,) }  des2->( c4)
-		\acciaccatura bes8 #(set-octavation 1) des''4-\ff ~ \tupletNumbersOff \times 2/3 { des8[ bes-. ges-.]
-			#(set-octavation 0) des-.[ bes-. bes,-.] } ces2->( a4_\markup{\italic dimin.}
+		\acciaccatura bes8 \ottava #1 des''4-\ff ~ \tupletNumbersOff \times 2/3 { des8[ bes-. ges-.]
+			\ottava #0 des-.[ bes-. bes,-.] } ces2->( a4_\markup{\italic dimin.}
 		% measure 80
 		bes2.-\p) ces2->( a4
 		bes2._\markup{\italic smorz.}) ces16->[( ees ges ces] ees8) r8 r8 a,,8(
@@ -401,13 +404,13 @@ leftNotes = \relative c {
 	lastupdated = "2005/Aug/07"
         
         footer = "Mutopia-2005/08/08-582"
-        tagline = \markup { \override #'(box-padding . 1.0) \override #'(baseline-skip . 2.7) \box \center-align { \small \line { Sheet music from \with-url #"http://www.MutopiaProject.org" \line { \teeny www. \hspace #-1.0 MutopiaProject \hspace #-1.0 \teeny .org \hspace #0.5 } • \hspace #0.5 \italic Free to download, with the \italic freedom to distribute, modify and perform. } \line { \small \line { Typeset using \with-url #"http://www.LilyPond.org" \line { \teeny www. \hspace #-1.0 LilyPond \hspace #-1.0 \teeny .org } by \maintainer \hspace #-1.0 . \hspace #0.5 Copyright © 2005. \hspace #0.5 Reference: \footer } } \line { \teeny \line { Licensed under the Creative Commons Attribution-ShareAlike 2.5 License, for details see: \hspace #-0.5 \with-url #"http://creativecommons.org/licenses/by-sa/2.5" http://creativecommons.org/licenses/by-sa/2.5 } } } }
+        tagline = \markup { \override #'(box-padding . 1.0) \override #'(baseline-skip . 2.7) \box \center-column { \small \line { Sheet music from \with-url #"http://www.MutopiaProject.org" \line { \teeny www. \hspace #-1.0 MutopiaProject \hspace #-1.0 \teeny .org \hspace #0.5 } • \hspace #0.5 \italic Free to download, with the \italic freedom to distribute, modify and perform. } \line { \small \line { Typeset using \with-url #"http://www.LilyPond.org" \line { \teeny www. \hspace #-1.0 LilyPond \hspace #-1.0 \teeny .org } by \maintainer \hspace #-1.0 . \hspace #0.5 Copyright © 2005. \hspace #0.5 Reference: \footer } } \line { \teeny \line { Licensed under the Creative Commons Attribution-ShareAlike 2.5 License, for details see: \hspace #-0.5 \with-url #"http://creativecommons.org/licenses/by-sa/2.5" http://creativecommons.org/licenses/by-sa/2.5 } } } }
 
 }
 
 \score {
 	\context PianoStaff <<
-		\set PianoStaff.instrument = \markup{\fontsize #4 {1.} \hspace #1.0 }
+		\set PianoStaff.instrumentName = \markup{\fontsize #4 {1.} \hspace #1.0 }
 		\context Staff = "up" <<
 			\rightNotes
 		>>
@@ -420,5 +423,10 @@ leftNotes = \relative c {
 		\context { \Score \override SpacingSpanner #'spacing-increment = #1.2 }
 	}
 	
-	\midi { \tempo 4 = 116 }
+	
+  \midi {
+    \tempo 4 = 116
+    }
+
+
 }
