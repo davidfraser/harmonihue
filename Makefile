@@ -4,6 +4,7 @@ export PATH := /home/davidf/frasergo-upstream/lilypond/bin/:$(PATH)
 
 output_genshi=$(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html))
 output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
+output_sample_lilypond=$(foreach filename,$(wildcard samples/*.ly),out/$(filename:.ly=.pdf))
 output_svg=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.svg))
 output_png=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.png))
 html_includes=header.html footer.html head_contents.html
@@ -11,13 +12,14 @@ genshify_args='target="mezzanine_include"'
 
 all: build_all
 
-build_all: chromaturn.ly $(output_genshi) $(output_lilypond_genshi) $(output_svg) $(output_png)
+build_all: chromaturn.ly $(output_genshi) $(output_lilypond_genshi) $(output_svg) $(output_png) $(output_sample_lilypond)
 
 clean:
 	rm -fr out
 	rm -fr tmp
 	rm chromaturn.ly
 
+SAMPLES=out/samples/.d
 OUT=out/.d
 TMP=tmp/.d
 
@@ -55,6 +57,13 @@ out/%.html: tmp/%.html $(OUT) $(TMP)
 
 tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly $(TMP)
 	./genshify -o $@ $< ${genshify_args}
+
+# We ensure that this is copied to the target directory, and actually compile from there
+out/samples/%.ly: samples/%.ly $(SAMPLES)
+	cp $< $@
+
+out/samples/%.pdf: out/samples/%.ly $(SAMPLES)
+	lilypond --pdf -o $(@:.pdf=) $<
 
 local: build_all
 	mkdir -p ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
