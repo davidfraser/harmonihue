@@ -4,7 +4,7 @@ export PATH := /home/davidf/frasergo-upstream/lilypond/bin/:$(PATH)
 
 output_genshi=$(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html))
 output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
-output_sample_lilypond=$(foreach filename,$(wildcard samples/*.ly),out/$(filename:.ly=.pdf))
+output_sample_lilypond=$(foreach filename,$(wildcard samples/*.ly),out/$(filename:.ly=.pdf) out/$(filename))
 output_svg=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.svg))
 output_png=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.png))
 html_includes=header.html footer.html head_contents.html
