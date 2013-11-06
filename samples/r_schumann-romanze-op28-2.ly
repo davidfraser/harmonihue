@@ -19,6 +19,8 @@
   copyright = "Public Domain"
 }
 
+\include "chromaturn.ly"
+
 u = { \change Staff = up  \stemDown }
 m = { \change Staff = mid  \stemUp  }
 
@@ -34,7 +36,9 @@ global =  { \key fis \major \time 6/8
   \repeat volta 2 { s2.*8 } s2.*26 \bar "|."
 }
 
+
 righta =  \transpose c cis' {
+ \chromaTurnOn
  % \stemUp \slurUp \tieUp
  \stemUp
  \repeat volta 2 {
@@ -91,6 +95,7 @@ righta =  \transpose c cis' {
 }
 
 rightb =  \transpose c cis' {
+ \chromaTurnOn
  \relative c { \stemDown \slurDown
   \repeat volta 2 {
    a4^1( g8^1 b4^1 a8^1 |
@@ -146,6 +151,7 @@ rightb =  \transpose c cis' {
 }
 
 lefta =  \transpose c cis {
+ \chromaTurnOn
  \stemUp \slurUp \tieUp
  \repeat volta 2 {
   f4^1( e8^1 g4^1 f8^1 |
@@ -199,6 +205,7 @@ lefta =  \transpose c cis {
 }
 
 leftb =  \transpose c cis {
+ \chromaTurnOn
  \stemDown \slurDown \tieDown
  \repeat volta 2 {
   f16^\p c f, c e c-3 g c-2 f, c f c |

@@ -22,6 +22,8 @@
 %% MACROS
 %%
 
+\include "chromaturn.ly"
+
 % some stuff to assist with polyphony
 up = {\stemUp \slurUp \tieUp \phrasingSlurUp}
 down = {\stemDown \slurDown \tieDown \phrasingSlurDown}
@@ -68,6 +70,7 @@ rightNotes = \relative c'''{
 	
 	\context Voice = main {
 		
+		\chromaTurnOn
 		\partial 2. bes8_\markup{\dynamic p \italic espress.}( c des a bes ges
 		f4-.-\<)( f-. f-.) f-\! ges8-\>( f ees c-\!)
 		des2-\>( bes4-\!) \times 6/11 { bes'8( c des a bes a gis a c bes ges) }
@@ -79,6 +82,7 @@ rightNotes = \relative c'''{
 			aes2 ~ aes8 ges
 			\sreset
 		} \\ { \down
+			\chromaTurnOn
 			des4-> bes8-\< c des ges-\!
 		} >>
 		f2.->) ees4( f8-\> ees des beses-\!
@@ -150,6 +154,7 @@ rightNotes = \relative c'''{
 			f'2^>( ees8 f) ees2( des4)
 			\sreset
 		} \\ { \down
+			\chromaTurnOn
 			<f, ces'>2.-\ff <f ces'>
 		} >>
 		<ces' aes'>4.( <des bes'>8 <ces aes'> <des bes'> <ces aes'>4.) r8 r4
@@ -157,6 +162,7 @@ rightNotes = \relative c'''{
 			f2( ees8 f) ees2^>( des4)
 			\sreset
 		} \\ { \down
+			\chromaTurnOn
 			<f, ces'>1 <f ces'>2
 		} >>
 		<ces' aes'>8( <des bes'> <ces aes'> <des bes'> <ces aes'> <des bes'> <ces aes'>2.)
@@ -166,6 +172,7 @@ rightNotes = \relative c'''{
 			<ges' bes>2.^> <f aes>)
 			\sreset
 		} \\ { \down
+			\chromaTurnOn
 			ces1.
 		} >>
 		<des f>4.->-\pp( <ces ees>8 <aes ces> <f aes>) <ces f>2^( << \context Voice = main { \up
@@ -173,6 +180,7 @@ rightNotes = \relative c'''{
 			<ges bes>2.^> <f aes>)
 			\sreset
 		} \\ { \down
+			\chromaTurnOn
 			<ces ees>4 ~ ces1.
 		} >>
 		R1.
@@ -231,6 +239,7 @@ leftNotes = \relative c {
 	
 	\context Voice = main {
 
+		\chromaTurnOn
 		\stemDown
 		
 		\partial 2. r2 r4
@@ -252,18 +261,24 @@ leftNotes = \relative c {
 		c,\pd( g' e' c bes'\pu c,) f,\pd( c' \clef treble a' ees c' a\pu)
 		% measure 15
 		\clef bass bes,,\pd( f' des' bes ees,\pu ges') << {
+			\chromaTurnOn
 			s8 f,2 s8
 		} \\ {
+			\chromaTurnOn
 			f,8\pd^( f' bes f' ees\pu a,)
 		} >>
 		bes,8\pd( f' des' bes ees,\pu ges') << {
+			\chromaTurnOn
 			s8 f,2 s8
 		} \\ {
+			\chromaTurnOn
 			f,8\pd^( f' bes f' ees\pu a,)
 		} >>
 		ges,8\pd( des' ges bes fes'\pu ges,) << {
+			\chromaTurnOn
 			ees2 f4
 		} \\ {
+			\chromaTurnOn
 			ees8\pd^( ges ces ees\pu) f, ees'
 		} >>
 		\once \override TextScript #'extra-offset = #'(0.0 . -1.6)
@@ -334,6 +349,7 @@ leftNotes = \relative c {
 		<< {
 			s8 s s s s bes4*1/2 des f s8 s s s
 		} \\ \context Voice = "main" {
+			\chromaTurnOn
 			des8 a' des a des,\pu) bes\pd( des f des' bes f' f,\pu)
 		} >>
 		bes,\pd( f' des' bes f' f,\pu) bes,\pd( f' ees' a, f' f,\pu)
@@ -344,18 +360,24 @@ leftNotes = \relative c {
 		bes,\pd( f' d' bes aes' bes,\pu) ees,\pd( ges ees' bes ges' ees\pu)
 		c,\pd( g' e' c bes'\pu c,) f,\pd( c' \clef treble a' ees c' a\pu)
 		\clef bass bes,,\pd( f' des' bes ees,\pu ges') << {
+			\chromaTurnOn
 			s8 f,2 s8
 		} \\ {
+			\chromaTurnOn
 			f,8\pd^( f' bes f' ees\pu a,)
 		} >>
 		bes,8\pd( f' des' bes ees,\pu ges') << {
+			\chromaTurnOn
 			s8 f,2 s8
 		} \\ {
+			\chromaTurnOn
 			f,8\pd^( f' bes f' ees\pu a,)
 		} >>
 		ges,8\pd( des' ges bes fes' ges,\pu) << {
+			\chromaTurnOn
 			ees2 f4
 		} \\ {
+			\chromaTurnOn
 			ees8\pd^( ges ces ees) f,\pu ees'
 		} >>
 		% measure 80
@@ -364,11 +386,14 @@ leftNotes = \relative c {
 		bes,\pd( f' des' bes f' f,\pu) bes,\pd( ges' a ces ees ges)
 		\stemNeutral \clef treble a4 r4 r r2 \clef bass s8 s8\pu
 		<< {
+			\chromaTurnOn
 			<f, bes d>2.( <f bes d>4-. <f bes d>-. <bes d>-.)
 		} \\ {
+			\chromaTurnOn
 			<bes,, bes'>2.\pd( <bes bes'>4-. <bes bes'>-. <bes bes'>-.\pu)
 		} \\ {
 			\stemDown
+			\chromaTurnOn
 			s2. s4 s s8 ges''8*1/2 f		% this is a kludge to get the eighth notes to the right of the others
 		} >>
 		% measure 85

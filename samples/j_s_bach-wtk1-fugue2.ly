@@ -43,10 +43,11 @@
 
 \version "2.12.0"
 
-
+\include "chromaturn.ly"
 
 
 dux = \context Voice = "two"  \relative c''{
+    \chromaTurnOn
     \voiceTwo
     \clef violin
 
@@ -108,6 +109,7 @@ dux = \context Voice = "two"  \relative c''{
 
 
 comes = \context Voice = "one"  \relative c'' {
+    \chromaTurnOn
     \voiceOne
     \override MultiMeasureRest  #'staff-position = #6 
     R1 |
@@ -150,6 +152,7 @@ comes = \context Voice = "one"  \relative c'' {
 }
 
 bassdux = \context Voice = "three"  \relative c' {
+    \chromaTurnOn
     \clef bass
     R1 |
     R |
