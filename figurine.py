@@ -9,6 +9,17 @@ import types
 from config import *
 from musicality import *
 
+def mod_delta(a, b, m):
+    """simple function for calculating the delta of two numbers in a modulo space"""
+    d = (a - b)
+    while d < 0:
+        d += m
+    while d > m:
+        d -= m
+    if d > m/2:
+        d = m - d
+    return d
+
 def web_color(rgb):
     r, g, b = [int(i*255) for i in rgb]
     return "#%02x%02x%02x" % (r, g, b)

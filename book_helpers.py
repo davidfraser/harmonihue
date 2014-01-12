@@ -31,17 +31,6 @@ def lighter_color(c, level):
     c2.hsl_l = min(1, c2.hsl_l + level)
     return c2
 
-def mod_delta(a, b, m):
-    """simple function for calculating the delta of two numbers in a modulo space"""
-    d = (a - b)
-    while d < 0:
-        d += m
-    while d > m:
-        d -= m
-    if d > m/2:
-        d = m - d
-    return d
-
 def get_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of hues, with the given saturation and value, as rgb"""
     return [rgb_float_tuple(colormath.color_objects.HSVColor(360*float(count*2 - i)/count, saturation, value)) for i in range(count)]
@@ -209,30 +198,6 @@ def hue_tone_rotation_table(interval=1, hues_function=None):
         rot = (hue_i % 4)
         yield tones[i], (r, g, b), rot
 
-def tone_sequence(ax, base_sequence, sequence):
-    s = 2*math.pi/12
-    l = len(sequence)
-    gamma = [s*base_sequence.index(i) for i in sequence]
-    r = [1 for i in sequence]
-    ax.plot(gamma, r)
-    return ax
-
-@figure_function
-def draw_scale(scale_name, base_interval=7):
-    base_cycle, fig = interval_circle_figure(base_interval)
-    ax = fig.axes[0]
-    scale = scales[scale_name][:]
-    scale.append(scale[0])
-    tone_sequence(ax, base_cycle, scale)
-    return fig
-
-@figure_function
-def draw_chord(chord_name, base_interval=7):
-    base_cycle, fig = interval_circle_figure(base_interval)
-    ax = fig.axes[0]
-    tone_sequence(ax, base_cycle, chords[chord_name])
-    return fig
-
 @figure_function
 def draw_hue_torus_tone_circle(R=10.0, r=5.0, hues_function=None):
     """draws the hues of the color map onto the torus"""
@@ -244,24 +209,6 @@ def draw_hue_torus_tone_circle(R=10.0, r=5.0, hues_function=None):
     hues = get_delta_spread_hues() if hues_function is None else hues_function()
     for interval, hue in enumerate(hues):
         ax.scatter([x[interval]], [y[interval]], [z[interval]], s=100, color=hue)
-    set_torus_view(ax, R, r)
-    return fig
-
-@figure_function
-def draw_torus_scale(scale_name, R=10.0, r=5.0):
-    """Draws a torus with the given tone cycles on"""
-    fig = draw_torus(R, r, figsize=(5,5))
-    ax = fig.axes[0]
-    torus_scale(ax, scale_name, R, r)
-    set_torus_view(ax, R, r)
-    return fig
-
-@figure_function
-def draw_torus_chord(chord_name, R=10.0, r=5.0):
-    """Draws a torus with the given tone cycles on"""
-    fig = draw_torus(R, r, figsize=(5,5))
-    ax = fig.axes[0]
-    torus_chord(ax, chord_name, R, r)
     set_torus_view(ax, R, r)
     return fig
 
