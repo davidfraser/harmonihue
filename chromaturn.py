@@ -1,5 +1,7 @@
 import os.path
 import subprocess
+from musicality import *
+from spectrum import *
 
 def lilypond_pitch_colors(hue_function=None):
     """generates tuples of lilypond pitch definitions and colors"""

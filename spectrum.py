@@ -6,10 +6,20 @@ import numpy
 DEFAULT_SATURATION = 1.0
 DEFAULT_VALUE = 0.8
 
+def rgb_hex(c):
+    """converts a colormath color object to an rgb hex string for html like #30bf30"""
+    return c.convert_to('rgb').get_rgb_hex()
+
 def rgb_float_tuple(c):
     """converts a colormath color object to an rgb tuple in the range [0, 1)"""
     r, g, b = c.convert_to('rgb').get_value_tuple()
     return (r/255., g/255., b/255.)
+
+def lighter_color(c, level):
+    """lightens the color by increasing the HSL lightness value by the given amount"""
+    c2 = c.convert_to('hsl')
+    c2.hsl_l = min(1, c2.hsl_l + level)
+    return c2
 
 def get_hue_spread(points, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """Returns a set of colors distributed in a circle around the Hsv space with fixed saturation and value"""

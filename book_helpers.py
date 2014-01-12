@@ -14,16 +14,6 @@ from musicality import *
 from spectrum import *
 from torus import *
 
-def rgb_hex(c):
-    """converts a colormath color object to an rgb hex string for html like #30bf30"""
-    return c.convert_to('rgb').get_rgb_hex()
-
-def lighter_color(c, level):
-    """lightens the color by increasing the HSL lightness value by the given amount"""
-    c2 = c.convert_to('hsl')
-    c2.hsl_l = min(1, c2.hsl_l + level)
-    return c2
-
 
 if __name__ == "__main__":
     import sys

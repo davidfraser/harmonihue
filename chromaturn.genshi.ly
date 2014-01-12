@@ -1,5 +1,7 @@
 {% python
 from book_helpers import *
+from chromaturn import *
+from spectrum import *
 %}
 \version "2.12.3"
 

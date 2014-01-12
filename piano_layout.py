@@ -2,7 +2,8 @@
 
 """constants and functions related to the layout of a piano-style keyboard and the decorations for the fretboard"""
 
-from book_helpers import *
+from musicality import *
+from spectrum import *
 
 octaves = 2 
 height = 120.0
