@@ -37,3 +37,8 @@ def draw_even_temper():
     ax.xaxis.grid(True)
     return fig
 
+@figure_function
+def draw_tone_circle(interval):
+    """A diagram of the circle of fifths/semitones with nothing drawn on it"""
+    return interval_circle_figure(interval)[1]
+
