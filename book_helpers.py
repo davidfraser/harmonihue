@@ -24,16 +24,6 @@ def lighter_color(c, level):
     c2.hsl_l = min(1, c2.hsl_l + level)
     return c2
 
-def hue_tone_rotation_table(interval=1, hues_function=None):
-    hues = get_delta_spread_hues() if hues_function is None else hues_function()
-    cycle = list(tone_cycle(interval))
-    hue_cycle = list(tone_cycle(7))
-    for i in range(12):
-        hue_i = hue_cycle.index(cycle[i])
-        r, g, b = (int(l*255) for l in hues[hue_i])
-        rot = (hue_i % 4)
-        yield tones[i], (r, g, b), rot
-
 
 if __name__ == "__main__":
     import sys

@@ -18,3 +18,15 @@ chords = {
     'aug': [0, 4, 8],
 }
 
+def tone_cycle(interval, start=0):
+    current = start
+    finished = False
+    while not finished:
+        yield current
+        current = (current + interval) % 12
+        finished = (current == start)
+
+def tone_cycle_pos(i, interval, start=0):
+    c = list(tone_cycle(interval, start))
+    return c.index(i)
+
