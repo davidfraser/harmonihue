@@ -8,13 +8,10 @@ import matplotlib
 from matplotlib import pyplot
 from mpl_toolkits import mplot3d
 import numpy
-import decorator
 import colormath.color_objects
 import subprocess
-import types
 import genshi
-
-OUTPUT_DIR = "out"
+from figurine import *
 
 DEFAULT_SATURATION = 1.0
 DEFAULT_VALUE = 0.8
@@ -74,38 +71,6 @@ def tone_cycle(interval, start=0):
 def tone_cycle_pos(i, interval, start=0):
     c = list(tone_cycle(interval, start))
     return c.index(i)
-
-def filename_part(x):
-    if isinstance(x, basestring):
-        return x
-    if isinstance(x, (int, float, type(None))):
-        return repr(x)
-    if isinstance(x, (list, tuple)):
-        return "_".join(filename_part(e) for e in x)
-    if isinstance(x, types.FunctionType):
-        return x.__name__
-    return repr(x)
-
-@decorator.decorator
-def figure_saver(f, *args, **kwargs):
-    filename = "_".join([f.__name__] + [filename_part(a) for a in args] + [filename_part(v) for k, v in sorted(kwargs.items())]) + ".png"
-    fig = f(*args, **kwargs)
-    fig.savefig(os.path.join(OUTPUT_DIR, filename))
-    pyplot.close()
-    return filename
-
-@decorator.decorator
-def figure_shower(f, *args, **kwargs):
-    fig = f(*args, **kwargs)
-    fig.show()
-    pyplot.show()
-    pyplot.close()
-
-def figure_function(f):
-    """decorator that adds .save and .show functions as attributes of the original function, whilst leaving it unchanged"""
-    f.save = figure_saver(f)
-    f.show = figure_shower(f)
-    return f
 
 @figure_function
 def draw_even_temper():
