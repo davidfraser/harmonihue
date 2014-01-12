@@ -3,6 +3,7 @@
 <html xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" py:with="target=(target if defined('target') else None)" py:strip="target=='mezzanine_include'">
 <?python
 from book_helpers import *
+from musical_maths import *
 MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 ?>
 <head py:if="target!='mezzanine_include'">

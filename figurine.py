@@ -2,12 +2,32 @@
 
 import decorator
 import math
+import matplotlib
 from matplotlib import pyplot
 import os.path
 import types
 from config import *
+from musicality import *
 
-tones = ["A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab"]
+def web_color(rgb):
+    r, g, b = [int(i*255) for i in rgb]
+    return "#%02x%02x%02x" % (r, g, b)
+
+def get_matplotlib_colors():
+    """Returns the default matplotlib colors for the lines drawn in a figure in html form"""
+    fig = pyplot.figure(1)
+    ax = fig.add_axes([0, 0, 1, 1])
+    colors_so_far = set()
+    while True:
+        line = ax.plot([1], [1])[0]
+        color = line.get_color()
+        if color in colors_so_far:
+            break
+        yield web_color(matplotlib.colors.colorConverter.to_rgb(color))
+        colors_so_far.add(color)
+    pyplot.close()
+
+matplotlib_colors = list(get_matplotlib_colors())
 
 def filename_part(x):
     if isinstance(x, basestring):

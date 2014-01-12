@@ -3,6 +3,7 @@
 from matplotlib import pyplot
 import math
 from figurine import *
+from torus import *
 
 @figure_function
 def draw_even_temper():
@@ -41,4 +42,29 @@ def draw_even_temper():
 def draw_tone_circle(interval):
     """A diagram of the circle of fifths/semitones with nothing drawn on it"""
     return interval_circle_figure(interval)[1]
+
+@figure_function
+def draw_tone_cycles(interval, base_interval=7):
+    base_cycle, fig = interval_circle_figure(base_interval)
+    ax = fig.axes[0]
+    s = 2*math.pi/12
+    for offset in range(0, (interval if (12 % interval == 0) else 1)):
+        tone_indexes = list(tone_cycle(interval, offset))
+        cycle = [base_cycle.index(i) for i in tone_indexes]
+        cycle.reverse()
+        l = len(cycle)
+        cycle.append(cycle[0])
+        gamma = [s*i for i in cycle]
+        r = [1 for i in cycle]
+        ax.plot(gamma, r)
+    return fig
+
+@figure_function
+def draw_torus_tone_cycles(interval=3, R=10.0, r=5.0):
+    """Draws a torus with the given tone cycles on"""
+    fig = draw_torus(R, r, figsize=(5,5))
+    ax = fig.axes[0]
+    torus_tone_cycles(ax, interval, R, r)
+    set_torus_view(ax, R, r)
+    return fig
 

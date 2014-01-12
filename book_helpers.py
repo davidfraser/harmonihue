@@ -6,32 +6,15 @@ import math
 import os
 import matplotlib
 from matplotlib import pyplot
-from mpl_toolkits import mplot3d
-import numpy
 import colormath.color_objects
 import subprocess
 import genshi
 from figurine import *
+from musicality import *
+from torus import *
 
 DEFAULT_SATURATION = 1.0
 DEFAULT_VALUE = 0.8
-
-scales = {
-    'major': [0, 2, 4, 5, 7, 9, 11],
-    'minor': [0, 2, 3, 5, 7, 8, 11],
-    'pentatonic': [0, 2, 4, 7, 9],
-}
-chords = {
-    'maj': [0, 4, 7],
-    'min': [0, 3, 7],
-    'maj7': [0, 4, 7, 11],
-    '7': [0, 4, 7, 10],
-    'min7': [0, 3, 7, 10],
-    'sus4': [0, 5, 7],
-    'sus2': [0, 2, 7],
-    'dim': [0, 3, 6],
-    'aug': [0, 4, 8],
-}
 
 def rgb_float_tuple(c):
     """converts a colormath color object to an rgb tuple in the range [0, 1)"""
@@ -216,10 +199,6 @@ def draw_hue_rotation_tone_circle(interval=7, hues_function=None):
         ax.scatter(scatter_gamma[i], 0.875, color=hues[hue_i], s=100, marker=(2, 0, (hue_i%4)*45), linewidths=(4))
     return fig
 
-def web_color(rgb):
-    r, g, b = [int(i*255) for i in rgb]
-    return "#%02x%02x%02x" % (r, g, b)
-
 def hue_tone_rotation_table(interval=1, hues_function=None):
     hues = get_delta_spread_hues() if hues_function is None else hues_function()
     cycle = list(tone_cycle(interval))
@@ -229,22 +208,6 @@ def hue_tone_rotation_table(interval=1, hues_function=None):
         r, g, b = (int(l*255) for l in hues[hue_i])
         rot = (hue_i % 4)
         yield tones[i], (r, g, b), rot
-
-def get_matplotlib_colors():
-    """Returns the default matplotlib colors for the lines drawn in a figure in html form"""
-    fig = pyplot.figure(1)
-    ax = fig.add_axes([0, 0, 1, 1])
-    colors_so_far = set()
-    while True:
-        line = ax.plot([1], [1])[0]
-        color = line.get_color()
-        if color in colors_so_far:
-            break
-        yield web_color(matplotlib.colors.colorConverter.to_rgb(color))
-        colors_so_far.add(color)
-    pyplot.close()
-
-matplotlib_colors = list(get_matplotlib_colors())
 
 def tone_sequence(ax, base_sequence, sequence):
     s = 2*math.pi/12
@@ -271,123 +234,6 @@ def draw_chord(chord_name, base_interval=7):
     return fig
 
 @figure_function
-def draw_tone_cycles(interval, base_interval=7):
-    base_cycle, fig = interval_circle_figure(base_interval)
-    ax = fig.axes[0]
-    s = 2*math.pi/12
-    for offset in range(0, (interval if (12 % interval == 0) else 1)):
-        tone_indexes = list(tone_cycle(interval, offset))
-        cycle = [base_cycle.index(i) for i in tone_indexes]
-        cycle.reverse()
-        l = len(cycle)
-        cycle.append(cycle[0])
-        gamma = [s*i for i in cycle]
-        r = [1 for i in cycle]
-        ax.plot(gamma, r)
-    return fig
-
-def torus_figure(ax, R=10.0, r=3.0, alpha=0.3, color='b'):
-    """Returns a polyc for a torus plot on the given (3d) axes"""
-    u = numpy.linspace(0, 2*numpy.pi, 180)
-    v = numpy.linspace(0, 2*numpy.pi, 180)
-    x = numpy.outer(R + r*numpy.cos(v), numpy.cos(u))
-    y = numpy.outer(R + r*numpy.cos(v), numpy.sin(u))
-    z = numpy.outer(r*numpy.sin(v), numpy.ones(numpy.size(u)))
-    polyc = ax.plot_surface(x, y, z,  rstride=9, cstride=9, color=color, alpha=alpha)
-    polyc.set_linewidth(0)
-    polyc.set_edgecolor(color)
-    return polyc
-
-def torus_tone_spiral(ax, R, r, color='yellow'):
-    """Draws a tone spiral around a torus of given radii"""
-    u = numpy.linspace(0, 2*numpy.pi, 180)
-    v = numpy.linspace(0, 3*2*numpy.pi, 180)
-    x = (R + r*numpy.cos(v))*numpy.cos(u)
-    y = (R + r*numpy.cos(v))*numpy.sin(u)
-    z = r*numpy.sin(v)
-    return ax.plot(x, y, z, color='yellow')
-
-def torus_tone_coords(R, r):
-    """Returns the x, y, z vectors for 12 tone points around the torus"""
-    u = numpy.linspace(0, 2*numpy.pi, 13)[:12]
-    v = numpy.linspace(0, 3*2*numpy.pi, 13)[:12]
-    x = (R + r*numpy.cos(v))*numpy.cos(u)
-    y = (R + r*numpy.cos(v))*numpy.sin(u)
-    z = r*numpy.sin(v)
-    return x, y, z
-
-def torus_tone_points(ax, R, r, color='orange'):
-    """Draws tone points and labels them around a torus of given radii"""
-    x, y, z = torus_tone_coords(R, r)
-    cycle = list(tone_cycle(7))
-    cycle.reverse()
-    for n, i in enumerate(cycle):
-        ax.text(x[n], y[n], z[n], tones[i])
-    return ax.scatter(x, y, z, color='orange')
-
-def torus_scale(ax, scale_name, R, r, base_interval=7):
-    """Draws straight lines between tone points to show scales on torus"""
-    base_cycle = list(tone_cycle(base_interval))
-    base_cycle.reverse()
-    x, y, z = torus_tone_coords(R, r)
-    s = 2*math.pi/12
-    scale = scales[scale_name][:]
-    scale.append(scale[0])
-    xc = [x[base_cycle.index(i)] for i in scale]
-    yc = [y[base_cycle.index(i)] for i in scale]
-    zc = [z[base_cycle.index(i)] for i in scale]
-    ax.plot(xc, yc, zc, color='blue')
-
-def torus_chord(ax, chord_name, R, r, base_interval=7):
-    """Draws straight lines between tone points to show chords on torus"""
-    base_cycle = list(tone_cycle(base_interval))
-    base_cycle.reverse()
-    x, y, z = torus_tone_coords(R, r)
-    s = 2*math.pi/12
-    chord = chords[chord_name]
-    xc = [x[base_cycle.index(i)] for i in chord]
-    yc = [y[base_cycle.index(i)] for i in chord]
-    zc = [z[base_cycle.index(i)] for i in chord]
-    ax.plot(xc, yc, zc, color='black')
-
-def torus_tone_cycles(ax, interval, R, r, base_interval=7):
-    """Draws straight lines between tone points to show interval cycles on torus"""
-    base_cycle = list(tone_cycle(base_interval))
-    base_cycle.reverse()
-    x, y, z = torus_tone_coords(R, r)
-    s = 2*math.pi/12
-    color_sequence = iter(matplotlib_colors)
-    for offset in range(0, (interval if (12 % interval == 0) else 1)):
-        tone_indexes = list(tone_cycle(interval, offset))
-        cycle = [base_cycle.index(i) for i in tone_indexes]
-        cycle.reverse()
-        l = len(cycle)
-        cycle.append(cycle[0])
-        xc = [x[c] for c in cycle]
-        yc = [y[c] for c in cycle]
-        zc = [z[c] for c in cycle]
-        ax.plot(xc, yc, zc, color=color_sequence.next())
-
-def set_torus_view(ax, R, r):
-    ax.set_xlim3d((-R-r, R+r))
-    ax.set_ylim3d((-R-r, R+r))
-    ax.set_zlim3d((-R-r, R+r))
-    ax.view_init(50, 30) 
-
-@figure_function
-def draw_torus(R=10.0, r=5.0, figsize=(10,10)):
-    """Draws a torus"""
-    fig = pyplot.figure(1, figsize=figsize)
-    ax = mplot3d.Axes3D(fig)
-    torus = torus_figure(ax, R, r, color='grey')
-    spiral = torus_tone_spiral(ax, R, r, color='yellow')
-    # stop the spiral from using the first default color
-    ax._get_lines.set_color_cycle([])
-    fig.points = torus_tone_points(ax, R, r, color='orange')
-    set_torus_view(ax, R, r)
-    return fig
-
-@figure_function
 def draw_hue_torus_tone_circle(R=10.0, r=5.0, hues_function=None):
     """draws the hues of the color map onto the torus"""
     fig = draw_torus(R, r, figsize=(5,5))
@@ -398,15 +244,6 @@ def draw_hue_torus_tone_circle(R=10.0, r=5.0, hues_function=None):
     hues = get_delta_spread_hues() if hues_function is None else hues_function()
     for interval, hue in enumerate(hues):
         ax.scatter([x[interval]], [y[interval]], [z[interval]], s=100, color=hue)
-    set_torus_view(ax, R, r)
-    return fig
-
-@figure_function
-def draw_torus_tone_cycles(interval=3, R=10.0, r=5.0):
-    """Draws a torus with the given tone cycles on"""
-    fig = draw_torus(R, r, figsize=(5,5))
-    ax = fig.axes[0]
-    torus_tone_cycles(ax, interval, R, r)
     set_torus_view(ax, R, r)
     return fig
 
