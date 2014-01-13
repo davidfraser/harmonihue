@@ -97,3 +97,6 @@ def draw_lab_delta_hues(R=10.0, r=5.0, figsize=(5,5)):
     ax.scatter(L, a, b, s=200, color=rgb_colors)
     return fig
 
+if __name__ == '__main__':
+    cmdline_show_figure(available_figure_functions(locals()))
+

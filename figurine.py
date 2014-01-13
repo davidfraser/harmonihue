@@ -87,3 +87,17 @@ def interval_circle_figure(base_interval):
     pyplot.axis('tight')
     return cycle, fig
 
+def available_figure_functions(local_dict):
+    """filters a dict of local variables to those which are functions with a show attribute (which is the value of the returned dict)"""
+    return dict((name, f.show) for name, f in local_dict.items() if hasattr(f, "show"))
+
+def cmdline_show_figure(available_functions):
+    """provides a commandline interface to select a function and run it by name"""
+    import sys
+    for arg in sys.argv[1:]:
+        if arg in available_functions:
+            print ("Running %s" % arg)
+            available_functions[arg]()
+        else:
+            print ("Could not find %s" % arg)
+

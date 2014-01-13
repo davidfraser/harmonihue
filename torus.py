@@ -107,3 +107,6 @@ def set_torus_view(ax, R, r):
     ax.set_zlim3d((-R-r, R+r))
     ax.view_init(50, 30) 
 
+if __name__ == '__main__':
+    cmdline_show_figure(available_figure_functions(locals()))
+

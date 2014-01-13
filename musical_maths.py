@@ -68,3 +68,6 @@ def draw_torus_tone_cycles(interval=3, R=10.0, r=5.0):
     set_torus_view(ax, R, r)
     return fig
 
+if __name__ == '__main__':
+    cmdline_show_figure(available_figure_functions(locals()))
+
