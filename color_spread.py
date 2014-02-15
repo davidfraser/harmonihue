@@ -10,12 +10,27 @@ from torus import *
 def draw_hue_circle(count=12, hues_function=None, radius=1):
     """A diagram of a circle with hue mapped on it"""
     fig = hue_circle_figure(count)
-    hues = default_spread_colors() if hues_function is None else hues_function()
+    hues = default_spread_colors(count) if hues_function is None else hues_function(count)
     ax = fig.axes[0]
     gamma = numpy.arange(-numpy.pi/count, 2*numpy.pi - numpy.pi/count, 2*numpy.pi/count)
     radii = [radius for i in range(count)]
     width = 2*numpy.pi/count
     bars = ax.bar(gamma, radii, width=width, bottom=0.0)
+    for hue, bar in zip(hues, bars):
+        bar.set_facecolor(rgb_float_tuple(hue))
+    return fig
+
+@figure_function
+def draw_hue_spread(count=360, hues_function=None, radius=1):
+    """A diagram of a circle with hue mapped on it"""
+    fig = hue_spread_figure(count)
+    hues = default_spread_colors(count) if hues_function is None else hues_function(count)
+    ax = fig.axes[0]
+    gamma = numpy.arange(-numpy.pi/count, 2*numpy.pi - numpy.pi/count, 2*numpy.pi/count)
+    radii = [radius for i in range(count)]
+    width = 2*numpy.pi/count
+    bars = ax.bar(gamma, radii, width=width, linewidth=0, bottom=0.5)
+    # TODO: use a Colormap to make these interpolate properly rather
     for hue, bar in zip(hues, bars):
         bar.set_facecolor(rgb_float_tuple(hue))
     return fig
