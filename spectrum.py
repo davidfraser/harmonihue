@@ -119,6 +119,16 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
     desired_colors = [colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues]
     return desired_colors
 
+@color_function
+def get_sine_bow_colors(count=12):
+    hues = numpy.linspace(numpy.pi*3/2, numpy.pi/2, count+1)[:count]
+    r = numpy.sin(hues)
+    g = numpy.sin(hues + numpy.pi/3)
+    b = numpy.sin(hues + 2*numpy.pi/3)
+    r, g, b = r*r, g*g, b*b
+    return [colormath.color_objects.RGBColor(r[i]*255, g[i]*255, b[i]*255) for i in range(count)]
+
+
 # use this to affect pages that are just wanting to use the chosen color spreading function
 default_spread_colors = get_delta_spread_colors
 
