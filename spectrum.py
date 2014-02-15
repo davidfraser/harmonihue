@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import colormath.color_objects
+import decorator
 import numpy
 
 DEFAULT_SATURATION = 1.0
@@ -15,17 +16,30 @@ def rgb_float_tuple(c):
     r, g, b = c.convert_to('rgb').get_value_tuple()
     return (r/255., g/255., b/255.)
 
+@decorator.decorator
+def rgb_tuplize(f, *args, **kwargs):
+    """when f produces a list of color objects, converts them all to rgb tuples"""
+    return [rgb_float_tuple(c) for c in f(*args, **kwargs)]
+
 def lighter_color(c, level):
     """lightens the color by increasing the HSL lightness value by the given amount"""
     c2 = c.convert_to('hsl')
     c2.hsl_l = min(1, c2.hsl_l + level)
     return c2
 
-def get_hue_spread(points, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
+def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
+    """returns a hsv color range corresponding roughly to the torus, as rgb"""
+    M_s, M_h = 0.1875, 0.1875
+    hsv_map = {0: (saturation+M_s, value+M_h), 1: (saturation+M_s, value-M_h), 2: (saturation-M_s, value-M_h), 3: (saturation-M_s, value+M_h)}
+    return [colormath.color_objects.HSVColor(360*float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1]) for i in range(count)]
+
+def get_hue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """Returns a set of colors distributed in a circle around the Hsv space with fixed saturation and value"""
     hues = numpy.linspace(360.0, 0.0, points)
     colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
     return colors
+
+get_spread_hues = rgb_tuplize(get_hue_spread)
 
 def get_lab_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of colors around the lab color space, with the given saturation and value"""
@@ -93,11 +107,7 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
     desired_colors = [colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues]
     return desired_colors
 
-def get_lab_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
-    """returns an evenly spread number of hues around the lab color space, with the given saturation and value, as rgb"""
-    return [rgb_float_tuple(color) for color in get_lab_spread_colors(count, saturation, value)]
+get_lab_spread_hues = rgb_tuplize(get_lab_spread_colors)
 
-def get_delta_spread_hues(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
-    """returns an evenly spread number of hues around the lab color space by measuring deltas, with the given saturation and value, as rgb"""
-    return [rgb_float_tuple(color) for color in get_delta_spread_colors(count, saturation, value)]
+get_delta_spread_hues = rgb_tuplize(get_delta_spread_colors)
 

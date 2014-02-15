@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" py:with="target=(target if defined('target') else None)" py:strip="target=='mezzanine_include'">
+<?python
+from color_spread import *
+from color_mapping import *
+?>
 <head py:if="target!='mezzanine_include'">
 <title>Harmonic Hues</title>
 <xi:include href="head_contents.html"/>
@@ -25,6 +29,22 @@
 <h4>Equidistant Rainbow Colours</h4>
 
 <p>Given the structure of the musical tone space, it would be useful to have a set of 12 colours that are spaced relatively evenly. The concept of Hue is useful for this purpose as it represents a perceptually continuous cycle along the <a href="http://en.wikipedia.org/wiki/Spectral_color">spectral colours</a> and the <a href="http://en.wikipedia.org/wiki/Line_of_purples">line of purples</a> on a chromaticity diagram. This section will explore how to produce an optimal set of colours with evenly distributed hues.</p>
+
+<h4>Simple hue distribution</h4>
+
+<p>As a first attempt, let's map the circle of fifths onto the hue dimension of the HSV colour space, whilst keeping saturation and value fixed.</p>
+
+<img src="${draw_hue_circle.save(12, hues_function=get_hue_spread)}"/>
+
+<h4>Using the Lab color space</h4>
+
+<p>Visually, these colors are not evenly spaced - the greens are not as spread out as the other colors and are harder to distinguish. This can be addressed by using the Lab color space to select colors with the same saturation and value, but with hue values chosen to optimize the distance in that space:<br/>
+<img src="${draw_hue_circle.save(12, hues_function=get_lab_spread_colors)}"/><img src="${draw_lab_hues.save()}"/>
+</p>
+
+<p>However, the Lab delta spaces still does not achieve anything uniform perceptual difference over large distances; using defined Delta-E functions on this space can improve the distribution as shown at right (and these deltas will be used to spread the hues from here onwards):<br/>
+<img src="${draw_hue_circle.save(12, hues_function=get_delta_spread_colors)}"/><img src="${draw_lab_delta_hues.save()}"/>
+</p>
 
 <xi:include href="footer.html"/>
 
