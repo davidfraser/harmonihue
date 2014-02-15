@@ -84,10 +84,16 @@ def calculate_colormath_delta_matrix(colors):
 def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of colors around the lab color space, using the colormath delta function, with the given saturation and value"""
     points = count
-    hues = numpy.linspace(0.0, 360.0, points+1)[:points]
+    direction = 1
+    if direction > 0:
+        hues = numpy.linspace(0.0, 360.0, points+1)[:points]
+    else:
+        hues = numpy.linspace(360.0, 0.0, points+1)[:points]
     resolved = False
     while not resolved:
-        hue_deltas = numpy.array([(360 + hues[(i+1) % points] - hues[i]) % 360 for i in range(points)])
+        deg_delta = lambda deg1, deg2: (360 + (deg1-deg2)) % 360
+        norm_deg_delta = lambda dd: dd if dd <= 180 else dd-360
+        hue_deltas = numpy.array([norm_deg_delta(deg_delta(hues[(i+1) % points], hues[i])) for i in range(points)])
         colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
         deltas = numpy.array([colors[i].delta_e(colors[(i+1) % points], mode='cie2000') for i in range(points)])
         # print "D ", deltas
@@ -97,17 +103,17 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
         for i in range(0, points):
             dv = delta_variance[i]
             if dv < 0.95:
-                hue_deltas[i] += 1
+                hue_deltas[i] += 1 * direction
             elif dv > 1.05:
-                hue_deltas[i] -= 1
+                hue_deltas[i] -= 1 * direction
             else:
                 in_range += 1
         if in_range == points:
             break
-        # print hue_deltas
-        hue_deltas *= 360.0 / sum(hue_deltas)
+        # print "hd~", hue_deltas
+        hue_deltas *= direction * 360.0 / sum(hue_deltas)
         # print "hd", hue_deltas
-        hues = [numpy.sum(hue_deltas[:i]) for i in range(points)]
+        hues = [numpy.sum(hue_deltas[:i]) % 360 for i in range(points)]
         print "H ", hues
     desired_colors = [colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues]
     return desired_colors
