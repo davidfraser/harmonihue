@@ -4,7 +4,7 @@ from spectrum import *
 rot_chars = '|/-\\'
 
 def hue_tone_rotation_table(interval=1, hues_function=None):
-    hues = get_delta_spread_hues() if hues_function is None else hues_function()
+    hues = default_spread_colors() if hues_function is None else hues_function()
     cycle = list(tone_cycle(interval))
     hue_cycle = list(tone_cycle(7))
     for i in range(12):

@@ -44,7 +44,7 @@ def fretboard_height(hpos):
 fret_pos = [string_length/(2**(fret/12.)) for fret in range(frets+1)]
 fret_cpos = [(fret_pos[fret]+fret_pos[fret+1])/2 for fret in range(frets)]
 hue_cycle = list(tone_cycle(7))
-colors = get_delta_spread_colors(saturation=1.0, value=0.6)
+colors = default_spread_colors(saturation=1.0, value=0.6)
 hue_colors = [colors[hue_cycle.index((index)%12)] for index in range(12)]
 hue_rotations = [index % 4 for index in range(12)]
 fretboard_left = string_length/(2**((frets+1)/12.))

@@ -21,6 +21,10 @@ def rgb_tuplize(f, *args, **kwargs):
     """when f produces a list of color objects, converts them all to rgb tuples"""
     return [rgb_float_tuple(c) for c in f(*args, **kwargs)]
 
+def color_function(f):
+    f.rgb = rgb_tuplize(f)
+    return f
+
 def lighter_color(c, level):
     """lightens the color by increasing the HSL lightness value by the given amount"""
     c2 = c.convert_to('hsl')
@@ -33,14 +37,14 @@ def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
     hsv_map = {0: (saturation+M_s, value+M_h), 1: (saturation+M_s, value-M_h), 2: (saturation-M_s, value-M_h), 3: (saturation-M_s, value+M_h)}
     return [colormath.color_objects.HSVColor(360*float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1]) for i in range(count)]
 
+@color_function
 def get_hue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """Returns a set of colors distributed in a circle around the Hsv space with fixed saturation and value"""
     hues = numpy.linspace(360.0, 0.0, points)
     colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
     return colors
 
-get_spread_hues = rgb_tuplize(get_hue_spread)
-
+@color_function
 def get_lab_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of colors around the lab color space, with the given saturation and value"""
     points = count*100
@@ -76,6 +80,7 @@ def calculate_colormath_delta_matrix(colors):
     deltas = [[labs[i].delta_e(labs[j], mode='cie2000') for i in range(points)] for j in range(points)]
     return numpy.array(deltas)
 
+@color_function
 def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of colors around the lab color space, using the colormath delta function, with the given saturation and value"""
     points = count
@@ -107,7 +112,6 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
     desired_colors = [colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues]
     return desired_colors
 
-get_lab_spread_hues = rgb_tuplize(get_lab_spread_colors)
-
-get_delta_spread_hues = rgb_tuplize(get_delta_spread_colors)
+# use this to affect pages that are just wanting to use the chosen color spreading function
+default_spread_colors = get_delta_spread_colors
 

@@ -34,20 +34,11 @@ from color_mapping import *
  <img src="${draw_hue_tone_circle.save(hues_function=get_hsv_circle_hues)}"/>
 </p>
 
-<p>Another possibility is to use something other than color to represent the &theta; angle in the torus; a simple example is an actual rotation of a line</p>
-
-<table>
- <tr><th>Fifths Order</th><th>Semitone Order</th></tr>
- <tr><td><img src="${draw_hue_rotation_tone_circle.save(7, hues_function=get_hue_spread)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1, hues_function=get_hue_spread)}"/></td></tr>
-</table>
-
-<h4>With better Lab colours</h4>
-
-<p>Combining this rotation with the colours spread through the Lab space using the delta function produces more easily differentiated hues:</p>
+<p>Another possibility is to use something other than color to represent the &theta; angle in the torus; a simple example is an actual rotation of a line. Combining this rotation with the chosen spread of colours more easily differentiated hues:</p>
 
 <table>
  <tr><th>Fifths Order</th><th>Semitone Order</th><th>Torus Plot</th></tr>
- <tr><td><img src="${draw_hue_rotation_tone_circle.save(7, hues_function=get_delta_spread_colors)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1, hues_function=get_delta_spread_colors)}"/></td><td><img src="${draw_hue_torus_tone_circle.save(hues_function=get_delta_spread_colors)}"/></td></tr>
+ <tr><td><img src="${draw_hue_rotation_tone_circle.save(7)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1)}"/></td><td><img src="${draw_hue_torus_tone_circle.save()}"/></td></tr>
 </table>
 
 <xi:include href="footer.html"/>

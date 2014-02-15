@@ -10,7 +10,7 @@ from torus import *
 def draw_hue_circle(n=12, hues_function=None, radius=1):
     """A diagram of a circle with hue mapped on it"""
     fig = hue_circle_figure(n)
-    hues = get_delta_spread_hues() if hues_function is None else hues_function()
+    hues = default_spread_colors() if hues_function is None else hues_function()
     ax = fig.axes[0]
     gamma = numpy.arange(-numpy.pi/12, 2*numpy.pi - numpy.pi/12, 2*numpy.pi/12)
     radii = [radius for i in range(12)]

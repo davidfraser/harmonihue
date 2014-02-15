@@ -5,7 +5,7 @@ from spectrum import *
 
 def lilypond_pitch_colors(hues_function=None):
     """generates tuples of lilypond pitch definitions and colors"""
-    colors = get_delta_spread_colors() if hues_function is None else hues_function()
+    colors = default_spread_colors() if hues_function is None else hues_function()
     hue_cycle = list(tone_cycle(7))
     count = len(tones)
     for note, tone in enumerate("abcdefg"):

@@ -11,7 +11,7 @@ def draw_hue_tone_circle(interval=7, hues_function=None, radius=1):
     """A diagram of the circle of fifths/semitones with hue mapped on it"""
     cycle, fig = interval_circle_figure(interval)
     hue_cycle = list(tone_cycle(7))
-    hues = get_delta_spread_hues() if hues_function is None else hues_function()
+    hues = default_spread_colors() if hues_function is None else hues_function()
     ax = fig.axes[0]
     gamma = numpy.arange(-numpy.pi/12, 2*numpy.pi - numpy.pi/12, 2*numpy.pi/12)
     radii = [radius for i in range(12)]
@@ -29,7 +29,7 @@ def draw_hue_torus_tone_circle(R=10.0, r=5.0, hues_function=None):
     x, y, z = torus_tone_coords(R, r)
     ax = fig.axes[0]
     hue_cycle = list(tone_cycle(7))
-    hues = get_delta_spread_hues() if hues_function is None else hues_function()
+    hues = default_spread_colors() if hues_function is None else hues_function()
     for interval, hue in enumerate(hues):
         ax.scatter([x[interval]], [y[interval]], [z[interval]], s=100, color=rgb_float_tuple(hue))
     set_torus_view(ax, R, r)
@@ -41,7 +41,7 @@ def draw_hue_rotation_tone_circle(interval=7, hues_function=None):
     fig = draw_hue_tone_circle(interval, hues_function=hues_function, radius=0.75)
     cycle = list(tone_cycle(interval))
     hue_cycle = list(tone_cycle(7))
-    hues = get_delta_spread_hues() if hues_function is None else hues_function()
+    hues = default_spread_colors() if hues_function is None else hues_function()
     ax = fig.axes[0]
     scatter_gamma = numpy.arange(0, 2*numpy.pi, 2*numpy.pi/12)
     for i in range(12):
