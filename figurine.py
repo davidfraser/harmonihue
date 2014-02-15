@@ -74,7 +74,7 @@ def figure_function(f):
 
 def hue_circle_figure(n):
     """sets up a matplotlib figure with a polar plot based on a circle of hues. Returns (cycle, fig)"""
-    fig = pyplot.figure(1, figsize=(2,2))
+    fig = pyplot.figure(1, figsize=(4,4))
     ax = fig.add_axes([0.1, 0.1, 0.8, 0.8], polar=True)
     s = 2*math.pi/n
     ax.set_xticks([s*i for i in range(n)])

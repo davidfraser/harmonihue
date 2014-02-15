@@ -3,10 +3,9 @@ import subprocess
 from musicality import *
 from spectrum import *
 
-def lilypond_pitch_colors(hue_function=None):
+def lilypond_pitch_colors(hues_function=None):
     """generates tuples of lilypond pitch definitions and colors"""
-    # hues = get_delta_spread_hues() if hues_function is None else hues_function()
-    colors = get_lab_spread_colors()
+    colors = get_delta_spread_colors() if hues_function is None else hues_function()
     hue_cycle = list(tone_cycle(7))
     count = len(tones)
     for note, tone in enumerate("abcdefg"):
