@@ -39,11 +39,11 @@ from color_mapping import *
 <h4>Using the Lab color space</h4>
 
 <p>Visually, these colors are not evenly spaced - the greens are not as spread out as the other colors and are harder to distinguish. This can be addressed by using the Lab color space to select colors with the same saturation and value, but with hue values chosen to optimize the distance in that space:<br/>
-<img src="${draw_hue_circle.save(12, hues_function=get_lab_spread_colors)}"/><img src="${draw_lab_hues.save()}"/>
+<img src="${draw_hue_circle.save(12, hues_function=get_lab_spread_colors)}"/><img src="${draw_lab_hues.save(hues_function=get_lab_spread_colors)}"/>
 </p>
 
 <p>However, the Lab delta spaces still does not achieve anything uniform perceptual difference over large distances; using defined Delta-E functions on this space can improve the distribution as shown at right (and these deltas will be used to spread the hues from here onwards):<br/>
-<img src="${draw_hue_circle.save(12, hues_function=get_delta_spread_colors)}"/><img src="${draw_lab_delta_hues.save()}"/>
+<img src="${draw_hue_circle.save(12, hues_function=get_delta_spread_colors)}"/><img src="${draw_lab_hues.save(hues_function=get_delta_spread_colors)}"/>
 </p>
 
 <xi:include href="footer.html"/>

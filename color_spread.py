@@ -21,7 +21,7 @@ def draw_hue_circle(n=12, hues_function=None, radius=1):
     return fig
 
 @figure_function
-def draw_lab_hues(R=10.0, r=5.0, figsize=(5,5)):
+def draw_lab_hues(R=10.0, r=5.0, figsize=(5,5), hues_function=None):
     """Draws the spread hue values in the Lab color space"""
     fig = pyplot.figure(1, figsize=figsize)
     ax = mplot3d.Axes3D(fig)
@@ -32,26 +32,7 @@ def draw_lab_hues(R=10.0, r=5.0, figsize=(5,5)):
     rgb_colors = [rgb_float_tuple(color) for color in colors]
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=20, color=rgb_colors)
-    new_colors = get_lab_spread_colors(count)
-    lab_colors = numpy.array([color.convert_to('lab').get_value_tuple() for color in new_colors])
-    rgb_colors = [rgb_float_tuple(color) for color in new_colors]
-    L, a, b = lab_colors.transpose()
-    ax.scatter(L, a, b, s=200, color=rgb_colors)
-    return fig
-
-@figure_function
-def draw_lab_delta_hues(R=10.0, r=5.0, figsize=(5,5)):
-    """Draws the delta-spread hue values in the Lab color space"""
-    fig = pyplot.figure(1, figsize=figsize)
-    ax = mplot3d.Axes3D(fig)
-    count = 12
-    points = count * 10
-    colors = get_hue_spread(points)
-    lab_colors = numpy.array([color.convert_to('lab').get_value_tuple() for color in colors])
-    rgb_colors = [rgb_float_tuple(color) for color in colors]
-    L, a, b = lab_colors.transpose()
-    ax.scatter(L, a, b, s=20, color=rgb_colors)
-    new_colors = get_delta_spread_colors(count)
+    new_colors = hues_function(count) if hues_function else default_spread_colors(count)
     lab_colors = numpy.array([color.convert_to('lab').get_value_tuple() for color in new_colors])
     rgb_colors = [rgb_float_tuple(color) for color in new_colors]
     L, a, b = lab_colors.transpose()
