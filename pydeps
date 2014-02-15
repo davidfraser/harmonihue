@@ -1,0 +1,80 @@
+#!/usr/bin/env python
+
+import glob
+import os
+import re
+import sys
+
+IMPORT_RE = re.compile("^ *(?:from ([A-Za-z0-9_.]*) import [A-Za-z0-9_,* ]*|import ([A-Za-z0-9_.]*)) *$")
+TARGET_RE = re.compile("^([^:]*): (.*)$")
+
+RECURSIVE = False
+
+def find_imports(filename):
+    with open(filename) as f:
+        for line in f:
+            m = IMPORT_RE.match(line)
+            if m:
+               a, b = m.groups()
+               yield a if a else b
+
+def filter_local_python(modules):
+    for module in modules:
+        filename = module.replace(".", os.path.sep) + ".py"
+        if os.path.exists(filename):
+            yield filename
+
+def recurse_imports(filename):
+    processed = set()
+    import_filenames = [filename]
+    while set(import_filenames).difference(processed):
+        for import_filename in set(import_filenames).difference(processed):
+            imports = list(filter_local_python(find_imports(import_filename)))
+            import_filenames.extend(i for i in imports if i not in import_filenames)
+            processed.add(import_filename)
+    return import_filenames[1:]
+
+def process_makefile():
+    with open("Makefile") as makefile:
+        for line in makefile:
+            m = TARGET_RE.match(line)
+            if m:
+                target, deps = m.groups()
+                deps = [dep for dep in deps.split(" ") if not dep.startswith("$")]
+                target_files = {}
+                if "%" in target:
+                    if not os.path.basename(target).startswith("%"):
+                        raise ValueError("This doesn't expect target file patterns with % in such a place: " + target)
+                    target_dir, target_base = os.path.dirname(target), os.path.basename(target).replace("%", "")
+                    pattern_deps = [dep for dep in deps if "%" in dep]
+                    for pattern in pattern_deps:
+                        if not os.path.basename(pattern).startswith("%"):
+                            raise ValueError("This doesn't expect src file patterns with % in such a place: " + pattern)
+                        pattern_dir, pattern_base = os.path.dirname(pattern), os.path.basename(pattern).replace("%", "")
+                        src_files = glob.glob(pattern.replace("%", "*"))
+                        for src_file in src_files:
+                            src_base = os.path.basename(src_file)
+                            if not src_base.endswith(pattern_base):
+                                raise ValueError("Globs are beyond me")
+                            target_file = os.path.join(target_dir, src_base[:-len(pattern_base)] + target_base)
+                            target_files.setdefault(target_file, []).extend(recurse_imports(src_file))
+                for target_file, deps in sorted(target_files.items()):
+                    if deps:
+                        print("%s: %s" % (target_file, " ".join(deps)))
+
+if "-M" in sys.argv:
+    process_makefile()
+    sys.exit(0)
+                    
+if "-r" in sys.argv:
+    sys.argv.remove("-r")
+    RECURSIVE = True
+
+for filename in sys.argv[1:]:
+    if RECURSIVE:
+        deps = recurse_imports(filename)
+    else:
+        deps = filter_local_python(find_imports(filename))
+    if deps:
+        print(" ".join(deps))
+

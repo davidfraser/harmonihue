@@ -2,7 +2,8 @@
 
 """constants and functions related to the layout of guitar strings and the decorations for the fretboard"""
 
-from book_helpers import *
+from musicality import *
+from spectrum import *
 
 strings = ["E", "A", "D", "G", "B", "E"]
 string_count = len(strings)

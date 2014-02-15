@@ -1,6 +1,17 @@
 {% python
-from book_helpers import *
+from musicality import *
+from spectrum import *
 rot_chars = '|/-\\'
+
+def hue_tone_rotation_table(interval=1, hues_function=None):
+    hues = get_delta_spread_hues() if hues_function is None else hues_function()
+    cycle = list(tone_cycle(interval))
+    hue_cycle = list(tone_cycle(7))
+    for i in range(12):
+        hue_i = hue_cycle.index(cycle[i])
+        r, g, b = (int(l*255) for l in hues[hue_i])
+        rot = (hue_i % 4)
+        yield tones[i], (r, g, b), rot
 %}\
 {% for tone, rgb, rot in hue_tone_rotation_table() %}\
  * ${tone.ljust(2)} ${str(rgb[0]).rjust(3)} ${str(rgb[1]).rjust(3)} ${str(rgb[2]).rjust(3)} ${rot_chars[rot]}

@@ -29,6 +29,9 @@ TMP=tmp/.d
 
 .PRECIOUS: %/.d tmp/%.html
 
+$(shell ./pydeps -M > Makefile.pydeps)
+include Makefile.pydeps
+
 %.ly: %.genshi.ly
 	./genshify -o $@ $< ${genshify_args}
 
@@ -36,17 +39,17 @@ out/guitar-fretboard.svg: guitar_layout.py sticker-def.genshi.xml guitar-base.ge
 
 out/piano-keyboard.svg: piano_layout.py
 
-out/%.svg: %.genshi.svg book_helpers.py $(OUT)
+out/%.svg: %.genshi.svg $(OUT)
 	./genshify -o $@ $< ${genshify_args}
 
 out/%.png: out/%.svg
 	rasterizer -d $@ -m image/png $<
 	# convert $< $@
 
-out/%.html: %.genshi.html book_helpers.py $(html_includes) $(OUT)
+out/%.html: %.genshi.html $(html_includes) $(OUT)
 	./genshify -o $@ $< ${genshify_args}
 
-out/%.txt: %.genshi.txt book_helpers.py $(OUT)
+out/%.txt: %.genshi.txt $(OUT)
 	./genshify -o $@ $< ${genshify_args}
 
 out/%.html: tmp/%.html $(OUT) $(TMP)
@@ -55,7 +58,7 @@ out/%.html: tmp/%.html $(OUT) $(TMP)
 	lilypond-book --lily-output-dir out/lily/ --process "lilypond -dbackend=eps" --output out/ $<
 	if [ -d out/lily/ ] ; then rm -r out/lily/ ; fi
 
-tmp/%.html: %.lilypond-genshi.html book_helpers.py chromaturn.ly $(TMP)
+tmp/%.html: %.lilypond-genshi.html chromaturn.ly $(TMP)
 	./genshify -o $@ $< ${genshify_args}
 
 # We ensure that this is copied to the target directory, and actually compile from there
