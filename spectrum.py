@@ -84,7 +84,7 @@ def calculate_colormath_delta_matrix(colors):
 def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of colors around the lab color space, using the colormath delta function, with the given saturation and value"""
     points = count
-    direction = 1
+    direction = -1
     if direction > 0:
         hues = numpy.linspace(0.0, 360.0, points+1)[:points]
     else:
