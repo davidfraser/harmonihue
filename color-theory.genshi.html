@@ -11,17 +11,20 @@
 
 <h3>Color Theory</h3>
 
-<p>Colors can also be modeled using "spaces". Two simple ways are through the RGB color space (which comprises the levels of red, green, and blue light that our eyes perceive), and through the HSV color space which rather uses the dimensions of Hue, Saturation and Value. A more sophisticated kind of color space is represented by the CIELAB color space, in which the distance between points in the space corresponds directly to the perceived difference between the colors to a human viewer.</p>
-
-<h4>Topology</h4>
-
-<p>The color spaces are generally three-dimensional (given the three different kinds of cone cell receptors in the human eye, with sensitivies to different ranges of frequences), and are approximately cylindrical, spherical or cubic depending on the nature of the model:<br/>
-  <ul>
-    <li>The <b>RGB</b> color space is <b>cubic</b> - each component varies from 0 to 1</li>
-    <li>The <b>HSV</b> color space is <b>cylindrical</b> - the Hue component is circular (cycling around the colors of the rainbow), the Saturation value is usually taken from the center of the cylinder to the edge, and the Value parameter as from the bottom to the top of the cylinder</li>
-    <li>The <b>Lab</b> color space can handle colors outside the human range of perception; the range of values meaningful to humans corresponds to a kind of distorted cube</li>
-  </ul>
+<p>Human vision and color are a very complex topic, and much useful material has been written about them - I would recommend <a href="http://www.handprint.com/LS/CVS/color.html">Bruce MacEvoy's color vision site</a> and <a href="http://www.huevaluechroma.com/index.php">The Dimensions of Colour by David Briggs</a> as both having fairly broad and well-written information. A brief simplified summary of some relevant information follows:
+    <ul>
+        <li>Light itself can be modeled as a <b>spectrum</b> - a set of amplitudes at different frequencies. Human perception of that light happens on multiple levels.</li>
+        <li><b>Our eyes</b> focus light onto a complex distribution of different cells that then produce <b>signals to the brain</b> indicating how much light has been received; these cells respond to different frequencies of light in different amounts, but the colour information transmitted is <b>inherently three-dimensional</b>, with three different ranges of sensitivity that correspond roughly to Red Green and Blue</li>
+        <li>Our <b>brain's perception</b> of the appearance of objects is influenced by the level of light in general, our perception of the illuminating/ambient light, and the juxtapositioning of colours</li>
+        <li>Standard <b>screens</b>, TVs etc reproduce colours using three wavelengths of light that stimulate the Red Green and Blue receptors in our eyes, but are not able to reproduce the full <a href="http://en.wikipedia.org/wiki/Gamut">gamut of colours</a> our eyes can see. Colour <b>printing</b> reproduces colours subtractively by combining (minimally) Cyan, Magenta, Yellow and Black ink, and has its own limitations.</li>
+        <li>Different <b>colour spaces</b> are used in software to represent colours, and make it possible to analyze the various different <b>properties</b> of colour, including hue, saturation, lightness, chromaticity, chroma, luminosity, brightness and more.</li>
+        <li>The <b>shape</b> (or topology) of these color spaces varies; they are generally three-dimensional, and vary between cubic (RGB), cylindrical (HSV/HSL), and irregular shapes (La*b*'s set of colours that humans can perceive corresponds to a kind of distorted cube)</li>
+    </ul>
 </p>
+
+<h4>Equidistant Rainbow Colours</h4>
+
+<p>Given the structure of the musical tone space, it would be useful to have a set of 12 colours that are spaced relatively evenly. The concept of Hue is useful for this purpose as it represents a perceptually continuous cycle along the <a href="http://en.wikipedia.org/wiki/Spectral_color">spectral colours</a> and the <a href="http://en.wikipedia.org/wiki/Line_of_purples">line of purples</a> on a chromaticity diagram. This section will explore how to produce an optimal set of colours with evenly distributed hues.</p>
 
 <xi:include href="footer.html"/>
 
