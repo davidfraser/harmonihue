@@ -85,9 +85,9 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
         hue_deltas = numpy.array([(360 + hues[(i+1) % points] - hues[i]) % 360 for i in range(points)])
         colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
         deltas = numpy.array([colors[i].delta_e(colors[(i+1) % points], mode='cie2000') for i in range(points)])
-        print "D ", deltas
+        # print "D ", deltas
         delta_variance = deltas / numpy.average(deltas)
-        print "dv", delta_variance
+        # print "dv", delta_variance
         in_range = 0
         for i in range(0, points):
             dv = delta_variance[i]
@@ -101,7 +101,7 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
             break
         # print hue_deltas
         hue_deltas *= 360.0 / sum(hue_deltas)
-        print "hd", hue_deltas
+        # print "hd", hue_deltas
         hues = [numpy.sum(hue_deltas[:i]) for i in range(points)]
         print "H ", hues
     desired_colors = [colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues]
