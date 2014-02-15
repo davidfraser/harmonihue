@@ -40,7 +40,7 @@ def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
 @color_function
 def get_hue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """Returns a set of colors distributed in a circle around the Hsv space with fixed saturation and value"""
-    hues = numpy.linspace(360.0, 0.0, points)
+    hues = numpy.linspace(360.0, 0.0, points+1)[:points]
     colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
     return colors
 
