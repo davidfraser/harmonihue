@@ -1,4 +1,4 @@
-\version "2.12.3"
+\version "2.16.0"
 
 \header {
   mutopiatitle = "Première Arabesque"
@@ -27,7 +27,7 @@
   bottom-margin =12
   %annotate-spacing = ##t
   %{ %}
-  between-system-padding = 0
+  obsolete-between-system-padding = 0  system-system-spacing #'padding = #(/ obsolete-between-system-padding staff-space)  score-system-spacing #'padding = #(/ obsolete-between-system-padding staff-space)
   ragged-last-bottom = ##f
 }
 % Definitios to override page-breaking
@@ -58,6 +58,7 @@ ohn = {
   \once\override NoteHead #'transparent = ##t
   \once\override NoteHead #'no-ledgers = ##t
   \once\override Stem #'transparent = ##t
+  \once\override Flag #'transparent = ##t
   \once\override Beam #'transparent = ##t
   \once\override Accidental #'transparent = ##t
 }
@@ -575,7 +576,7 @@ lhDownEE = {
     \override Score.TextSpanner #'font-size = #1
     % The 'piano' accidental style has extraNaturals false by default
     %\set PianoStaff.extraNatural = ##f
-    #(set-accidental-style 'piano 'Score)
+    \accidentalStyle #'Score "piano"
     \set PianoStaff.printKeyCancellation = ##f
     \override PianoStaff.PhrasingSlur #'height-limit = #4
     \override PianoStaff.DynamicLineSpanner #'staff-padding = #3
@@ -624,10 +625,7 @@ lhDownEE = {
     }
   }
   \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 72 2)
-    }
+    \tempo 2 = 72
     %% Remove the dynamics from the midi output
     \context {
       \Voice
