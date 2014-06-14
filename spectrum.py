@@ -120,7 +120,7 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
     return desired_colors
 
 @color_function
-def get_sine_bow_colors(count=12):
+def get_sine_bow_colors(count=12, saturation=None, value=None):
     hues = numpy.linspace(numpy.pi*3/2, numpy.pi/2, count+1)[:count]
     r = numpy.sin(hues)
     g = numpy.sin(hues + numpy.pi/3)
