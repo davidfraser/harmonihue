@@ -1,5 +1,7 @@
 \version "2.16.0"
 
+\include "chromaturn.ly"
+
 \header {
   mutopiatitle = "Première Arabesque"
   mutopiacomposer = "DebussyC"
@@ -586,12 +588,14 @@ lhDownEE = {
       \time 4/4
       \new Voice = "red" {
 	%{colorize } \override NoteHead #'color = #red %}
+	\chromaTurnOn
 	\rhUpE
 	\rhUpA
 	\rhUpEE
       }
       \new Voice = "green" {
 	%{colorize } \override NoteHead #'color = #green %}
+	\chromaTurnOn
 	\rhDownE
 	\rhDownA
 	\rhDownEE
@@ -604,12 +608,14 @@ lhDownEE = {
       \time 4/4
       \new Voice = "blue" {
 	%{colorize } \override NoteHead #'color = #blue %}
+	\chromaTurnOn
 	\lhUpE
 	\lhUpA
 	\lhUpEE
       }
       \new Voice = "grey" {
 	%{colorize } \override NoteHead #'color = #grey %}
+	\chromaTurnOn
 	\lhDownE \bar "||"
 	\lhDownA \bar "||"
 	\lhDownEE \bar "|."
