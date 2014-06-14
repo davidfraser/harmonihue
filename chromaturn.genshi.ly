@@ -91,7 +91,7 @@ chromaTurnOn = {
            (note-color (pitch-to-color (ly:event-property (event-cause grob) 'pitch)))
            (rotation (pitch-to-rotation (ly:event-property (event-cause grob) 'pitch)))
            (hollow (< (ly:grob-property grob 'duration-log) 2))
-           (turn-width (if hollow 0.2 0.1))
+           (turn-width (if hollow 0.2 0.15))
            (half-turn-width (ly:number->string (/ turn-width 2)))
            (combo-stencil (ly:stencil-add
                note
