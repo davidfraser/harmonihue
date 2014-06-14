@@ -95,15 +95,15 @@ chromaTurnOn = {
                    (ly:make-stencil (list 'embedded-ps
                         (string-append "gsave
                           currentpoint translate
-                          newpath
-                          0.75 0 translate
+                          0.7 0 translate
                           "
                           (ly:number->string rotation)
                           " rotate
-                          -0.35 0.1 moveto
-                          0.35 0.1 lineto
-                          0.35 -0.1 lineto
-                          -0.35 -0.1 lineto
+                          newpath
+                          -0.35 0.05 moveto
+                          0.35 0.05 lineto
+                          0.35 -0.05 lineto
+                          -0.35 -0.05 lineto
                           closepath
                           fill
                           grestore" ))
