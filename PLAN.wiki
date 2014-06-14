@@ -1,5 +1,19 @@
 = Plan =
 
+== Lilypond ==
+
+* Make Breves work by placing the line differently; calculate the numbers based on widths etc. Reference notes:
+
+ - http://www.lilypond.org/doc/v2.19/Documentation/notation/note-head-styles - note head styles
+ - http://lilypond.org/doc/v2.17/Documentation/notation/the-feta-font - note glyph names (e.g. `notehead.s1`)
+ - http://www.lilypond.org/doc/v2.18/Documentation/internals/notehead internals (e.g. `duration-log`)
+ - http://lsr.di.unimi.it/LSR/Item?id=890 - the coloring here is using a similar approach, and the code could be compared
+ - http://www.lilypond.org/doc/v2.18/Documentation/internals/scheme-functions
+ - http://lsr.di.unimi.it/LSR/Item?id=617 - custom stencils that do calculation
+
+* Take away the custom code to handle whether we have a patched lilypond or not
+* Remove the optional PATH in the Makefile
+
 == Colour Spaces ==
 
 Need to understand:
