@@ -20,6 +20,23 @@ def lilypond_pitch_colors(hues_function=None):
             else:
                 yield ("0 %d %d" % (lilypond_note, offset), colors[hue_index])
 
+def lilypond_pitch_rotations():
+    """generates tuples of lilypond pitch definitions and colors"""
+    hue_cycle = list(tone_cycle(7))
+    count = len(tones)
+    for note, tone in enumerate("abcdefg"):
+        base_tone_index = tones.index(tone.upper())
+        for offset, accidental in [(0, ""), (-1, "es"), (+1, "is"), (-2, "eses"), (+2, "isis")]:
+            tone_index = (base_tone_index + offset + count) % count
+            hue_index = hue_cycle.index(tone_index)
+            rotation = get_rotation(hue_index)
+            # lilypond pitches are C-based
+            lilypond_note = (note + 7 - 2) % 7
+            if offset:
+                yield ("0 %d %d/2" % (lilypond_note, offset), rotation)
+            else:
+                yield ("0 %d %d" % (lilypond_note, offset), rotation)
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 chromaturn_ly_filename = os.path.join(BASE_DIR, "chromaturn.ly")
 _lilypond_bool = {"#f": False, "#t": True}

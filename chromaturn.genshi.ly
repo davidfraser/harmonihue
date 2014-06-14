@@ -26,6 +26,14 @@ to distinguish enharmonics.
   )
  )
 
+#(define rotation-mapping
+  (list
+{% for pitch_str, rotation in lilypond_pitch_rotations() %}
+    (cons (ly:make-pitch ${pitch_str}) ${rotation})
+{% end %}
+  )
+ )
+
 %Compare pitch and alteration (not octave).
 #(define (pitch-equals? p1 p2)
   (and
@@ -36,6 +44,11 @@ to distinguish enharmonics.
   (let ((color (assoc pitch color-mapping pitch-equals?)))
     (if color
       (cdr color))))
+
+#(define (pitch-to-rotation pitch)
+  (let ((rotation (assoc pitch rotation-mapping pitch-equals?)))
+    (if rotation
+      (cdr rotation))))
 
 #(define (color-notehead grob)
   (pitch-to-color
@@ -69,3 +82,42 @@ chromaTurnOff = {
 
 {% end %}
 
+{% if not lilypond_has_chromaturn() %}
+
+chromaTurnOn = {
+  \override NoteHead #'color = #color-notehead
+  \override NoteHead #'stencil = #(lambda (grob)
+    (let* ((note (ly:note-head::print grob))
+           (rotation (pitch-to-rotation (ly:event-property (event-cause grob) 'pitch)))
+           (combo-stencil (ly:stencil-add
+               note
+               (stencil-with-color
+                   (ly:make-stencil (list 'embedded-ps
+                        (string-append "gsave
+                          currentpoint translate
+                          newpath
+                          0.75 0 translate
+                          "
+                          (ly:number->string rotation)
+                          " rotate
+                          -0.35 0.1 moveto
+                          0.35 0.1 lineto
+                          0.35 -0.1 lineto
+                          -0.35 -0.1 lineto
+                          closepath
+                          fill
+                          grestore" ))
+                        (cons 0 1.3125)
+                        (cons -.75 .75))
+                   (x11-color 'white)))))
+          (ly:make-stencil (ly:stencil-expr combo-stencil)
+            (ly:stencil-extent note X)
+            (ly:stencil-extent note Y))))
+}
+
+chromaTurnOff = {
+  \revert NoteHead #'font-color
+  \revert NoteHead #'stencil
+}
+
+{% end %}
