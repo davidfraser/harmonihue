@@ -1,6 +1,6 @@
 .PHONY: all clean build_all upload local
 
-export PATH := /home/davidf/frasergo-upstream/lilypond/bin/:$(PATH)
+# export PATH := /home/davidf/frasergo-upstream/lilypond/bin/:$(PATH)
 
 output_genshi=$(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html))
 output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
