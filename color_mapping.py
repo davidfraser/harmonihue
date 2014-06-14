@@ -46,9 +46,10 @@ def draw_hue_rotation_tone_circle(interval=7, hues_function=None):
     ax = fig.axes[0]
     scatter_gamma = numpy.arange(0, 2*numpy.pi, 2*numpy.pi/12)
     for i in range(12):
-        hue_i = hue_cycle.index(cycle[i])
-        r = get_rotation(hue_i)
-        ax.scatter(scatter_gamma[i], 0.875, color=rgb_float_tuple(hues[hue_i]), s=100, marker=(2, 0, r), linewidths=(4))
+        tone = cycle[i]
+        hue_i = hue_cycle.index(tone)
+        r = get_rotation(tone)
+        ax.scatter(scatter_gamma[i], 0.875, color=rgb_float_tuple(hues[hue_i]), s=100, marker=(2, 0, -r), linewidths=(4))
     return fig
 
 if __name__ == '__main__':

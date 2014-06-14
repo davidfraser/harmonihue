@@ -30,7 +30,7 @@ def tone_cycle_pos(i, interval, start=0):
     c = list(tone_cycle(interval, start))
     return c.index(i)
 
-def get_rotation(hue_index):
-    """returns the rotation in degrees associated with a given hue index from 0 to 12"""
-    return (hue_index % 4)*45
+def get_rotation(tone_index):
+    """returns the rotation in degrees associated with a given tone index from 0 to 11"""
+    return ((tone_index+3) % 4)*45
 
