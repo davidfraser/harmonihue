@@ -88,7 +88,9 @@ chromaTurnOn = {
   \override NoteHead #'color = #color-notehead
   \override NoteHead #'stencil = #(lambda (grob)
     (let* ((note (ly:note-head::print grob))
+           (note-color (pitch-to-color (ly:event-property (event-cause grob) 'pitch)))
            (rotation (pitch-to-rotation (ly:event-property (event-cause grob) 'pitch)))
+           (hollow (< (ly:grob-property grob 'duration-log) 2))
            (combo-stencil (ly:stencil-add
                note
                (stencil-with-color
@@ -109,7 +111,7 @@ chromaTurnOn = {
                           grestore" ))
                         (cons 0 1.3125)
                         (cons -.75 .75))
-                   (x11-color 'white)))))
+                   (if hollow note-color (x11-color 'white))))))
           (ly:make-stencil (ly:stencil-expr combo-stencil)
             (ly:stencil-extent note X)
             (ly:stencil-extent note Y))))
