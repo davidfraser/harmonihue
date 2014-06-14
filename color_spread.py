@@ -21,7 +21,7 @@ def draw_hue_circle(count=12, hues_function=None, radius=1):
     return fig
 
 @figure_function
-def draw_hue_spread(count=360, hues_function=None, radius=1):
+def draw_hue_spread(count=360, hues_function=None, radius=1, graph_value=False):
     """A diagram of a circle with hue mapped on it"""
     fig = hue_spread_figure(count)
     hues = default_spread_colors(count) if hues_function is None else hues_function(count)
@@ -33,6 +33,8 @@ def draw_hue_spread(count=360, hues_function=None, radius=1):
     # TODO: use a Colormap to make these interpolate properly rather
     for hue, bar in zip(hues, bars):
         bar.set_facecolor(rgb_float_tuple(hue))
+    if graph_value:
+        ax.scatter(gamma, [radius+0.2 for i in range(count)])
     return fig
 
 @figure_function
