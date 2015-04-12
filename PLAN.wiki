@@ -1,5 +1,9 @@
 = Plan =
 
+* http://stackoverflow.com/questions/1902526/coloring-notes-in-lilypond-by-pitch?rq=1
+
+ - Make a comment here about this method
+
 == Lilypond ==
 
 * Make Breves work by placing the line differently; calculate the numbers based on widths etc. Reference notes:
