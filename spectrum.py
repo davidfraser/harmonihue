@@ -44,6 +44,20 @@ def get_hue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE
     colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
     return colors
 
+def ymap(hues):
+    """makes yellow the midpoint between red and blue, instead of green"""
+    return [h*0.75 if 0 <= h < 120 else (90+(h-120)*1.25) if 120 <= h < 240 else (240+(h-240)*1) for h in hues]
+
+@color_function
+def get_yhue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
+    """Returns a set of colors distributed in a circle around the Hsv space, but with RYB equidistant instead of RGB, with fixed saturation and value"""
+    # yellow is half way between green and red
+    # so red=0=360, blue=240, green=120 -> yellow=60
+    hues = numpy.linspace(360.0, 0.0, points+1)[:points]
+    hues = ymap(hues)
+    colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
+    return colors
+
 @color_function
 def get_lab_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """returns an evenly spread number of colors around the lab color space, with the given saturation and value"""
@@ -81,7 +95,7 @@ def calculate_colormath_delta_matrix(colors):
     return numpy.array(deltas)
 
 @color_function
-def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
+def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE, use_ymap=False):
     """returns an evenly spread number of colors around the lab color space, using the colormath delta function, with the given saturation and value"""
     points = count
     max_variance = 0.05 if count <= 60 else 0.1
@@ -116,12 +130,18 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
         # print "hd", hue_deltas
         hues = [numpy.sum(hue_deltas[:i]) % 360 for i in range(points)]
         print "H ", hues
+    if use_ymap:
+        hues = ymap(hues)
     desired_colors = [colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues]
     return desired_colors
 
 @color_function
+def get_ydelta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
+    return get_delta_spread_colors(count, saturation, value, use_ymap=True)
+
+@color_function
 def get_sine_bow_colors(count=12, saturation=None, value=None):
-    hues = numpy.linspace(numpy.pi*3/2, numpy.pi/2, count+1)[:count]
+    hues = numpy.linspace(numpy.pi/2, numpy.pi*3/2, count+1)[:count]
     r = numpy.sin(hues)
     g = numpy.sin(hues + numpy.pi/3)
     b = numpy.sin(hues + 2*numpy.pi/3)

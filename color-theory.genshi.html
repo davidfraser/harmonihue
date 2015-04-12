@@ -37,6 +37,11 @@ from color_mapping import *
 <img src="${draw_hue_spread.save(hues_function=get_hue_spread)}"/>
 <img src="${draw_hue_circle.save(hues_function=get_hue_spread)}"/>
 
+<p>What if we used red, yellow and blue instead of red, green and blue as equidistant colors?</p>
+
+<img src="${draw_hue_spread.save(hues_function=get_yhue_spread)}"/>
+<img src="${draw_hue_circle.save(hues_function=get_yhue_spread)}"/>
+
 <h4>Using the Lab color space</h4>
 
 <p>Visually, these colors are not evenly spaced - the greens are not as spread out as the other colors and are harder to distinguish. This can be addressed by using the Lab color space to select colors with the same saturation and value, but with hue values chosen to optimize the distance in that space:<br/>
@@ -51,6 +56,11 @@ from color_mapping import *
 <img src="${draw_lab_hues.save(hues_function=get_delta_spread_colors)}"/>
 <br/>There are still notable bands of color that stand out in the left-most diagrams, which indicates that this isn't as smooth as we would like it to be...
 </p>
+
+<p>What if we used red, yellow and blue instead of red, green and blue as equidistant colors?</p>
+<img src="${draw_hue_spread.save(120, hues_function=get_ydelta_spread_colors)}"/>
+<img src="${draw_hue_circle.save(hues_function=get_ydelta_spread_colors)}"/>
+<img src="${draw_lab_hues.save(hues_function=get_ydelta_spread_colors)}"/>
 
 <p>This is an interesting alternative generating RGB colors directly using the sin<sup>2</sup> function which generates a smoother, more flourescent set of colours (see <a href="http://basecase.org/env/on-rainbows">Charlie Loyd</a> and <a href="http://krazydad.com/tutorials/makecolors.php">Jim Budgardner</a>'s independent development of this technique):<br/>
 <img src="${draw_hue_spread.save(hues_function=get_sine_bow_colors)}"/>
