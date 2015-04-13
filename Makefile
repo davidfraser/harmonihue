@@ -65,7 +65,7 @@ tmp/%.html: %.lilypond-genshi.html chromaturn.ly $(TMP)
 out/samples/%.ly: samples/%.ly $(SAMPLES)
 	cp $< $@
 
-out/samples/%.pdf: out/samples/%.ly $(SAMPLES)
+out/samples/%.pdf: out/samples/%.ly $(SAMPLES) chromaturn.ly
 	lilypond --pdf -o $(@:.pdf=) $<
 
 local: build_all
