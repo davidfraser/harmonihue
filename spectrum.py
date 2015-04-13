@@ -44,15 +44,22 @@ def get_hue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE
     colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
     return colors
 
+RED_GREEN_SCALE = 0.5
+GREEN_BLUE_SCALE = 1.5
+BLUE_RED_SCALE = 1.0
+_GREEN_OFFSET = RED_GREEN_SCALE*120
+_BLUE_OFFSET = _GREEN_OFFSET + GREEN_BLUE_SCALE*120
+_RED_OFFSET = _BLUE_OFFSET + BLUE_RED_SCALE*120
+
 def ymap(hues):
     """makes yellow the midpoint between red and blue, instead of green"""
-    return [h*0.75 if 0 <= h < 120 else (90+(h-120)*1.25) if 120 <= h < 240 else (240+(h-240)*1) for h in hues]
+    # yellow is half way between green and red
+    # so red=0=360, blue=240, green=120 -> yellow=60
+    return [h*RED_GREEN_SCALE if 0 <= h < 120 else (_GREEN_OFFSET+(h-120)*GREEN_BLUE_SCALE) if 120 <= h < 240 else (_BLUE_OFFSET+(h-240)*BLUE_RED_SCALE) for h in hues]
 
 @color_function
 def get_yhue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """Returns a set of colors distributed in a circle around the Hsv space, but with RYB equidistant instead of RGB, with fixed saturation and value"""
-    # yellow is half way between green and red
-    # so red=0=360, blue=240, green=120 -> yellow=60
     hues = numpy.linspace(360.0, 0.0, points+1)[:points]
     hues = ymap(hues)
     colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
