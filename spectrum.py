@@ -68,10 +68,11 @@ def compile_scale_shifts(scale_shifts):
 # yellow is half way between green and red
 # so red=0=360, blue=240, green=120 -> yellow=60
 SCALE_SHIFTS = [
-    (120, 0.5),   # shift green to yellow
-    (240, 1.5),   # compress green-blue
-    (360, 1.0),   # leave the rest the same
-    (361, 1.0),   # don't die on handling 360 hues
+    (120, 0.5),    # shift green to yellow
+    (240, 1.5),    # compress green-blue
+    (300, 45/60.),    # expand blue-purple slightly
+    (360, 75/60.),    # squish purple-red
+    (361, 1.0),    # don't die on handling 360 hues
 ]
 
 ymap_scale_shifter = compile_scale_shifts(SCALE_SHIFTS)
@@ -180,5 +181,5 @@ def get_sine_bow_colors(count=12, saturation=None, value=None):
 
 
 # use this to affect pages that are just wanting to use the chosen color spreading function
-default_spread_colors = get_delta_spread_colors
+default_spread_colors = get_yhue_spread
 
