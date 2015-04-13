@@ -44,18 +44,41 @@ def get_hue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE
     colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
     return colors
 
-RED_GREEN_SCALE = 0.5
-GREEN_BLUE_SCALE = 1.5
-BLUE_RED_SCALE = 1.0
-_GREEN_OFFSET = RED_GREEN_SCALE*120
-_BLUE_OFFSET = _GREEN_OFFSET + GREEN_BLUE_SCALE*120
-_RED_OFFSET = _BLUE_OFFSET + BLUE_RED_SCALE*120
+def apply_scale_shifts(scale_shifts):
+    result = []
+    _start_range = 0
+    _target_offset = 0
+    for _end_range, _range_scale in scale_shifts:
+        result.append((_start_range, _end_range, _target_offset, _range_scale))
+        _target_offset += (_end_range - _start_range) * _range_scale
+        _start_range = _end_range
+    return result
+
+def compile_scale_shifts(scale_shifts):
+    code = []
+    code.append("def scale_shift(h):\n    return ")
+    for start_range, end_range, target_offset, range_scale in apply_scale_shifts(scale_shifts):
+        code.append("(%r+(h-%r)*%r) if %r <= h < %r " % (target_offset, start_range, range_scale, start_range, end_range))
+        code.append("else ")
+    code = code + ["None\n"]
+    c = compile("".join(code), __file__, "exec")
+    exec(c)
+    return scale_shift
+
+# yellow is half way between green and red
+# so red=0=360, blue=240, green=120 -> yellow=60
+SCALE_SHIFTS = [
+    (120, 0.5),   # shift green to yellow
+    (240, 1.5),   # compress green-blue
+    (360, 1.0),   # leave the rest the same
+    (361, 1.0),   # don't die on handling 360 hues
+]
+
+ymap_scale_shifter = compile_scale_shifts(SCALE_SHIFTS)
 
 def ymap(hues):
     """makes yellow the midpoint between red and blue, instead of green"""
-    # yellow is half way between green and red
-    # so red=0=360, blue=240, green=120 -> yellow=60
-    return [h*RED_GREEN_SCALE if 0 <= h < 120 else (_GREEN_OFFSET+(h-120)*GREEN_BLUE_SCALE) if 120 <= h < 240 else (_BLUE_OFFSET+(h-240)*BLUE_RED_SCALE) for h in hues]
+    return [ymap_scale_shifter(hue) for hue in hues]
 
 @color_function
 def get_yhue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
