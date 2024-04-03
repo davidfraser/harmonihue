@@ -7,11 +7,29 @@ The main current focus is `book.genshi.html`. This is the source template for th
 === Dependencies ===
 
 Compiling the book requires:
-* Python, and the following Python modules:
+* Python 2, and the following Python modules:
 ** genshi
 ** matplotlib (with a backend that can produce image files)
 ** mplot_toolkits.mplot3d
 ** numpy
 ** decorator
-** grapefruit
+** colormath
+* Lilypond for rendering sheet music
+* Batik's Rasterizer for converting SVG (vector) images to PNG (rendered)
+* Make for running the process
 
+On Ubuntu 22.04, the following should work:
+```
+sudo apt install python2.7 python-tk virtualenv python2-pip-whl python2-setuptools-whl 
+sudo apt install lilypond
+sudo apt install libbatik-java openjdk-11-jre # for batik's rasterizer - this requires a full JRE, not just openjdk-11-jre-headless
+sudo apt install make
+```
+
+Then from the `harmonihue` directory:
+```
+virtualenv --python=`which python2` venv/
+. venv/bin/activate
+pip install -r requirements.txt
+make
+```
