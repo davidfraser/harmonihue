@@ -34,8 +34,7 @@ out/%.svg: %.genshi.svg book_helpers.py $(OUT)
 	./genshify $< $@
 
 out/%.png: out/%.svg
-	rasterizer -d $@ -m image/png $<
-	# convert $< $@
+	inkscape $< -o $@
 
 out/%.html: %.genshi.html book_helpers.py $(OUT)
 	./genshify $< $@

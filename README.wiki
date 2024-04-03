@@ -15,14 +15,14 @@ Compiling the book requires:
 ** decorator
 ** colormath
 * Lilypond for rendering sheet music
-* Batik's Rasterizer for converting SVG (vector) images to PNG (rendered)
+* Inkscape for converting SVG (vector) images to PNG (rendered)
 * Make for running the process
 
 On Ubuntu 22.04, the following should work:
 ```
 sudo apt install python2.7 python-tk virtualenv python2-pip-whl python2-setuptools-whl 
 sudo apt install lilypond
-sudo apt install libbatik-java openjdk-11-jre # for batik's rasterizer - this requires a full JRE, not just openjdk-11-jre-headless
+sudo apt install inkscape
 sudo apt install make
 ```
 
