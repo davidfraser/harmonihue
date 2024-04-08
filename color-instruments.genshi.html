@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns:py="http://genshi.edgewall.org/">
-<head>
+<html xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" py:with="target=(target if defined('target') else None)" py:strip="target=='mezzanine_include'">
+<head py:if="target!='mezzanine_include'">
 <title>Harmonic Hues</title>
-<?python
-from book_helpers import *
-MATPLOTLIB_COLORS = list(get_matplotlib_colors())
-?>
+<xi:include href="head_contents.html"/>
 </head>
-<body>
+<body py:strip="target=='mezzanine_include'">
+
+<xi:include href="header.html"/>
 
 <h3>Instruments of Color</h3>
 
@@ -25,6 +24,8 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 <p>The following is a diagram of the keys of a piano</p>
 
 <img src="piano-keyboard.png"/>
+
+<xi:include href="footer.html"/>
 
 </body>
 </html>

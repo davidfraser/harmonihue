@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns:py="http://genshi.edgewall.org/">
-<head>
-<title>Harmonic Hues</title>
+<html xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" py:with="target=(target if defined('target') else None)" py:strip="target=='mezzanine_include'">
 <?python
-from book_helpers import *
-MATPLOTLIB_COLORS = list(get_matplotlib_colors())
+from chromaturn import *
+from color_mapping import *
 ?>
+<head py:if="target!='mezzanine_include'">
+<title>Harmonic Hues</title>
+<xi:include href="head_contents.html"/>
 </head>
-<body>
+<body py:strip="target=='mezzanine_include'">
+
+<xi:include href="header.html"/>
 
 <h3>Color Notation</h3>
 
@@ -33,12 +36,12 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 <h4>Simple Hue-based Coloring</h4>
 
 <p>Applying the hues to the heads of the notes gives the following:<br/>
- <img style="float: right;" src="${draw_hue_tone_circle.save(7, hues_function=get_lab_spread_hues)}"/>
+ <img style="float: right;" src="${draw_hue_tone_circle.save(7)}"/>
 </p>
 
 <h5>Sample - Single Melody: Amazing Grace</h5>
 <lilypond>
-\include "chromaturn.ly"
+\include "${chromaturn_ly_filename}"
 {
   \chromaNotesOn
   \key d \major
@@ -52,17 +55,57 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
 }
 </lilypond>
 
-<h5>Chromatic Scale</h5>
+<h5>Chromatic Scale and Circle of Fifths</h5>
 <lilypond>
-\include "chromaturn.ly"
+\include "${chromaturn_ly_filename}"
 \relative {
   \chromaNotesOn
   \key c \major
   \time 3/4
-  c'4 cis4 d4 ees4 e4 f4 fis4 g4 aes4 a4 bes4 b4 c2.
+  c4 cis4 d4 ees4 e4 f4 fis4 g4 aes4 a4 bes4 b4 c2.
+  \bar "||"
+  c,4 g'4 d4 a'4 e4 b'4 fis4 cis'4 gis4 dis'4 ais4 f'4 c2.
   \bar "|."
 }
 </lilypond>
+
+<h4>Hues and Rotation Indicators</h4>
+
+<p>Applying the hues to the heads of the notes <i>and</i> indicating the rotation around the torus with a line gives the following:<br/>
+ <img style="float: right;" src="${draw_hue_rotation_tone_circle.save(7)}"/>
+</p>
+
+<h5>Sample - Single Melody: Amazing Grace</h5>
+<lilypond>
+\include "${chromaturn_ly_filename}"
+{
+  \chromaTurnOn
+  \key d \major
+  \time 3/4
+  \partial 4
+  a'8. d''16 d''2 fis''8[ e''32 d''16.] fis''2 fis''8 e'' d''2 b'4 a'2
+  a'8. d''16 d''2 fis''8[ e''32 d''16.] fis''2 e''8. fis''16 a''2 r4
+  r2 fis''8. a''16 a''2 fis''8[ e''32 d''16.] fis''2 fis''8 e'' d''2 b'4 a'2
+  a'8. d''16 d''2 fis''8[ e''32 d''16.] fis''2 e''4 d''2.  r2
+  \bar "|."
+}
+</lilypond>
+
+<h5>Chromatic Scale and Circle of Fifths</h5>
+<lilypond>
+\include "${chromaturn_ly_filename}"
+\relative {
+  \chromaTurnOn
+  \key c \major
+  \time 3/4
+  c4 cis4 d4 ees4 e4 f4 fis4 g4 aes4 a4 bes4 b4 c2.
+  \bar "||"
+  c,4 g'4 d4 a'4 e4 b'4 fis4 cis'4 gis4 dis'4 ais4 f'4 c2.
+  \bar "|."
+}
+</lilypond>
+
+<xi:include href="footer.html"/>
 
 </body>
 </html>

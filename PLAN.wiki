@@ -1,5 +1,23 @@
 = Plan =
 
+* http://stackoverflow.com/questions/1902526/coloring-notes-in-lilypond-by-pitch?rq=1
+
+ - Make a comment here about this method
+
+== Lilypond ==
+
+* Make Breves work by placing the line differently; calculate the numbers based on widths etc. Reference notes:
+
+ - http://www.lilypond.org/doc/v2.19/Documentation/notation/note-head-styles - note head styles
+ - http://lilypond.org/doc/v2.17/Documentation/notation/the-feta-font - note glyph names (e.g. `notehead.s1`)
+ - http://www.lilypond.org/doc/v2.18/Documentation/internals/notehead internals (e.g. `duration-log`)
+ - http://lsr.di.unimi.it/LSR/Item?id=890 - the coloring here is using a similar approach, and the code could be compared
+ - http://www.lilypond.org/doc/v2.18/Documentation/internals/scheme-functions
+ - http://lsr.di.unimi.it/LSR/Item?id=617 - custom stencils that do calculation
+
+* Take away the custom code to handle whether we have a patched lilypond or not
+* Remove the optional PATH in the Makefile
+
 == Colour Spaces ==
 
 Need to understand:
@@ -16,8 +34,6 @@ Need to understand:
 
  - http://onlinelibrary.wiley.com/doi/10.1002/col.1049/abstract
  - Already have code to calculate deltas using colormath library
- - Add sample distributed hue set using the above spaces and the Delta E function (if not already done)
- - Switch other grapefruit usage to use colormath
 
 * Reference the attempts to create color spaces with Euclidean distance functions based on them:
 
@@ -32,7 +48,9 @@ Need to understand:
  - Color constancy with differing illumination levels
  - Contextual effects such as Bartleson Breneman
 
-* Research whether there's a sufficient sample data set to construct the set of 12 colors directly from the sample data
+* Try and use the Jab colorspace of CIECAM02 - see https://github.com/igd-geo/pcolor/ for a Java implementation, and https://github.com/jetspeed/ciecam for a Python implementation
+
+* Research whether there's a sufficient experimental sample data set to construct the set of 12 colors directly from the sample data
 
 === Further Reading ===
 

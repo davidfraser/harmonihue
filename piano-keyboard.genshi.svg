@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?python
-from book_helpers import *
+from spectrum import *
 from piano_layout import *
 ?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" xml:space="preserve" width="${figure_width}cm" height="${figure_height}cm" viewBox="0 0 ${total_width} ${height}">

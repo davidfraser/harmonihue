@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" py:with="target=(target if defined('target') else None)" py:strip="target=='mezzanine_include'">
+<head py:if="target!='mezzanine_include'">
+<title>Harmonic Hues</title>
+<xi:include href="head_contents.html"/>
+</head>
+<body py:strip="target=='mezzanine_include'">
+
+<xi:include href="header.html"/>
+
+<p><a href="index.html">HarmoniHue</a> is a system for relating musical pitch to visual phenomenen (especially colour). The aim is to find a correspondence between these different concepts that will function intuitively, especially in conveying the harmonic relationships between different pitches.</p>
+
+<p>The following are sample scores generated using an adjusted lilypond with a special macro to include the harmonihue concepts in the notation.</p>
+
+<ul>
+  <li><a href="samples/chopin-nocturne-in-b-flat-minor.pdf">Chopin Nocturne Op. 9, No. 1 in B flat minor</a> (<a href="samples/chopin-nocturne-in-b-flat-minor.ly">Lilypond source</a>)</li>
+  <li><a href="samples/j_s_bach-wtk1-fugue2.pdf">J.S. Bach Well-Tempered Klavier Fugue 2</a> (<a href="samples/j_s_bach-wtk1-fugue2.ly">Lilypond source</a>)</li>
+  <li><a href="samples/r_schumann-romanze-op28-2.pdf">R. Schumann Romanze Op. 28 No. 2</a> (<a href="samples/r_schumann-romanze-op28-2.ly">Lilypond source</a>)</li>
+</ul>
+
+<xi:include href="footer.html"/>
+
+</body>
+</html>
+

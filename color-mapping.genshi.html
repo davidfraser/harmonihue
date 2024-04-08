@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns:py="http://genshi.edgewall.org/">
-<head>
-<title>Harmonic Hues</title>
+<html xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" py:with="target=(target if defined('target') else None)" py:strip="target=='mezzanine_include'">
 <?python
-from book_helpers import *
-MATPLOTLIB_COLORS = list(get_matplotlib_colors())
+from color_mapping import *
 ?>
+<head py:if="target!='mezzanine_include'">
+<title>Harmonic Hues</title>
+<xi:include href="head_contents.html"/>
 </head>
-<body>
+<body py:strip="target=='mezzanine_include'">
+
+<xi:include href="header.html"/>
+
 
 <h3>Color Mapping</h3>
 
-<p>We have so far two spaces for <a title="You model tones with one L - they're not very L-ish">modeling</a> tones (the circle of fifths, and the more complex but satisfying torus space), and a number of spaces for <a title="You model colors with two Ls. Really">modelling</a> colors. Let's now consider appropriate mappings between the spaces.</p>
+<p>We have so far two spaces for <a title="You model tones with one L - they're not very L-ish">modeling</a> tones (the circle of fifths, and the more complex but satisfying torus space), and we've explored equidistant rainbow colour sets when <a title="You model colors with two Ls. Really">modelling</a> colors. Let's now look at the correspondence between the spaces.</p>
 
-<h4>Simple hue projection</h4>
+<h4>Simple Hue is Not Enough</h4>
 
-<p>The key feature of the tone spaces is that they are cyclical. The only color space that is directly cyclical is the HSV color space, in the hue dimension. As a first attempt, let's map the circle of fifths onto the hue dimension whilst keeping saturation and value fixed.</p>
+<p>Starting where we started with color-mapping, let's see how the circle of fifths looks when using a simple hue distribution to represent adjacent tones:</p>
 
 <table>
  <tr><th>Fifths Order</th><th>Semitone Order</th><th>Torus Plot</th></tr>
- <tr><td><img src="${draw_hue_tone_circle.save(7, hues_function=get_spread_hues)}"/></td><td><img src="${draw_hue_tone_circle.save(1, hues_function=get_spread_hues)}"/></td><td><img src="${draw_hue_torus_tone_circle.save(hues_function=get_spread_hues)}"/></td></tr>
+ <tr><td><img src="${draw_hue_tone_circle.save(7, hues_function=get_hue_spread)}"/></td><td><img src="${draw_hue_tone_circle.save(1, hues_function=get_hue_spread)}"/></td><td><img src="${draw_hue_torus_tone_circle.save(hues_function=get_hue_spread)}"/></td></tr>
+</table>
+
+<p>What if we used red, yellow and blue instead of red, green and blue as equidistant colors?</p>
+
+<table>
+ <tr><th>Fifths Order</th><th>Semitone Order</th><th>Torus Plot</th></tr>
+ <tr><td><img src="${draw_hue_tone_circle.save(7, hues_function=get_yhue_spread)}"/></td><td><img src="${draw_hue_tone_circle.save(1, hues_function=get_yhue_spread)}"/></td><td><img src="${draw_hue_torus_tone_circle.save(hues_function=get_yhue_spread)}"/></td></tr>
 </table>
 
 <p>This has some obvious advantages - related tones seem fairly similar etc - along with the logical disadvantage that since the circle of fifths maps major seconds as closer than major thirds, these differences come through in the color space. This is because we are mapping the &gamma; angle in the torus to hue, but doing nothing with the &theta; angle.</p>
@@ -31,30 +41,14 @@ MATPLOTLIB_COLORS = list(get_matplotlib_colors())
  <img src="${draw_hue_tone_circle.save(hues_function=get_hsv_circle_hues)}"/>
 </p>
 
-<p>Another possibility is to use something other than color to represent the &theta; angle in the torus; a simple example is an actual rotation of a line</p>
+<p>Another possibility is to use something other than color to represent the &theta; angle in the torus; a simple example is an actual rotation of a line. Combining this rotation with the chosen spread of colours more easily differentiated hues:</p>
 
 <table>
- <tr><th>Fifths Order</th><th>Semitone Order</th></tr>
- <tr><td><img src="${draw_hue_rotation_tone_circle.save(7, hues_function=get_spread_hues)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1, hues_function=get_spread_hues)}"/></td></tr>
+ <tr><th>Fifths Order</th><th>Semitone Order</th><th>Torus Plot</th></tr>
+ <tr><td><img src="${draw_hue_rotation_tone_circle.save(7)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1)}"/></td><td><img src="${draw_hue_torus_tone_circle.save()}"/></td></tr>
 </table>
 
-<h4>Using the Lab color space</h4>
-
-<p>Visually, there is still an issue though - the greens are not as spread out as the other colors and are harder to distinguish. This can be addressed by using the Lab color space to select colors with the same saturation and value, but with hue values chosen to optimize the distance in that space. However, the Lab delta spaces still does not achieve anything uniform perceptual difference over large distances; using defined Delta-E functions on this space can improve the distribution as shown at right (and these deltas will be used to spread the hues from here onwards):<br/>
- <img src="${draw_lab_hues.save()}"/><img src="${draw_lab_delta_hues.save()}"/>
-</p>
-
-<p>These selections then result in more easily differentiated hues:</p>
-<table>
- <tr><th>Fifths Order</th><th>Torus Plot</th></tr>
- <tr><td><img src="${draw_hue_tone_circle.save(hues_function=get_delta_spread_hues)}"/></td><td><img src="${draw_hue_torus_tone_circle.save(hues_function=get_delta_spread_hues)}"/></td></tr>
-</table>
-
-<p>Combining this with the rotation we had earlier gives the following:</p>
-<table>
- <tr><th>Fifths Order</th><th>Semitone Order</th></tr>
- <tr><td><img src="${draw_hue_rotation_tone_circle.save(7, hues_function=get_delta_spread_hues)}"/></td><td><img src="${draw_hue_rotation_tone_circle.save(1, hues_function=get_delta_spread_hues)}"/></td></tr>
-</table>
+<xi:include href="footer.html"/>
 
 </body>
 </html>

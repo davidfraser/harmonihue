@@ -3,15 +3,47 @@
 import genshi.template
 import os
 import sys
+import argparse
+import json
+import urlparse
 
 EXTENSION_CLASSES = {"ly": genshi.template.NewTextTemplate, "txt": genshi.template.NewTextTemplate}
 script_dir = os.path.dirname(os.path.abspath(__file__))
 loader = genshi.template.TemplateLoader([script_dir])
-input_filename = sys.argv[1]
-output_filename = sys.argv[2]
-extension = input_filename[(input_filename.rfind(".") if "." in input_filename else -1) + 1:]
-template = loader.load(input_filename, cls=EXTENSION_CLASSES.get(extension, None))
-result = template.generate().render()
-with open(output_filename, "w") as output_file:
-    output_file.write(result.encode("UTF-8"))
+
+def vardef(s):
+    if "=" not in s:
+        raise ValueError("Variable definitions must be of the form variable=value")
+    return s.split("=", 1)
+
+def main():
+    parser = argparse.ArgumentParser(description="A simple command line genshi template processor")
+    parser.add_argument("template", type=file, help="Select the template file to process")
+    parser.add_argument("-o", "--output", type=str, default=None, help="Set the output file (defaults to template file with .genshi removed)")
+    parser.add_argument("-f", "--form-data", type=file, default=None, help="Parse a form's submitted arguments from the given file, and loads them into a 'form' variable")
+    parser.add_argument("variable", type=vardef, nargs="*", metavar="VARIABLE=json_value", help="Set context variables in json format")
+    args = parser.parse_args()
+    input_filename = args.template.name
+    extension = input_filename[(input_filename.rfind(".") if "." in input_filename else -1) + 1:]
+    template = loader.load(input_filename, cls=EXTENSION_CLASSES.get(extension, None))
+    context = genshi.template.Context()
+    context['form'] = form_context = genshi.template.Context()
+    if args.form_data:
+        with args.form_data:
+            form_context.update(urlparse.parse_qsl(args.form_data.read().decode("UTF-8")))
+    for variable, value in args.variable:
+        context[variable] = json.loads(value)
+    result = template.generate(context).render(encoding="UTF-8")
+    if args.output is None:
+        output_filename = input_filename.replace(".genshi", "")
+        output_file = open(output_filename, 'w')
+    elif args.output == '-':
+        output_file = sys.stdout
+    else:
+        output_file = open(args.output, 'w')
+    with output_file:
+        output_file.write(result)
+
+if __name__ == "__main__":
+    main()
 

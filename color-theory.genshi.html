@@ -1,28 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns:py="http://genshi.edgewall.org/">
-<head>
-<title>Harmonic Hues</title>
+<html xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude" py:with="target=(target if defined('target') else None)" py:strip="target=='mezzanine_include'">
 <?python
-from book_helpers import *
-MATPLOTLIB_COLORS = list(get_matplotlib_colors())
+from color_spread import *
+from color_mapping import *
 ?>
+<head py:if="target!='mezzanine_include'">
+<title>Harmonic Hues</title>
+<xi:include href="head_contents.html"/>
 </head>
-<body>
+<body py:strip="target=='mezzanine_include'">
+
+<xi:include href="header.html"/>
 
 <h3>Color Theory</h3>
 
-<p>Colors can also be modeled using "spaces". Two simple ways are through the RGB color space (which comprises the levels of red, green, and blue light that our eyes perceive), and through the HSV color space which rather uses the dimensions of Hue, Saturation and Value. A more sophisticated kind of color space is represented by the CIELAB color space, in which the distance between points in the space corresponds directly to the perceived difference between the colors to a human viewer.</p>
-
-<h4>Topology</h4>
-
-<p>The color spaces are generally three-dimensional (given the three different kinds of cone cell receptors in the human eye, with sensitivies to different ranges of frequences), and are approximately cylindrical, spherical or cubic depending on the nature of the model:<br/>
-  <ul>
-    <li>The <b>RGB</b> color space is <b>cubic</b> - each component varies from 0 to 1</li>
-    <li>The <b>HSV</b> color space is <b>cylindrical</b> - the Hue component is circular (cycling around the colors of the rainbow), the Saturation value is usually taken from the center of the cylinder to the edge, and the Value parameter as from the bottom to the top of the cylinder</li>
-    <li>The <b>Lab</b> color space can handle colors outside the human range of perception; the range of values meaningful to humans corresponds to a kind of distorted cube</li>
-  </ul>
+<p>Human vision and color are a very complex topic, and much useful material has been written about them - I would recommend <a href="http://www.handprint.com/LS/CVS/color.html">Bruce MacEvoy's color vision site</a> and <a href="http://www.huevaluechroma.com/index.php">The Dimensions of Colour by David Briggs</a> as both having fairly broad and well-written information. A brief simplified summary of some relevant information follows:
+    <ul>
+        <li>Light itself can be modeled as a <b>spectrum</b> - a set of amplitudes at different frequencies. Human perception of that light happens on multiple levels.</li>
+        <li><b>Our eyes</b> focus light onto a complex distribution of different cells that then produce <b>signals to the brain</b> indicating how much light has been received; these cells respond to different frequencies of light in different amounts, but the colour information transmitted is <b>inherently three-dimensional</b>, with three different ranges of sensitivity that correspond roughly to Red Green and Blue</li>
+        <li>Our <b>brain's perception</b> of the appearance of objects is influenced by the level of light in general, our perception of the illuminating/ambient light, and the juxtapositioning of colours</li>
+        <li>Standard <b>screens</b>, TVs etc reproduce colours using three wavelengths of light that stimulate the Red Green and Blue receptors in our eyes, but are not able to reproduce the full <a href="http://en.wikipedia.org/wiki/Gamut">gamut of colours</a> our eyes can see. Colour <b>printing</b> reproduces colours subtractively by combining (minimally) Cyan, Magenta, Yellow and Black ink, and has its own limitations.</li>
+        <li>Different <b>colour spaces</b> are used in software to represent colours, and make it possible to analyze the various different <b>properties</b> of colour, including hue, saturation, lightness, chromaticity, chroma, luminosity, brightness and more.</li>
+        <li>The <b>shape</b> (or topology) of these color spaces varies; they are generally three-dimensional, and vary between cubic (RGB), cylindrical (HSV/HSL), and irregular shapes (La*b*'s set of colours that humans can perceive corresponds to a kind of distorted cube)</li>
+    </ul>
 </p>
+
+<h4>Equidistant Rainbow Colours</h4>
+
+<p>Given the structure of the musical tone space, it would be useful to have a set of 12 colours that are spaced relatively evenly. The concept of Hue is useful for this purpose as it represents a perceptually continuous cycle along the <a href="http://en.wikipedia.org/wiki/Spectral_color">spectral colours</a> and the <a href="http://en.wikipedia.org/wiki/Line_of_purples">line of purples</a> on a chromaticity diagram. This section will explore how to produce an optimal set of colours with evenly distributed hues.</p>
+
+<h4>Simple hue distribution</h4>
+
+<p>As a first attempt, let's map the circle of fifths onto the hue dimension of the HSV colour space, whilst keeping saturation and value fixed.</p>
+
+<img src="${draw_hue_spread.save(hues_function=get_hue_spread)}"/>
+<img src="${draw_hue_circle.save(hues_function=get_hue_spread)}"/>
+
+<h4>Using the Lab color space</h4>
+
+<p>Visually, these colors are not evenly spaced - the greens are not as spread out as the other colors and are harder to distinguish. This can be addressed by using the Lab color space to select colors with the same saturation and value, but with hue values chosen to optimize the distance in that space:<br/>
+<img src="${draw_hue_spread.save(hues_function=get_lab_spread_colors, graph_value=1)}"/>
+<img src="${draw_hue_circle.save(hues_function=get_lab_spread_colors)}"/>
+<img src="${draw_lab_hues.save(hues_function=get_lab_spread_colors)}"/>
+</p>
+
+<p>However, the Lab delta spaces still does not achieve anything uniform perceptual difference over large distances; using defined Delta-E functions on this space should improve the distribution as shown at right:<br/>
+<img src="${draw_hue_spread.save(120, hues_function=get_delta_spread_colors)}"/>
+<img src="${draw_hue_circle.save(hues_function=get_delta_spread_colors)}"/>
+<img src="${draw_lab_hues.save(hues_function=get_delta_spread_colors)}"/>
+<br/>There are still notable bands of color that stand out in the left-most diagrams, which indicates that this isn't as smooth as we would like it to be...
+</p>
+
+<p>This is an interesting alternative generating RGB colors directly using the sin<sup>2</sup> function which generates a smoother, more flourescent set of colours (see <a href="http://basecase.org/env/on-rainbows">Charlie Loyd</a> and <a href="http://krazydad.com/tutorials/makecolors.php">Jim Budgardner</a>'s independent development of this technique):<br/>
+<img src="${draw_hue_spread.save(hues_function=get_sine_bow_colors)}"/>
+<img src="${draw_hue_circle.save(hues_function=get_sine_bow_colors)}"/>
+</p>
+
+<p>But none of these really look right to me. Perhaps it is because the hue mapping functions tend to see red green and blue as equidistant; but al alternative set as used in paint mixing is red yellow and blue. What if we used red, yellow and blue instead of red, green and blue as equidistant colors, and simply remapped the hues to that? In addition, we could map try and compress the purple range slightly...</p>
+
+<img src="${draw_hue_spread.save(hues_function=get_yhue_spread)}"/>
+<img src="${draw_hue_circle.save(hues_function=get_yhue_spread)}"/>
+
+<p>Would it help to use the Lab delta functions to adjust this? The following diagram shows that it doesn't really...</p>
+<img src="${draw_hue_spread.save(120, hues_function=get_ydelta_spread_colors)}"/>
+<img src="${draw_hue_circle.save(hues_function=get_ydelta_spread_colors)}"/>
+<img src="${draw_lab_hues.save(hues_function=get_ydelta_spread_colors)}"/>
+
+<xi:include href="footer.html"/>
 
 </body>
 </html>
