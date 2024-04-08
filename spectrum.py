@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import colormath.color_objects
+from colormath.color_conversions import convert_color
+from colormath.color_diff import delta_e_cie2000
 import decorator
 import numpy
 
@@ -113,16 +115,16 @@ def calculate_colormath_delta(colors):
     """calculates the norm of the deltas between each color in Lab space"""
     points = len(colors)
     labs = [colormath.color_objects.LabColor(*color.convert_to('lab').get_value_tuple()) for color in colors]
-    # deltas = [labs[i].delta_e(labs[(i+1) % points], mode='cmc', pl=1, pc=1) for i in range(points)]
-    deltas = [labs[i].delta_e(labs[(i+1) % points], mode='cie2000') for i in range(points)]
+    # deltas = [labs[i].delta_e_cmc(labs[(i+1) % points], pl=1, pc=1) for i in range(points)]
+    deltas = [labs[i].delta_e_cie2000(labs[(i+1) % points]) for i in range(points)]
     return numpy.array(deltas)
 
 def calculate_colormath_delta_matrix(colors):
     """calculates a matrix of the deltas between each pair of points"""
     points = len(colors)
     labs = [colormath.color_objects.LabColor(*color.convert_to('lab').get_value_tuple()) for color in colors]
-    # deltas = [labs[i].delta_e(labs[(i+1) % points], mode='cmc', pl=1, pc=1) for i in range(points)]
-    deltas = [[labs[i].delta_e(labs[j], mode='cie2000') for i in range(points)] for j in range(points)]
+    # deltas = [labs[i].delta_e_cmc(labs[(i+1) % points], pl=1, pc=1) for i in range(points)]
+    deltas = [[labs[i].delta_e_cie2000(labs[j]) for i in range(points)] for j in range(points)]
     return numpy.array(deltas)
 
 @color_function
@@ -136,12 +138,16 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
     else:
         hues = numpy.linspace(360.0, 0.0, points+1)[:points]
     resolved = False
+    def hsv_delta_e_cie2000(h1, h2):
+        l1 = convert_color(h1, colormath.color_objects.LabColor)
+        l2 = convert_color(h2, colormath.color_objects.LabColor)
+        return delta_e_cie2000(l1, l2)
     while not resolved:
         deg_delta = lambda deg1, deg2: (360 + (deg1-deg2)) % 360
         norm_deg_delta = lambda dd: dd if dd <= 180 else dd-360
         hue_deltas = numpy.array([norm_deg_delta(deg_delta(hues[(i+1) % points], hues[i])) for i in range(points)])
         colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
-        deltas = numpy.array([colors[i].delta_e(colors[(i+1) % points], mode='cie2000') for i in range(points)])
+        deltas = numpy.array([hsv_delta_e_cie2000(colors[i], colors[(i+1) % points]) for i in range(points)])
         # print "D ", deltas
         delta_variance = deltas / numpy.average(deltas)
         # print "dv", delta_variance

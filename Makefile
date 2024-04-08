@@ -43,8 +43,7 @@ out/%.svg: %.genshi.svg $(OUT)
 	./genshify -o $@ $< ${genshify_args}
 
 out/%.png: out/%.svg
-	rasterizer -d $@ -m image/png $<
-	# convert $< $@
+	inkscape $< -o $@
 
 out/%.html: %.genshi.html $(html_includes) $(OUT)
 	./genshify -o $@ $< ${genshify_args}
