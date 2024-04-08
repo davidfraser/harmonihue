@@ -8,12 +8,12 @@ The main current focus is `book.genshi.html`. This is the source template for th
 
 Compiling the book requires:
 * Python 2, and the following Python modules:
-** genshi
-** matplotlib (with a backend that can produce image files)
-** mplot_toolkits.mplot3d
-** numpy
-** decorator
-** colormath
+  - `genshi`
+  - `matplotlib` (with a backend that can produce image files)
+  - `mplot_toolkits.mplot3d` (part of `matplotlib`)
+  - `numpy`
+  - `decorator`
+  - `colormath`
 * Lilypond for rendering sheet music
 * Inkscape for converting SVG (vector) images to PNG (rendered)
 * Make for running the process
@@ -33,3 +33,4 @@ virtualenv --python=`which python2` venv/
 pip install -r requirements.txt
 make
 ```
+
