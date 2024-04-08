@@ -11,11 +11,11 @@ DEFAULT_VALUE = 0.8
 
 def rgb_hex(c):
     """converts a colormath color object to an rgb hex string for html like #30bf30"""
-    return convert_color(color, RGBColor).get_rgb_hex()
+    return convert_color(c, RGBColor).get_rgb_hex()
 
 def rgb_float_tuple(c):
     """converts a colormath color object to an rgb tuple in the range [0, 1)"""
-    r, g, b = convert_color(color, RGBColor).get_value_tuple()
+    r, g, b = convert_color(c, RGBColor).get_value_tuple()
     return (r/255., g/255., b/255.)
 
 @decorator.decorator
@@ -29,7 +29,7 @@ def color_function(f):
 
 def lighter_color(c, level):
     """lightens the color by increasing the HSL lightness value by the given amount"""
-    c2 = convert_color(color, HSLColor)
+    c2 = convert_color(c, HSLColor)
     c2.hsl_l = min(1, c2.hsl_l + level)
     return c2
 
