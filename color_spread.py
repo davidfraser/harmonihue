@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-import colormath.color_objects
+from colormath.color_objects import LabColor
+from colormath.color_conversions import convert_color
 import numpy
 from figurine import *
 from spectrum import *
@@ -44,12 +45,12 @@ def draw_lab_hues(count=12, R=10.0, r=5.0, figsize=(5,5), hues_function=None):
     ax = mplot3d.Axes3D(fig)
     points = count * 10
     colors = get_hue_spread(points)
-    lab_colors = numpy.array([color.convert_to('lab').get_value_tuple() for color in colors])
+    lab_colors = numpy.array([convert_color(color, LabColor).get_value_tuple() for color in colors])
     rgb_colors = [rgb_float_tuple(color) for color in colors]
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=20, color=rgb_colors)
     new_colors = hues_function(count) if hues_function else default_spread_colors(count)
-    lab_colors = numpy.array([color.convert_to('lab').get_value_tuple() for color in new_colors])
+    lab_colors = numpy.array([convert_color(color, LabColor).get_value_tuple() for color in new_colors])
     rgb_colors = [rgb_float_tuple(color) for color in new_colors]
     L, a, b = lab_colors.transpose()
     ax.scatter(L, a, b, s=200, color=rgb_colors)

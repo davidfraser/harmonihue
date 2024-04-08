@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import colormath.color_objects
+from colormath.color_objects import LabColor, HSLColor, HSVColor, sRGBColor as RGBColor
 from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie2000
 import decorator
@@ -11,11 +11,11 @@ DEFAULT_VALUE = 0.8
 
 def rgb_hex(c):
     """converts a colormath color object to an rgb hex string for html like #30bf30"""
-    return c.convert_to('rgb').get_rgb_hex()
+    return convert_color(color, RGBColor).get_rgb_hex()
 
 def rgb_float_tuple(c):
     """converts a colormath color object to an rgb tuple in the range [0, 1)"""
-    r, g, b = c.convert_to('rgb').get_value_tuple()
+    r, g, b = convert_color(color, RGBColor).get_value_tuple()
     return (r/255., g/255., b/255.)
 
 @decorator.decorator
@@ -29,7 +29,7 @@ def color_function(f):
 
 def lighter_color(c, level):
     """lightens the color by increasing the HSL lightness value by the given amount"""
-    c2 = c.convert_to('hsl')
+    c2 = convert_color(color, HSLColor)
     c2.hsl_l = min(1, c2.hsl_l + level)
     return c2
 
@@ -37,13 +37,13 @@ def get_hsv_circle_hues(count=12, saturation=0.75, value=0.75):
     """returns a hsv color range corresponding roughly to the torus, as rgb"""
     M_s, M_h = 0.1875, 0.1875
     hsv_map = {0: (saturation+M_s, value+M_h), 1: (saturation+M_s, value-M_h), 2: (saturation-M_s, value-M_h), 3: (saturation-M_s, value+M_h)}
-    return [colormath.color_objects.HSVColor(360*float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1]) for i in range(count)]
+    return [HSVColor(360*float(count*2 - i)/count, hsv_map[i%4][0], hsv_map[i%4][1]) for i in range(count)]
 
 @color_function
 def get_hue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALUE):
     """Returns a set of colors distributed in a circle around the Hsv space with fixed saturation and value"""
     hues = numpy.linspace(360.0, 0.0, points+1)[:points]
-    colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
+    colors = numpy.array([HSVColor(hue, saturation, value) for hue in hues])
     return colors
 
 def apply_scale_shifts(scale_shifts):
@@ -88,7 +88,7 @@ def get_yhue_spread(points=12, saturation=DEFAULT_SATURATION, value=DEFAULT_VALU
     """Returns a set of colors distributed in a circle around the Hsv space, but with RYB equidistant instead of RGB, with fixed saturation and value"""
     hues = numpy.linspace(360.0, 0.0, points+1)[:points]
     hues = ymap(hues)
-    colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
+    colors = numpy.array([HSVColor(hue, saturation, value) for hue in hues])
     return colors
 
 @color_function
@@ -106,7 +106,7 @@ def get_lab_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAULT
 def calculate_lab_delta_norm(colors, scale=(1, 0.5, 0.5)):
     """calculates the norm of the deltas between each color in Lab space"""
     points = len(colors)
-    labs = numpy.array([color.convert_to('lab').get_value_tuple() for color in colors])
+    labs = numpy.array([convert_color(color, LabColor).get_value_tuple() for color in colors])
     lab_delta = numpy.diff(labs, axis=0) * points * scale # scale up a and b so the ranges are comparable
     lab_delta_norm = numpy.apply_along_axis(numpy.linalg.norm, 1, lab_delta)
     return lab_delta_norm
@@ -114,7 +114,7 @@ def calculate_lab_delta_norm(colors, scale=(1, 0.5, 0.5)):
 def calculate_colormath_delta(colors):
     """calculates the norm of the deltas between each color in Lab space"""
     points = len(colors)
-    labs = [colormath.color_objects.LabColor(*color.convert_to('lab').get_value_tuple()) for color in colors]
+    labs = [LabColor(*convert_color(color, LabColor).get_value_tuple()) for color in colors]
     # deltas = [labs[i].delta_e_cmc(labs[(i+1) % points], pl=1, pc=1) for i in range(points)]
     deltas = [labs[i].delta_e_cie2000(labs[(i+1) % points]) for i in range(points)]
     return numpy.array(deltas)
@@ -122,7 +122,7 @@ def calculate_colormath_delta(colors):
 def calculate_colormath_delta_matrix(colors):
     """calculates a matrix of the deltas between each pair of points"""
     points = len(colors)
-    labs = [colormath.color_objects.LabColor(*color.convert_to('lab').get_value_tuple()) for color in colors]
+    labs = [convert_color(color, LabColor) for color in colors]
     # deltas = [labs[i].delta_e_cmc(labs[(i+1) % points], pl=1, pc=1) for i in range(points)]
     deltas = [[labs[i].delta_e_cie2000(labs[j]) for i in range(points)] for j in range(points)]
     return numpy.array(deltas)
@@ -139,14 +139,14 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
         hues = numpy.linspace(360.0, 0.0, points+1)[:points]
     resolved = False
     def hsv_delta_e_cie2000(h1, h2):
-        l1 = convert_color(h1, colormath.color_objects.LabColor)
-        l2 = convert_color(h2, colormath.color_objects.LabColor)
+        l1 = convert_color(h1, LabColor)
+        l2 = convert_color(h2, LabColor)
         return delta_e_cie2000(l1, l2)
     while not resolved:
         deg_delta = lambda deg1, deg2: (360 + (deg1-deg2)) % 360
         norm_deg_delta = lambda dd: dd if dd <= 180 else dd-360
         hue_deltas = numpy.array([norm_deg_delta(deg_delta(hues[(i+1) % points], hues[i])) for i in range(points)])
-        colors = numpy.array([colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues])
+        colors = numpy.array([HSVColor(hue, saturation, value) for hue in hues])
         deltas = numpy.array([hsv_delta_e_cie2000(colors[i], colors[(i+1) % points]) for i in range(points)])
         # print "D ", deltas
         delta_variance = deltas / numpy.average(deltas)
@@ -169,7 +169,7 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
         print "H ", hues
     if use_ymap:
         hues = ymap(hues)
-    desired_colors = [colormath.color_objects.HSVColor(hue, saturation, value) for hue in hues]
+    desired_colors = [HSVColor(hue, saturation, value) for hue in hues]
     return desired_colors
 
 @color_function
@@ -183,7 +183,7 @@ def get_sine_bow_colors(count=12, saturation=None, value=None):
     g = numpy.sin(hues + numpy.pi/3)
     b = numpy.sin(hues + 2*numpy.pi/3)
     r, g, b = r*r, g*g, b*b
-    return [colormath.color_objects.RGBColor(r[i]*255, g[i]*255, b[i]*255) for i in range(count)]
+    return [RGBColor(r[i]*255, g[i]*255, b[i]*255) for i in range(count)]
 
 
 # use this to affect pages that are just wanting to use the chosen color spreading function
