@@ -29,8 +29,7 @@
   bottom-margin =12
   %annotate-spacing = ##t
   %{ %}
-  obsolete-obsolete-between-system-padding = 0  system-system-spacing #'padding = #(/ obsolete-between-system-padding staff-space)  score-system-spacing #'padding = #(/ obsolete-between-system-padding staff-space)  system-system-spacing #'padding = #(/ obsolete-between-system-padding staff-space)  score-system-spacing #'padding = #(/ obsolete-between-system-padding staff-space)
-  ragged-last-bottom = ##f
+  obsolete-between-system-padding = 0  system-system-spacing #'padding = #(/ obsolete-between-system-padding staff-space)  score-system-spacing #'padding = #(/ obsolete-between-system-padding staff-space)
 }
 % Definitios to override page-breaking
 myLineBreak = {
@@ -60,7 +59,6 @@ ohn = {
   \once\override NoteHead #'transparent = ##t
   \once\override NoteHead #'no-ledgers = ##t
   \once\override Stem #'transparent = ##t
-  \once\override Flag #'transparent = ##t
   \once\override Flag #'transparent = ##t
   \once\override Beam #'transparent = ##t
   \once\override Accidental #'transparent = ##t
