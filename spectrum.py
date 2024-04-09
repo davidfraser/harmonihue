@@ -16,7 +16,7 @@ def rgb_hex(c):
 def rgb_float_tuple(c):
     """converts a colormath color object to an rgb tuple in the range [0, 1)"""
     r, g, b = convert_color(c, RGBColor).get_value_tuple()
-    return (r/255., g/255., b/255.)
+    return (r, g, b)
 
 @decorator.decorator
 def rgb_tuplize(f, *args, **kwargs):
@@ -183,7 +183,7 @@ def get_sine_bow_colors(count=12, saturation=None, value=None):
     g = numpy.sin(hues + numpy.pi/3)
     b = numpy.sin(hues + 2*numpy.pi/3)
     r, g, b = r*r, g*g, b*b
-    return [RGBColor(r[i]*255, g[i]*255, b[i]*255) for i in range(count)]
+    return [RGBColor(r[i], g[i], b[i]) for i in range(count)]
 
 
 # use this to affect pages that are just wanting to use the chosen color spreading function

@@ -9,7 +9,7 @@ def hue_tone_rotation_table(interval=1, hues_function=None):
     hue_cycle = list(tone_cycle(7))
     for i in range(12):
         hue_i = hue_cycle.index(cycle[i])
-        r, g, b = (int(l*255) for l in hues[hue_i])
+        r, g, b = (int(l) for l in hues[hue_i])
         rot = (hue_i % 4)
         yield tones[i], (r, g, b), rot
 %}\

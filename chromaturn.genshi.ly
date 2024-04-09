@@ -21,7 +21,7 @@ to distinguish enharmonics.
 #(define color-mapping
   (list
 {% for pitch_str, color in lilypond_pitch_colors() %}{% with rgb=convert_color(color, RGBColor) %}
-    (cons (ly:make-pitch ${pitch_str})	(rgb-color ${rgb.rgb_r/255.} ${rgb.rgb_g/255.} ${rgb.rgb_b/255.}))
+    (cons (ly:make-pitch ${pitch_str})	(rgb-color ${rgb.rgb_r} ${rgb.rgb_g} ${rgb.rgb_b}))
 {% end %}{% end %}
   )
  )
