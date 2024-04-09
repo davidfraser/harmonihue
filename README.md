@@ -17,7 +17,7 @@ Compiling the book requires:
   - `numpy`
   - `decorator`
   - `colormath`
-* Lilypond 2.16.x for rendering sheet music
+* Lilypond 2.18.x for rendering sheet music
 * Inkscape for converting SVG (vector) images to PNG (rendered)
 * Make for running the process
 
@@ -61,7 +61,6 @@ choco install -y python2
 python2 -m ensurepip
 python2 -m pip install --upgrade pip setuptools virtualenv
 python2 -m virtualenv venv
-rem check if lilypond 2.18.x also works
 choco install -y lilypond==2.18.2
 choco install -y inkscape
 choco install -y make

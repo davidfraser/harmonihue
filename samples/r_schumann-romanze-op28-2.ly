@@ -4,7 +4,7 @@
 
 #(set-global-staff-size 16)
 
-\version "2.16.0"
+\version "2.18.0"
 
 \header {
   title = "Romanzen"
@@ -44,13 +44,13 @@ righta =  \transpose c cis' {
  % \stemUp \slurUp \tieUp
  \stemUp
  \repeat volta 2 {
-  \override TextScript   #'extra-offset = #'(-8.0 . 2.5)
+  \override TextScript.extra-offset = #'(-8.0 . 2.5)
   \m  a,16[^\p( \u c^\markup {
       \large "Einfach ("
       \note #"8" #1
       \large " = 100)" }
   a c ] \m  g,[ \u c^3 ] \m  b,[ \u c^2 b c] \m  a,[ \u c^3]) | 
-  \revert TextScript #'extra-offset
+  \revert TextScript.extra-offset
   \m  f,[( \u c f c] \m  g,[ \u c^4] \m  a,[ \u c^2 a c8  c16)] | 
   \m  c16[( \u f c' f] \m  b,[ \u f] \m  d[ \u f^3 d' f^2] \m  c[ \u  f)^4] |
   \m  f,16[( \u c16^3 f c] \m  g,[ \u c^4] \m  a,[ \u c^2 a c8  c16)] |
@@ -117,7 +117,7 @@ rightb =  \transpose c cis' {
  c_3 g,_2 es, g, h,_4 g, d, g, c g,8 f,16 |
  c g, es, g, es c_3 as, c^2 d^3 c h, c |
  e des b,\< des g e_3 ces_4 d_2 f^3 d cis d |
- \once \override PhrasingSlur   #'extra-offset = #'(0 . 3)
+ \once \override PhrasingSlur.extra-offset = #'(0 . 3)
  g\( fes des fes b g_3 es_1\! ges_2 a^3 ges f_1 ges_2 |
  r ges_2 b des_1 ges b,_2 des ges,^1 b, \d des,^1 \stemDown \transpose c' c { b,[_1 as,] |
  g,8  b,16[ g, e, cis,]  d,\)_4 \< f, h, d_3 f_2  r16\! }
@@ -130,16 +130,16 @@ rightb =  \transpose c cis' {
   f,8.. f32^1 g8^2  a4.) |
   a4^1( c8^1_\accent~[c b)] g16^1([ b^2] |
    c4)^1 es8^1~es d^1 f^1~ |
-  \override PianoStaff.Arpeggio  #'direction = #UP
+  \override PianoStaff.Arpeggio.direction = #UP
   f f8.. f32^1( as4.)^\fermata\arpeggio ~ |
-  \revert PianoStaff.Arpeggio #'direction
+  \revert PianoStaff.Arpeggio.direction
   \stemUp \tieUp as r4 r8 |
  }
   s2. s
  \u s4. \grace {
-  \override Flag #'stroke-style = #"grace"
+  \override Flag.stroke-style = #"grace"
   f8(
-  \revert Flag #'stroke-style }
+  \revert Flag.stroke-style }
   f4) e8 |
  f g16_2 b_1 a_2 gis_1 c_2 h, c cis_1 d_2 b,_1 |
  \tieDown c4.~<f, c  >16\< \tieNeutral <f h>~ < f^3 h >8[\>\! < e b^2> \!] |
@@ -180,7 +180,7 @@ lefta =  \transpose c cis {
    c4) r8 f4-4( as8-5~ | as g-4  b)-5 as4-5( ces'8-4~ |
   ces' b des'-4  c'4)-5( <es'-4 es''>8 |
   \stemDown \tieDown  des'4.)_5~des'~ |
-  \override NoteColumn   #'horizontal-shift = #-1 des' s
+  \override NoteColumn.horizontal-shift = #-1 des' s
  }
  >>
  \change Staff=down \stemUp \slurUp \tieUp \phrasingSlurUp
@@ -194,9 +194,9 @@ lefta =  \transpose c cis {
  s2.*2
  s8 r16 h\( c' d' es' as g8\arpeggio  fis(
  ges)\) f16-2( a-1 c'-3  f')-1 \grace {
-  \override Flag #'stroke-style = #"grace"
+  \override Flag.stroke-style = #"grace"
   \stemDown \slurUp  b,[( f] \stemUp 
-  \revert Flag #'stroke-style }
+  \revert Flag.stroke-style }
   e')-1( d' c' b-1 a-2\prall g 
   f16)-4 f' <c' e'> d'-1 c'-2 h-1 s4.
  s2.
@@ -255,31 +255,31 @@ leftb =  \transpose c cis {
 		       
 \score { 
   \context PianoStaff <<
-    \accidentalStyle "piano-cautionary"
-    \override PianoStaff.NoteCollision   #'merge-differently-dotted = ##t
+    \accidentalStyle piano-cautionary
+    \override PianoStaff.NoteCollision.merge-differently-dotted = ##t
     \set PianoStaff.connectArpeggios = ##t
-    \override PianoStaff.Arpeggio #'stencil = #ly:arpeggio::brew-chord-bracket
+    \override PianoStaff.Arpeggio.stencil = #ly:arpeggio::brew-chord-bracket
 
-    \override PianoStaff.InstrumentName #'font-size = #6
-    \override PianoStaff.InstrumentName #'font-shape = #'italic
-    \override PianoStaff.InstrumentName #'font-magnification = #3
+    \override PianoStaff.InstrumentName.font-size = #6
+    \override PianoStaff.InstrumentName.font-shape = #'italic
+    \override PianoStaff.InstrumentName.font-magnification = #3
     
     \set PianoStaff.instrumentName = "  2."
     \new Staff =  "up" {
-      \override Staff.DynamicLineSpanner   #'direction = #DOWN
+      \override Staff.DynamicLineSpanner.direction = #DOWN
       \clef G <<\global \new Voice =  "upv" \righta >>
     }
     \new Staff =  "mid" {
-    \override Staff.InstrumentName #'font-size = #0
-    \override Staff.InstrumentName #'font-shape = #'upright
-    \override Staff.InstrumentName #'font-magnification = #1
-    \override Staff.InstrumentName #'extra-offset = #'(0 . 6)
+    \override Staff.InstrumentName.font-size = #0
+    \override Staff.InstrumentName.font-shape = #'upright
+    \override Staff.InstrumentName.font-magnification = #1
+    \override Staff.InstrumentName.extra-offset = #'(0 . 6)
    % \set Staff.instrumentName = "\\begin{turn}{-90}{Rechte Hand}\\end{turn}"
     \set Staff.instrumentName = \markup { \column { Rechte Hand }  \hspace #2 }
       \clef F <<\global \new Voice =  "midv" \rightb>>
     }
       \new Staff =  "down" {
-        \override Staff.DynamicLineSpanner   #'direction = #UP
+        \override Staff.DynamicLineSpanner.direction = #UP
         \clef F
 	<< \global \new Voice \lefta \new Voice \leftb >>
     }
@@ -290,7 +290,7 @@ leftb =  \transpose c cis {
     }
     \context {
       \Score
-      \override SpacingSpanner #'common-shortest-duration = #(ly:make-moment 1 8)
+      \override SpacingSpanner.common-shortest-duration = #(ly:make-moment 1/8)
     }
   }
   

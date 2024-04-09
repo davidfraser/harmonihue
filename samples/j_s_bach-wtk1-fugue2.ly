@@ -41,7 +41,7 @@
 
 
 
-\version "2.16.0"
+\version "2.18.0"
 
 \include "chromaturn.ly"
 
@@ -111,7 +111,7 @@ dux = \context Voice = "two"  \relative c''{
 comes = \context Voice = "one"  \relative c'' {
     \chromaTurnOn
     \voiceOne
-    \override MultiMeasureRest  #'staff-position = #6 
+    \override MultiMeasureRest.staff-position = #6 
     R1 |
     R1 |
     r8 g'16 fis g8 c, es g16 fis g8 a |
@@ -201,10 +201,10 @@ bassdux = \context Voice = "three"  \relative c' {
 
 	\context Score \with
 	{
-	    \override SpacingSpanner #'spacing-increment = #1.0
-	    \override SpacingSpanner #'shortest-duration-space = #1.9	
+	    \override SpacingSpanner.spacing-increment = #1.0
+	    \override SpacingSpanner.shortest-duration-space = #1.9	
 	} \context PianoStaff << 
-	    \override Score.TimeSignature  #'style = #'C
+	    \override Score.TimeSignature.style = #'C
 	    \context Staff = "treble" <<
 		\key c \minor
 		\dux
