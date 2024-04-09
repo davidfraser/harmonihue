@@ -25,9 +25,9 @@
 	  \typewriter { "http://sca.uwaterloo.ca/Mutopia/" }
 	}
 	\line {
-	  #(ly:export (string-append
+	  $(string-append
 		       "It has been typeset and placed in the public "
-		       "domain by " maintainer  "." ))
+		       "domain by " maintainer  "." )
 	}
 	\justify {
 	  Unrestricted modification and redistribution 
@@ -41,7 +41,7 @@
 
 
 
-\version "2.12.0"
+\version "2.16.0"
 
 \include "chromaturn.ly"
 
@@ -222,10 +222,7 @@ bassdux = \context Voice = "three"  \relative c' {
 	}
 	\layout {}
 	\midi {
-	  \context {
-	    \Score
-	    tempoWholesPerMinute = #(ly:make-moment 84 4)
-	  }
+	  \tempo 4 = 84
 	}
     }
     \paper {

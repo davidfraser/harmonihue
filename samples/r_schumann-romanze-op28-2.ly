@@ -4,7 +4,7 @@
 
 #(set-global-staff-size 16)
 
-\version "2.12.0"
+\version "2.16.0"
 
 \header {
   title = "Romanzen"
@@ -135,9 +135,9 @@ rightb =  \transpose c cis' {
  }
   s2. s
  \u s4. \grace {
-  \override Stem   #'stroke-style = #"grace"
+  \override Flag #'stroke-style = #"grace"
   f8(
-  \revert Stem #'stroke-style }
+  \revert Flag #'stroke-style }
   f4) e8 |
  f g16_2 b_1 a_2 gis_1 c_2 h, c cis_1 d_2 b,_1 |
  \tieDown c4.~<f, c  >16\< \tieNeutral <f h>~ < f^3 h >8[\>\! < e b^2> \!] |
@@ -192,9 +192,9 @@ lefta =  \transpose c cis {
  s2.*2
  s8 r16 h\( c' d' es' as g8\arpeggio  fis(
  ges)\) f16-2( a-1 c'-3  f')-1 \grace {
-  \override Stem   #'stroke-style = #"grace"
+  \override Flag #'stroke-style = #"grace"
   \stemDown \slurUp  b,[( f] \stemUp 
-  \revert Stem #'stroke-style }
+  \revert Flag #'stroke-style }
   e')-1( d' c' b-1 a-2\prall g 
   f16)-4 f' <c' e'> d'-1 c'-2 h-1 s4.
  s2.
@@ -253,7 +253,7 @@ leftb =  \transpose c cis {
 		       
 \score { 
   \context PianoStaff <<
-    #(set-accidental-style 'piano-cautionary)
+    \accidentalStyle "piano-cautionary"
     \override PianoStaff.NoteCollision   #'merge-differently-dotted = ##t
     \set PianoStaff.connectArpeggios = ##t
     \override PianoStaff.Arpeggio #'stencil = #ly:arpeggio::brew-chord-bracket
@@ -284,7 +284,7 @@ leftb =  \transpose c cis {
   >>
   \layout { 
     \context {
-      \RemoveEmptyStaffContext
+      \Staff \RemoveEmptyStaves
     }
     \context {
       \Score
@@ -293,10 +293,7 @@ leftb =  \transpose c cis {
   }
   
   \midi {
-    \context {
-      \Score
-      tempoWholesPerMinute = #(ly:make-moment 100 8)
-      }
+    \tempo 8 = 100
     }
 
 
