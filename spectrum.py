@@ -166,7 +166,7 @@ def get_delta_spread_colors(count=12, saturation=DEFAULT_SATURATION, value=DEFAU
         hue_deltas *= direction * 360.0 / sum(hue_deltas)
         # print "hd", hue_deltas
         hues = [numpy.sum(hue_deltas[:i]) % 360 for i in range(points)]
-        print "H ", hues
+        # print "H ", hues
     if use_ymap:
         hues = ymap(hues)
     desired_colors = [HSVColor(hue, saturation, value) for hue in hues]
