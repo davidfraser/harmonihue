@@ -1,6 +1,34 @@
 .PHONY: all clean build_all upload local
 
 # export PATH := /home/davidf/frasergo-upstream/lilypond/bin/:$(PATH)
+LILYPOND_DIR=$(USERPROFILE)/AppData/Local/Programs/Lilypond/Lilypond216/usr/bin
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+testme := $(shell echo $(mkfile_path) > test.txt)
+current_dir := $(dir $(mkfile_path))
+testme2:= $(shell echo $(current_dir) >> test.txt)
+
+ifeq ($(OS),Windows_NT)
+SHELL=cmd
+RM=del /Q /F
+RRM=rmdir /Q /S
+CP=copy
+MKDIR=mkdir
+TOUCH=copy nul
+FixPath=$(subst /,\,$1)
+ConditionalRmDir=if exist $(call FixPath,$1) (rmdir /q /s $(call FixPath,$1))
+PYTHON_DIR := $(current_dir)/venv/Scripts
+else
+RM=rm -f
+RRM=rm -f -r
+CP=cp
+MKDIR=mkdir -p
+TOUCH=touch
+FixPath=$1
+ConditionalRmDir=if [ -d $1 ] ; then rm -r $1 ; fi
+PYTHON_DIR := $(current_dir)/venv
+endif
+
+export PATH:=$(PYTHON_DIR):$(LILYPOND_DIR):$(PATH)
 
 output_genshi=$(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html))
 output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
@@ -15,60 +43,60 @@ all: build_all
 build_all: chromaturn.ly $(output_genshi) $(output_lilypond_genshi) $(output_svg) $(output_png) $(output_sample_lilypond)
 
 clean:
-	rm -fr out
-	rm -fr tmp
-	rm chromaturn.ly
+	$(RRM) out
+	$(RRM) tmp
+	$(RM) chromaturn.ly
 
 SAMPLES=out/samples/.d
 OUT=out/.d
 TMP=tmp/.d
 
 %/.d:
-	mkdir -p $(@D)
-	touch $@
+	$(MKDIR) $(call FixPath,$(@D))
+	$(TOUCH) $(call FixPath,$@)
 
 .PRECIOUS: %/.d tmp/%.html
 
-$(shell ./pydeps -M > Makefile.pydeps)
+$(shell python ./pydeps -M > Makefile.pydeps)
 include Makefile.pydeps
 
 %.ly: %.genshi.ly
-	./genshify -o $@ $< ${genshify_args}
+	python ./genshify -o $@ $< ${genshify_args}
 
 out/guitar-fretboard.svg: guitar_layout.py sticker-def.genshi.xml guitar-base.genshi.xml guitar-strings.genshi.xml
 
 out/piano-keyboard.svg: piano_layout.py
 
 out/%.svg: %.genshi.svg $(OUT)
-	./genshify -o $@ $< ${genshify_args}
+	python ./genshify -o $@ $< ${genshify_args}
 
 out/%.png: out/%.svg
 	inkscape $< -o $@
 
 out/%.html: %.genshi.html $(html_includes) $(OUT)
-	./genshify -o $@ $< ${genshify_args}
+	python ./genshify -o $@ $< ${genshify_args}
 
 out/%.txt: %.genshi.txt $(OUT)
-	./genshify -o $@ $< ${genshify_args}
+	python ./genshify -o $@ $< ${genshify_args}
 
+# Remove temporary files to ensure regeneration of lilypond pictures, since lilypond-book does its own incomplete dependency check
 out/%.html: tmp/%.html $(OUT) $(TMP)
-	# Remove temporary files to ensure regeneration of lilypond pictures, since lilypond-book does its own incomplete dependency check
-	if [ -d out/lily/ ] ; then rm -r out/lily/ ; fi
-	lilypond-book --lily-output-dir out/lily/ --process "lilypond -dbackend=eps" --output out/ $<
-	if [ -d out/lily/ ] ; then rm -r out/lily/ ; fi
+	$(call ConditionalRmDir,out/lily/)
+	python $(LILYPOND_DIR)/lilypond-book.py --lily-output-dir out/lily/ --process "lilypond -dbackend=eps" --output out/ $<
+	$(call ConditionalRmDir,out/lily/)
 
 tmp/%.html: %.lilypond-genshi.html chromaturn.ly $(TMP)
-	./genshify -o $@ $< ${genshify_args}
+	python ./genshify -o $@ $< ${genshify_args}
 
 # We ensure that this is copied to the target directory, and actually compile from there
 out/samples/%.ly: samples/%.ly $(SAMPLES)
-	cp $< $@
+	$(CP) $(call FixPath,$<) $(call FixPath,$@)
 
 out/samples/%.pdf: out/samples/%.ly $(SAMPLES) chromaturn.ly
 	lilypond --pdf -o $(@:.pdf=) $<
 
 local: build_all
-	mkdir -p ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
+	$(MKDIR) ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
 	rsync -avzP out/ ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
 
 upload: build_all

@@ -17,9 +17,12 @@ Compiling the book requires:
   - `numpy`
   - `decorator`
   - `colormath`
-* Lilypond for rendering sheet music
+* Lilypond 2.16.x for rendering sheet music
 * Inkscape for converting SVG (vector) images to PNG (rendered)
 * Make for running the process
+
+Installing on a modern Linux distro
+-----------------------------------
 
 On Ubuntu 22.04, the following should work:
 ```
@@ -34,6 +37,42 @@ Then from the `harmonihue` directory:
 virtualenv --python=`which python2` venv/
 . venv/bin/activate
 pip install -r requirements.txt
+```
+
+To actually build the contents, run:
+```
 make
 ```
 
+Installing on a modern Windows
+------------------------------
+
+If installing Lilypond manually, don't include the built-in python - it's really old.
+This doesn't help as it seems to install it anyway :(
+
+On Windows 11, the following might work (assuming you have [chocolatey](https://chocolatey.org/) set up):
+```bat
+choco install -y python2
+python2 -m ensurepip
+python2 -m pip install --upgrade pip setuptools virtualenv
+python2 -m virtualenv venv
+rem check if lilypond 2.18.x also works
+choco install -y lilypond==2.18.2
+choco install -y inkscape
+choco install -y make
+choco install -y rsync
+```
+
+Then from the `harmonihue` directory:
+```
+rem virtualenv doesn't seem to copy required tcl and tk to the expected places
+rem xcopy /e /i \path\to\python\Lib\tcl\tcl8.5\ venv\Lib\tcl8.5\
+rem xcopy /e /i \path\to\python\Lib\tcl\tk8.5\ venv\Lib\tk8.5\
+venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+To actually build the contents, run:
+```
+make
+```
