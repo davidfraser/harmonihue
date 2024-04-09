@@ -32,7 +32,9 @@ m = { \change Staff = mid  \stemUp  }
 forcedBreak = \break
 
 global =  { \key fis \major \time 6/8
-  \set Score.beatLength =  #(ly:make-moment 3 8)
+  \set Timing.beamExceptions = #'()
+  \set Timing.baseMoment = #(ly:make-moment 1/8)
+  \set Timing.beatStructure = #'(3 3)
   \repeat volta 2 { s2.*8 } s2.*26 \bar "|."
 }
 
