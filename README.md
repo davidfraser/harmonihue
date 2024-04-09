@@ -21,6 +21,9 @@ Compiling the book requires:
 * Inkscape for converting SVG (vector) images to PNG (rendered)
 * Make for running the process
 
+The makefile assumes that you have the right version of Lilypond in the current path,
+and the appropriate Python environment with the required scripts activated.
+
 Installing on a modern Linux distro
 -----------------------------------
 
@@ -49,6 +52,8 @@ Installing on a modern Windows
 
 If installing Lilypond manually, don't include the built-in python - it's really old.
 This doesn't help as it seems to install it anyway :(
+So if you install for example to `%USERPROFILE\AppData\Local\Programs\Lilypond\LilyPondNN\usr\bin`,
+then run `del python*.exe` in that directory.
 
 On Windows 11, the following might work (assuming you have [chocolatey](https://chocolatey.org/) set up):
 ```bat

@@ -1,7 +1,5 @@
 .PHONY: all clean build_all upload local
 
-# export PATH := /home/davidf/frasergo-upstream/lilypond/bin/:$(PATH)
-LILYPOND_DIR=$(USERPROFILE)/AppData/Local/Programs/Lilypond/Lilypond216/usr/bin
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 testme := $(shell echo $(mkfile_path) > test.txt)
 current_dir := $(dir $(mkfile_path))
@@ -16,7 +14,9 @@ MKDIR=mkdir
 TOUCH=copy nul
 FixPath=$(subst /,\,$1)
 ConditionalRmDir=if exist $(call FixPath,$1) (rmdir /q /s $(call FixPath,$1))
-PYTHON_DIR := $(current_dir)/venv/Scripts
+# this finds the first lilypond executable on the path, gets the directory, and works out how to run lilypond-book from there with our python
+LILYPOND_DIR=$(shell cmd /E:ON /c set "FIRST=" & for /F "delims= eol=|" %%E in ('where lilypond.exe') do @if not defined FIRST (set FIRST=F & echo %%~dpE))
+LILYPOND_BOOK=python $(LILYPOND_DIR)\lilypond-book.py
 else
 RM=rm -f
 RRM=rm -f -r
@@ -25,10 +25,8 @@ MKDIR=mkdir -p
 TOUCH=touch
 FixPath=$1
 ConditionalRmDir=if [ -d $1 ] ; then rm -r $1 ; fi
-PYTHON_DIR := $(current_dir)/venv
+LILYPOND_BOOK=lilypond-book
 endif
-
-export PATH:=$(PYTHON_DIR):$(LILYPOND_DIR):$(PATH)
 
 output_genshi=$(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html))
 output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
@@ -82,7 +80,7 @@ out/%.txt: %.genshi.txt $(OUT)
 # Remove temporary files to ensure regeneration of lilypond pictures, since lilypond-book does its own incomplete dependency check
 out/%.html: tmp/%.html $(OUT) $(TMP)
 	$(call ConditionalRmDir,out/lily/)
-	python $(LILYPOND_DIR)/lilypond-book.py --lily-output-dir out/lily/ --process "lilypond -dbackend=eps" --output out/ $<
+	$(LILYPOND_BOOK) --lily-output-dir out/lily/ --process "lilypond -dbackend=eps" --output out/ $<
 	$(call ConditionalRmDir,out/lily/)
 
 tmp/%.html: %.lilypond-genshi.html chromaturn.ly $(TMP)
