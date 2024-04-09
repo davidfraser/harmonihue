@@ -64,8 +64,6 @@ rightNotes = \relative c'''{
 	\time 6/4
 	\key bes \minor
 	\clef treble
-	
-	#(override-auto-beam-setting '(end * * * *) 6 8 'Staff)
 	\set Staff.extraNatural = ##f
 	
 	\context Voice = main {
@@ -231,8 +229,6 @@ rightNotes = \relative c'''{
 }
 
 leftNotes = \relative c {
-	#(override-auto-beam-setting '(end * * * *) 6 8 'Staff)
-	
 	\time 6/4
 	\key bes \minor
 	\clef bass
