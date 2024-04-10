@@ -54,11 +54,11 @@ to distinguish enharmonics.
   (pitch-to-color
     (ly:event-property (event-cause grob) 'pitch)))
 
+{% if chromaturn_enabled() %}
+
 chromaNotesOn = {
   \override NoteHead #'color = #color-notehead
 }
-
-{% if chromaturn_enabled() %}
 
 chromaTurnOn = {
   \override NoteHead #'color = #color-notehead
@@ -103,6 +103,9 @@ chromaTurnOff = {
 {% end %}
 
 {% if not chromaturn_enabled() %}
+
+chromaNotesOn = {
+}
 
 chromaTurnOn = {
 }
