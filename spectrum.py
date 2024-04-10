@@ -64,8 +64,9 @@ def compile_scale_shifts(scale_shifts):
         code.append("else ")
     code = code + ["None\n"]
     c = compile("".join(code), __file__, "exec")
-    exec(c)
-    return scale_shift
+    namespace = {}
+    exec(c, namespace)
+    return namespace['scale_shift']
 
 # yellow is half way between green and red
 # so red=0=360, blue=240, green=120 -> yellow=60
