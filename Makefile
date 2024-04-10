@@ -34,7 +34,7 @@ output_sample_lilypond=$(foreach filename,$(wildcard samples/*.ly),out/$(filenam
 output_svg=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.svg))
 output_png=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.png))
 html_includes=header.html footer.html head_contents.html
-genshify_args='target="mezzanine_include"'
+genshify_args="target=\"mezzanine_include\""
 
 all: build_all
 
