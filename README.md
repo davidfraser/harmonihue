@@ -70,8 +70,8 @@ choco install -y rsync
 Then from the `harmonihue` directory:
 ```
 rem virtualenv doesn't seem to copy required tcl and tk to the expected places
-rem xcopy /e /i \path\to\python\Lib\tcl\tcl8.5\ venv\Lib\tcl8.5\
-rem xcopy /e /i \path\to\python\Lib\tcl\tk8.5\ venv\Lib\tk8.5\
+rem xcopy /e %USERPROFILE%\AppData\Local\Programs\Python\Python27\tcl\tcl8.5\ venv\Lib\tcl8.5\
+rem xcopy /e %USERPROFILE%\AppData\Local\Programs\Python\Python27\tcl\tk8.5\ venv\Lib\tk8.5\
 venv\Scripts\activate
 pip install -r requirements.txt
 ```
