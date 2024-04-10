@@ -43,7 +43,7 @@ _lilypond_bool = {"#f": False, "#t": True}
 
 def lilypond_has_chromaturn():
     check_file = os.path.join(BASE_DIR, "check-chromaturn.ly")
-    response = subprocess.check_output(["lilypond", check_file], cwd=BASE_DIR, stderr=subprocess.PIPE).strip()
+    response = subprocess.check_output(["lilypond", check_file], cwd=BASE_DIR, stderr=subprocess.PIPE).strip().decode('UTF-8')
     if response in _lilypond_bool:
         return _lilypond_bool[response]
     raise ValueError("Unexpected response trying to check for chromaturn presence in lilypond: %s" % response)
