@@ -4,7 +4,7 @@
 
 #(set-global-staff-size 16)
 
-\version "2.18.0"
+\version "2.20.0"
 
 \header {
   title = "Romanzen"
@@ -34,7 +34,7 @@ forcedBreak = \break
 global =  { \key fis \major \time 6/8
   \set Timing.beamExceptions = #'()
   \set Timing.baseMoment = #(ly:make-moment 1/8)
-  \set Timing.beatStructure = #'(3 3)
+  \set Timing.beatStructure = 3,3
   \repeat volta 2 { s2.*8 } s2.*26 \bar "|."
 }
 
