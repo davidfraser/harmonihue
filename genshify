@@ -5,7 +5,7 @@ import os
 import sys
 import argparse
 import json
-import urlparse
+import urllib.parse
 
 EXTENSION_CLASSES = {"ly": genshi.template.NewTextTemplate, "txt": genshi.template.NewTextTemplate}
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -30,7 +30,7 @@ def main():
     context['form'] = form_context = genshi.template.Context()
     if args.form_data:
         with args.form_data:
-            form_context.update(urlparse.parse_qsl(args.form_data.read().decode("UTF-8")))
+            form_context.update(urllib.parse.parse_qsl(args.form_data.read().decode("UTF-8")))
     for variable, value in args.variable:
         context[variable] = json.loads(value)
     result = template.generate(context).render(encoding="UTF-8")

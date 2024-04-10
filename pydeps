@@ -60,7 +60,7 @@ def process_makefile():
                             target_files.setdefault(target_file, []).extend(recurse_imports(src_file))
                 for target_file, deps in sorted(target_files.items()):
                     if deps:
-                        print("%s: %s" % (target_file, " ".join(deps)))
+                        print(("%s: %s" % (target_file, " ".join(deps))))
 
 if "-M" in sys.argv:
     process_makefile()
@@ -76,5 +76,5 @@ for filename in sys.argv[1:]:
     else:
         deps = filter_local_python(find_imports(filename))
     if deps:
-        print(" ".join(deps))
+        print((" ".join(deps)))
 
