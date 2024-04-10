@@ -6,6 +6,13 @@ from colormath.color_diff import delta_e_cie2000
 import decorator
 import numpy
 
+# delta_e_cie2000 calls numpy.asscalar which has been removed since numpy 1.23
+# see https://github.com/gtaylor/python-colormath/issues/104
+def patch_asscalar(a):
+    return a.item()
+
+setattr(numpy, "asscalar", patch_asscalar)
+
 DEFAULT_SATURATION = 1.0
 DEFAULT_VALUE = 0.8
 
