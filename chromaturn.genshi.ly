@@ -86,7 +86,7 @@ chromaTurnOn = {
                           -0.35 -" half-turn-width " lineto
                           closepath
                           fill
-                          grestore" ))
+                          grestore " ))
                         (cons 0 1.3125)
                         (cons -.75 .75))
                    (if hollow note-color (x11-color 'white))))))
