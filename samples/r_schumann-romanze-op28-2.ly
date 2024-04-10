@@ -4,7 +4,7 @@
 
 #(set-global-staff-size 16)
 
-\version "2.18.0"
+\version "2.22.0"
 
 \header {
   title = "Romanzen"
@@ -34,7 +34,7 @@ forcedBreak = \break
 global =  { \key fis \major \time 6/8
   \set Timing.beamExceptions = #'()
   \set Timing.baseMoment = #(ly:make-moment 1/8)
-  \set Timing.beatStructure = #'(3 3)
+  \set Timing.beatStructure = 3,3
   \repeat volta 2 { s2.*8 } s2.*26 \bar "|."
 }
 
@@ -47,7 +47,7 @@ righta =  \transpose c cis' {
   \override TextScript.extra-offset = #'(-8.0 . 2.5)
   \m  a,16[^\p( \u c^\markup {
       \large "Einfach ("
-      \note #"8" #1
+      \note {8} #1
       \large " = 100)" }
   a c ] \m  g,[ \u c^3 ] \m  b,[ \u c^2 b c] \m  a,[ \u c^3]) | 
   \revert TextScript.extra-offset
