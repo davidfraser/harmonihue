@@ -1,5 +1,4 @@
 import os.path
-import subprocess
 from musicality import *
 from spectrum import *
 
@@ -39,12 +38,6 @@ def lilypond_pitch_rotations():
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 chromaturn_ly_filename = os.path.join(BASE_DIR, "chromaturn.ly")
-_lilypond_bool = {"#f": False, "#t": True}
 
-def lilypond_has_chromaturn():
-    check_file = os.path.join(BASE_DIR, "check-chromaturn.ly")
-    response = subprocess.check_output(["lilypond", check_file], cwd=BASE_DIR, stderr=subprocess.PIPE).strip()
-    if response in _lilypond_bool:
-        return _lilypond_bool[response]
-    raise ValueError("Unexpected response trying to check for chromaturn presence in lilypond: %s" % response)
-
+def chromaturn_enabled():
+    return True

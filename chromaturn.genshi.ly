@@ -58,31 +58,7 @@ chromaNotesOn = {
   \override NoteHead #'color = #color-notehead
 }
 
-{% if lilypond_has_chromaturn() %}
-
-% brew_chromaturn_stencil is a modified form of brew_ez_stencil from easyHeadsOn
-% TODO: make this draw lines instead of using letters, and add intelligence for different note types
-% FIXME: this makes sharps and flats overlay the notes
-chromaTurnOn = {
-  \override NoteHead #'color = #color-notehead
-  \override NoteHead #'stencil = #ly:note-head::brew-chromaturn-stencil
-  \override NoteHead #'font-size = #-7
-  \override NoteHead #'font-family = #'sans
-  \override NoteHead #'font-series = #'bold
-}
-
-chromaTurnOff = {
-  \revert NoteHead #'font-color
-  \revert NoteHead #'stencil
-  \revert NoteHead #'font-size
-  \revert NoteHead #'font-family
-  \revert NoteHead #'font-series
-  \revert NoteHead #'note-names
-}
-
-{% end %}
-
-{% if not lilypond_has_chromaturn() %}
+{% if chromaturn_enabled() %}
 
 chromaTurnOn = {
   \override NoteHead #'color = #color-notehead
@@ -122,6 +98,16 @@ chromaTurnOn = {
 chromaTurnOff = {
   \revert NoteHead #'font-color
   \revert NoteHead #'stencil
+}
+
+{% end %}
+
+{% if not chromaturn_enabled() %}
+
+chromaTurnOn = {
+}
+
+chromaTurnOff = {
 }
 
 {% end %}
