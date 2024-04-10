@@ -3,3 +3,4 @@ colormath
 git+https://github.com/davidfraser/Grapefruit@remove-d2to1
 matplotlib
 numpy
+decorator
