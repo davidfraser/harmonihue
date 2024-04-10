@@ -32,7 +32,7 @@ def draw_even_temper():
     even_temper = [2 ** (float(i)/12) for i in range(13)]
     ax.scatter(even_temper, [0]*13)
     ax.set_xticks(even_temper)
-    ax.set_xticklabels([str(i) for i in range(14)])
+    ax.set_xticklabels([str(i) for i in range(len(even_temper))])
     ax.set_xlim((1, 2))
     ax.set_xlabel("frequency ($log 2$)")
     ax.xaxis.grid(True)
