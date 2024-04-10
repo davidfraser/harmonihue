@@ -38,7 +38,7 @@ def lilypond_pitch_rotations():
                 yield ("0 %d %d" % (lilypond_note, offset), rotation)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-chromaturn_ly_filename = os.path.join(BASE_DIR, "chromaturn.ly")
+chromaturn_ly_filename = os.path.join(BASE_DIR, "chromaturn.ly").replace(os.sep, '/')
 _lilypond_bool = {"#f": False, "#t": True}
 
 def lilypond_has_chromaturn():
