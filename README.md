@@ -10,14 +10,15 @@ Dependencies
 ------------
 
 Compiling the book requires:
-* Python 2, and the following Python modules (the correct list is in `requirements.txt`):
+* Python 3.x, and the following Python modules (the correct list is in `requirements.txt`):
   - `genshi`
   - `matplotlib` (with a backend that can produce image files)
   - `mplot_toolkits.mplot3d` (part of `matplotlib`)
   - `numpy`
   - `decorator`
   - `colormath`
-* Lilypond 2.18.x for rendering sheet music
+  - `grapefruit` (needs a fork of the main project to support Python 3)
+* Lilypond 2.22.x for rendering sheet music (2.24.x has an issue currently)
 * Inkscape for converting SVG (vector) images to PNG (rendered)
 * Make for running the process
 
@@ -50,18 +51,15 @@ make
 Installing on a modern Windows
 ------------------------------
 
-If installing Lilypond manually, don't include the built-in python - it's really old.
+If installing Lilypond manually, don't include the built-in python.
 This doesn't help as it seems to install it anyway :(
 So if you install for example to `%USERPROFILE\AppData\Local\Programs\Lilypond\LilyPondNN\usr\bin`,
-then run `del python*.exe` in that directory.
+then run `rename python.exe lilypond-python.exe` in that directory.
 
 On Windows 11, the following might work (assuming you have [chocolatey](https://chocolatey.org/) set up):
 ```bat
-choco install -y python2
-python2 -m ensurepip
-python2 -m pip install --upgrade pip setuptools virtualenv
-python2 -m virtualenv venv
-choco install -y lilypond==2.18.2
+choco install -y python
+choco install -y lilypond==2.22.2
 choco install -y inkscape
 choco install -y make
 choco install -y rsync
@@ -69,9 +67,7 @@ choco install -y rsync
 
 Then from the `harmonihue` directory:
 ```
-rem virtualenv doesn't seem to copy required tcl and tk to the expected places
-rem xcopy /e /i \path\to\python\Lib\tcl\tcl8.5\ venv\Lib\tcl8.5\
-rem xcopy /e /i \path\to\python\Lib\tcl\tk8.5\ venv\Lib\tk8.5\
+python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 ```
