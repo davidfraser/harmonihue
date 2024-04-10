@@ -41,7 +41,7 @@ def get_matplotlib_colors():
 matplotlib_colors = list(get_matplotlib_colors())
 
 def filename_part(x):
-    if isinstance(x, basestring):
+    if isinstance(x, str):
         return x
     if isinstance(x, (int, float, type(None))):
         return repr(x)
@@ -117,15 +117,15 @@ def interval_circle_figure(base_interval):
 
 def available_figure_functions(local_dict):
     """filters a dict of local variables to those which are functions with a show attribute (which is the value of the returned dict)"""
-    return dict((name, f.show) for name, f in local_dict.items() if hasattr(f, "show"))
+    return dict((name, f.show) for name, f in list(local_dict.items()) if hasattr(f, "show"))
 
 def cmdline_show_figure(available_functions):
     """provides a commandline interface to select a function and run it by name"""
     import sys
     for arg in sys.argv[1:]:
         if arg in available_functions:
-            print ("Running %s" % arg)
+            print(("Running %s" % arg))
             available_functions[arg]()
         else:
-            print ("Could not find %s" % arg)
+            print(("Could not find %s" % arg))
 

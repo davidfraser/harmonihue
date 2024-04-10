@@ -4,7 +4,7 @@ import colorsys
 import math
 try:
     import grapefruit
-except ImportError, e:
+except ImportError as e:
     grapefruit = None
 
 def circle_element(f, e, n):
@@ -62,12 +62,12 @@ harmonic_index = {
 def closest_harmonics(f, g):
     """returns the set of harmonic ratios that could relate g to the base frequency f within a ratio of 1.025"""
     # for e in (3, 5, 7, 9, 2 ** (1/12.)):
-    print f, g
+    print(f, g)
     for e, m in sorted(harmonic_index.items()):
         n, fen = closest_harmonic(f, g, e)
         r = abs_ratio(fen, g)
         score = (n + (r-1))*m
-        print "   %0.2f %d:%d %0.2f" % (score, e, n, r)
+        print("   %0.2f %d:%d %0.2f" % (score, e, n, r))
 
 def harm_skew_pythag(f):
     harmonic_index, h_f = closest_harmonic(440., f, 3)
@@ -88,7 +88,7 @@ def color(harmonic_index, skew, cycle):
         x, y = hsv_map[cycle]
         L, a, b = float(30+4*harmonic_index), x/2, y/2
         c = grapefruit.Color.NewFromLab(L, a, b)
-        print (L, a, b), c.lab, c.rgb
+        print((L, a, b), c.lab, c.rgb)
         return c.rgb
 
 def web_color(rgb):

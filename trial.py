@@ -52,7 +52,7 @@ for p in range(0, 12):
     a_x, a_y, a_z = notes[p]
     p_distance = []
     order = []
-    for q in range(p, 12) + range(0, p):
+    for q in list(range(p, 12)) + list(range(0, p)):
         b_x, b_y, b_z = notes[q]
         d_x, d_y, d_z = (a_x-b_x), (a_y-b_y), (a_z-b_z)
         distance = math.sqrt(d_x*d_x + d_y*d_y + d_z*d_z)
@@ -61,7 +61,7 @@ for p in range(0, 12):
         s, pq = ("+", 12-pq) if pq > 6 else ("-", pq)
         order.append((distance, "d%02d%s" % (pq, s)))
     order.sort()
-    print " ".join("%0.2f" % d for d in p_distance) + " " + " ".join(label for d, label in order)
+    print(" ".join("%0.2f" % d for d in p_distance) + " " + " ".join(label for d, label in order))
 
 plt.show()
 

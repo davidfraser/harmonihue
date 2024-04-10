@@ -13,7 +13,7 @@ def draw_even_temper():
     ax.semilogx(basex=2)
     bases = [2, 3, 5, 7, 11]
     for i, base in enumerate(bases):
-        for j in [0, 1] if (base == 2) else range(-6,7):
+        for j in [0, 1] if (base == 2) else list(range(-6,7)):
             f = float(base) ** j
             p = 1
             while f < 1:
@@ -26,7 +26,7 @@ def draw_even_temper():
             ax.scatter([f], [i+1], alpha=alpha)
             ax.text(f, i+1, str(j), alpha=math.sqrt(alpha))
     y_tick_info = {2: "octaves", 3: "fifths", 5: "major thirds"}
-    ax.set_yticks(range(len(bases)+1))
+    ax.set_yticks(list(range(len(bases)+1)))
     ax.set_yticklabels(["(even-temper) $2^\\frac{1}{12}$"] + ["%s $\\frac{1}{%d}$" % (y_tick_info.get(base, ""), base) for base in bases])
     ax.set_ylabel("base harmonic ratio")
     even_temper = [2 ** (float(i)/12) for i in range(13)]

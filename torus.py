@@ -99,7 +99,7 @@ def torus_tone_cycles(ax, interval, R, r, base_interval=7):
         xc = [x[c] for c in cycle]
         yc = [y[c] for c in cycle]
         zc = [z[c] for c in cycle]
-        ax.plot(xc, yc, zc, color=color_sequence.next())
+        ax.plot(xc, yc, zc, color=next(color_sequence))
 
 def set_torus_view(ax, R, r):
     ax.set_xlim3d((-R-r, R+r))
