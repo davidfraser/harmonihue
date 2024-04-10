@@ -3,6 +3,7 @@
 from matplotlib import pyplot
 from mpl_toolkits import mplot3d
 import numpy
+from cycler import cycler
 from figurine import *
 from musicality import *
 
@@ -49,11 +50,11 @@ def torus_tone_coords(R, r):
 def draw_torus(R=10.0, r=5.0, figsize=(10,10)):
     """Draws a torus"""
     fig = pyplot.figure(1, figsize=figsize)
-    ax = mplot3d.Axes3D(fig)
+    ax = fig.add_subplot(111, projection='3d')
     torus = torus_figure(ax, R, r, color='grey')
     spiral = torus_tone_spiral(ax, R, r, color='yellow')
     # stop the spiral from using the first default color
-    ax._get_lines.set_prop_cycle(color=[])
+    ax._get_lines.set_prop_cycle(cycler(color=[]))
     fig.points = torus_tone_points(ax, R, r, color='orange')
     set_torus_view(ax, R, r)
     return fig

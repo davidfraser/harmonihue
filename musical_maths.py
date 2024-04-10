@@ -10,7 +10,7 @@ def draw_even_temper():
     """draws a diagram of the different rational frequences and how they related to the even-tempered twelve-tone scale"""
     fig = pyplot.figure(1, figsize=(10,4))
     ax = fig.add_axes([0.25, 0.15, 0.65, 0.75])
-    ax.semilogx(basex=2)
+    ax.semilogx(base=2)
     bases = [2, 3, 5, 7, 11]
     for i, base in enumerate(bases):
         for j in [0, 1] if (base == 2) else list(range(-6,7)):
