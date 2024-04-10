@@ -17,10 +17,12 @@ def vardef(s):
     return s.split("=", 1)
 
 def main():
+    readable_file = argparse.FileType('r', encoding='utf-8')
+    writeable_file = argparse.FileType('w', encoding='utf-8')
     parser = argparse.ArgumentParser(description="A simple command line genshi template processor")
-    parser.add_argument("template", type=file, help="Select the template file to process")
-    parser.add_argument("-o", "--output", type=str, default=None, help="Set the output file (defaults to template file with .genshi removed)")
-    parser.add_argument("-f", "--form-data", type=file, default=None, help="Parse a form's submitted arguments from the given file, and loads them into a 'form' variable")
+    parser.add_argument("template", type=readable_file, help="Select the template file to process")
+    parser.add_argument("-o", "--output", type=writeable_file, default=None, help="Set the output file (defaults to template file with .genshi removed)")
+    parser.add_argument("-f", "--form-data", type=readable_file, default=None, help="Parse a form's submitted arguments from the given file, and loads them into a 'form' variable")
     parser.add_argument("variable", type=vardef, nargs="*", metavar="VARIABLE=json_value", help="Set context variables in json format")
     args = parser.parse_args()
     input_filename = args.template.name
@@ -33,14 +35,12 @@ def main():
             form_context.update(urllib.parse.parse_qsl(args.form_data.read().decode("UTF-8")))
     for variable, value in args.variable:
         context[variable] = json.loads(value)
-    result = template.generate(context).render(encoding="UTF-8")
+    result = template.generate(context).render()
     if args.output is None:
         output_filename = input_filename.replace(".genshi", "")
-        output_file = open(output_filename, 'w')
-    elif args.output == '-':
-        output_file = sys.stdout
+        output_file = open(output_filename, 'w', encoding='utf-8')
     else:
-        output_file = open(args.output, 'w')
+        output_file = args.output
     with output_file:
         output_file.write(result)
 
