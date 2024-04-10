@@ -1,9 +1,7 @@
 .PHONY: all clean build_all upload local
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
-testme := $(shell echo $(mkfile_path) > test.txt)
 current_dir := $(dir $(mkfile_path))
-testme2:= $(shell echo $(current_dir) >> test.txt)
 
 ifeq ($(OS),Windows_NT)
 SHELL=cmd

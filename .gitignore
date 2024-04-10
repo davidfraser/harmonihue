@@ -1,6 +1,10 @@
+# generated code
+chromaturn.ly
+Makefile.pydeps
+# other temporary and output files
 **.pyc
 .*.sw*
 tmp
 out
-chromaturn.ly
+# virtual environments
 venv*
