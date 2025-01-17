@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<h1><a href="http://www.frasergo.org/projects/harmonihue/index.html" title="Harmonic Hues, © David Fraser 2013">HarmoniHue</a></h1>
+<h3>Color Theory</h3>
+<p>Human vision and color are a very complex topic, and much useful material has been written about them - I would recommend <a href="http://www.handprint.com/LS/CVS/color.html">Bruce MacEvoy's color vision site</a> and <a href="http://www.huevaluechroma.com/index.php">The Dimensions of Colour by David Briggs</a> as both having fairly broad and well-written information. A brief simplified summary of some relevant information follows:
+    <ul>
+        <li>Light itself can be modeled as a <b>spectrum</b> - a set of amplitudes at different frequencies. Human perception of that light happens on multiple levels.</li>
+        <li><b>Our eyes</b> focus light onto a complex distribution of different cells that then produce <b>signals to the brain</b> indicating how much light has been received; these cells respond to different frequencies of light in different amounts, but the colour information transmitted is <b>inherently three-dimensional</b>, with three different ranges of sensitivity that correspond roughly to Red Green and Blue</li>
+        <li>Our <b>brain's perception</b> of the appearance of objects is influenced by the level of light in general, our perception of the illuminating/ambient light, and the juxtapositioning of colours</li>
+        <li>Standard <b>screens</b>, TVs etc reproduce colours using three wavelengths of light that stimulate the Red Green and Blue receptors in our eyes, but are not able to reproduce the full <a href="http://en.wikipedia.org/wiki/Gamut">gamut of colours</a> our eyes can see. Colour <b>printing</b> reproduces colours subtractively by combining (minimally) Cyan, Magenta, Yellow and Black ink, and has its own limitations.</li>
+        <li>Different <b>colour spaces</b> are used in software to represent colours, and make it possible to analyze the various different <b>properties</b> of colour, including hue, saturation, lightness, chromaticity, chroma, luminosity, brightness and more.</li>
+        <li>The <b>shape</b> (or topology) of these color spaces varies; they are generally three-dimensional, and vary between cubic (RGB), cylindrical (HSV/HSL), and irregular shapes (La*b*'s set of colours that humans can perceive corresponds to a kind of distorted cube)</li>
+    </ul>
+</p>
+<h4>Equidistant Rainbow Colours</h4>
+<p>Given the structure of the musical tone space, it would be useful to have a set of 12 colours that are spaced relatively evenly. The concept of Hue is useful for this purpose as it represents a perceptually continuous cycle along the <a href="http://en.wikipedia.org/wiki/Spectral_color">spectral colours</a> and the <a href="http://en.wikipedia.org/wiki/Line_of_purples">line of purples</a> on a chromaticity diagram. This section will explore how to produce an optimal set of colours with evenly distributed hues.</p>
+<h4>Simple hue distribution</h4>
+<p>As a first attempt, let's map the circle of fifths onto the hue dimension of the HSV colour space, whilst keeping saturation and value fixed.</p>
+<img src="draw_hue_spread_360_get_hue_spread_1_False.png"/>
+<img src="draw_hue_circle_12_get_hue_spread_1.png"/>
+<h4>Using the Lab color space</h4>
+<p>Visually, these colors are not evenly spaced - the greens are not as spread out as the other colors and are harder to distinguish. This can be addressed by using the Lab color space to select colors with the same saturation and value, but with hue values chosen to optimize the distance in that space:<br/>
+<img src="draw_hue_spread_360_get_lab_spread_colors_1_1.png"/>
+<img src="draw_hue_circle_12_get_lab_spread_colors_1.png"/>
+<img src="draw_lab_hues_12_10.0_5.0_5_5_get_lab_spread_colors.png"/>
+</p>
+<p>However, the Lab delta spaces still does not achieve anything uniform perceptual difference over large distances; using defined Delta-E functions on this space should improve the distribution as shown at right:<br/>
+<img src="draw_hue_spread_120_get_delta_spread_colors_1_False.png"/>
+<img src="draw_hue_circle_12_get_delta_spread_colors_1.png"/>
+<img src="draw_lab_hues_12_10.0_5.0_5_5_get_delta_spread_colors.png"/>
+<br/>There are still notable bands of color that stand out in the left-most diagrams, which indicates that this isn't as smooth as we would like it to be...
+</p>
+<p>This is an interesting alternative generating RGB colors directly using the sin<sup>2</sup> function which generates a smoother, more flourescent set of colours (see <a href="http://basecase.org/env/on-rainbows">Charlie Loyd</a> and <a href="http://krazydad.com/tutorials/makecolors.php">Jim Budgardner</a>'s independent development of this technique):<br/>
+<img src="draw_hue_spread_360_get_sine_bow_colors_1_False.png"/>
+<img src="draw_hue_circle_12_get_sine_bow_colors_1.png"/>
+</p>
+<p>But none of these really look right to me. Perhaps it is because the hue mapping functions tend to see red green and blue as equidistant; but al alternative set as used in paint mixing is red yellow and blue. What if we used red, yellow and blue instead of red, green and blue as equidistant colors, and simply remapped the hues to that? In addition, we could map try and compress the purple range slightly...</p>
+<img src="draw_hue_spread_360_get_yhue_spread_1_False.png"/>
+<img src="draw_hue_circle_12_get_yhue_spread_1.png"/>
+<p>Would it help to use the Lab delta functions to adjust this? The following diagram shows that it doesn't really...</p>
+<img src="draw_hue_spread_120_get_ydelta_spread_colors_1_False.png"/>
+<img src="draw_hue_circle_12_get_ydelta_spread_colors_1.png"/>
+<img src="draw_lab_hues_12_10.0_5.0_5_5_get_ydelta_spread_colors.png"/>
+<p><tt>© David Fraser 2013</tt></p>

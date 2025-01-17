@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="32.0cm" height="12.0cm" viewBox="0 0 320.0 120.0">
+
+    
+
+
+    <rect style="fill: white; stroke: black;" x="0.0" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="22.857142857142858" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="45.714285714285715" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="68.57142857142857" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="91.42857142857143" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="114.28571428571429" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="137.14285714285714" y="0" width="22.857142857142858" height="120.0"/>
+    <rect style="fill: black; stroke: black;" x="16.19047619047619" y="0" width="13.333333333333334" height="80.0"/><rect style="fill: black; stroke: black;" x="39.04761904761905" y="0" width="13.333333333333334" height="80.0"/><rect style="fill: black; stroke: black;" x="84.76190476190476" y="0" width="13.333333333333334" height="80.0"/><rect style="fill: black; stroke: black;" x="107.61904761904762" y="0" width="13.333333333333334" height="80.0"/><rect style="fill: black; stroke: black;" x="130.47619047619048" y="0" width="13.333333333333334" height="80.0"/>
+    
+        
+        <circle id="sticker_white_0" style="fill: #7fee11; stroke: black; stroke-width: 0.05;" cx="11.428571428571429" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_0" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="6.350476190476191" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(0 11.428571428571429 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_2" style="fill: #ee8011; stroke: black; stroke-width: 0.05;" cx="34.285714285714285" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_2" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="29.207619047619048" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(90 34.285714285714285 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_4" style="fill: #ee117f; stroke: black; stroke-width: 0.05;" cx="57.142857142857146" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_4" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="52.06476190476191" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(0 57.142857142857146 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_5" style="fill: #40ff40; stroke: black; stroke-width: 0.05;" cx="80.0" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_5" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="74.92190476190476" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(45 80.0 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_7" style="fill: #bfbf00; stroke: black; stroke-width: 0.05;" cx="102.85714285714286" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_7" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="97.77904761904762" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(135 102.85714285714286 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_9" style="fill: #ff4040; stroke: black; stroke-width: 0.05;" cx="125.71428571428572" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_9" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="120.63619047619048" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(45 125.71428571428572 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_11" style="fill: #bf00bf; stroke: black; stroke-width: 0.05;" cx="148.57142857142856" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_11" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="143.4933333333333" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(135 148.57142857142856 107.36842105263158)"/>
+    
+    
+    
+        
+        <circle id="sticker_black_1" style="fill: #4040ff; stroke: black; stroke-width: 0.05;" cx="22.857142857142858" cy="71.57894736842105" r="5.333333333333334"/>
+        <rect id="sticker_bar_black_1" style="fill: black; stroke: none;" rx="2.666666666666667" ry="2.666666666666667" x="19.30247619047619" y="70.24561403508773" width="7.109333333333334" height="2.666666666666667" transform="rotate(45 22.857142857142858 71.57894736842105)"/>
+    
+    
+        
+        <circle id="sticker_black_3" style="fill: #00bfbf; stroke: black; stroke-width: 0.05;" cx="45.714285714285715" cy="71.57894736842105" r="5.333333333333334"/>
+        <rect id="sticker_bar_black_3" style="fill: black; stroke: none;" rx="2.666666666666667" ry="2.666666666666667" x="42.159619047619046" y="70.24561403508773" width="7.109333333333334" height="2.666666666666667" transform="rotate(135 45.714285714285715 71.57894736842105)"/>
+    
+    
+        
+        <circle id="sticker_black_6" style="fill: #8011ee; stroke: black; stroke-width: 0.05;" cx="91.42857142857143" cy="71.57894736842105" r="5.333333333333334"/>
+        <rect id="sticker_bar_black_6" style="fill: black; stroke: none;" rx="2.666666666666667" ry="2.666666666666667" x="87.87390476190477" y="70.24561403508773" width="7.109333333333334" height="2.666666666666667" transform="rotate(90 91.42857142857143 71.57894736842105)"/>
+    
+    
+        
+        <circle id="sticker_black_8" style="fill: #117fee; stroke: black; stroke-width: 0.05;" cx="114.28571428571429" cy="71.57894736842105" r="5.333333333333334"/>
+        <rect id="sticker_bar_black_8" style="fill: black; stroke: none;" rx="2.666666666666667" ry="2.666666666666667" x="110.73104761904763" y="70.24561403508773" width="7.109333333333334" height="2.666666666666667" transform="rotate(0 114.28571428571429 71.57894736842105)"/>
+    
+    
+        
+        <circle id="sticker_black_10" style="fill: #11ee80; stroke: black; stroke-width: 0.05;" cx="137.14285714285714" cy="71.57894736842105" r="5.333333333333334"/>
+        <rect id="sticker_bar_black_10" style="fill: black; stroke: none;" rx="2.666666666666667" ry="2.666666666666667" x="133.58819047619048" y="70.24561403508773" width="7.109333333333334" height="2.666666666666667" transform="rotate(90 137.14285714285714 71.57894736842105)"/>
+    
+    
+
+    <rect style="fill: white; stroke: black;" x="160.0" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="182.85714285714286" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="205.71428571428572" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="228.57142857142856" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="251.42857142857144" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="274.2857142857143" y="0" width="22.857142857142858" height="120.0"/><rect style="fill: white; stroke: black;" x="297.1428571428571" y="0" width="22.857142857142858" height="120.0"/>
+    <rect style="fill: black; stroke: black;" x="176.1904761904762" y="0" width="13.333333333333334" height="80.0"/><rect style="fill: black; stroke: black;" x="199.04761904761907" y="0" width="13.333333333333334" height="80.0"/><rect style="fill: black; stroke: black;" x="244.7619047619048" y="0" width="13.333333333333334" height="80.0"/><rect style="fill: black; stroke: black;" x="267.6190476190476" y="0" width="13.333333333333334" height="80.0"/><rect style="fill: black; stroke: black;" x="290.4761904761904" y="0" width="13.333333333333334" height="80.0"/>
+    
+        
+        <circle id="sticker_white_0" style="fill: #7fee11; stroke: black; stroke-width: 0.05;" cx="171.42857142857142" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_0" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="166.35047619047617" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(0 171.42857142857142 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_2" style="fill: #ee8011; stroke: black; stroke-width: 0.05;" cx="194.28571428571428" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_2" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="189.20761904761903" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(90 194.28571428571428 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_4" style="fill: #ee117f; stroke: black; stroke-width: 0.05;" cx="217.14285714285714" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_4" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="212.0647619047619" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(0 217.14285714285714 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_5" style="fill: #40ff40; stroke: black; stroke-width: 0.05;" cx="239.99999999999997" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_5" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="234.92190476190473" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(45 239.99999999999997 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_7" style="fill: #bfbf00; stroke: black; stroke-width: 0.05;" cx="262.8571428571429" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_7" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="257.7790476190477" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(135 262.8571428571429 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_9" style="fill: #ff4040; stroke: black; stroke-width: 0.05;" cx="285.7142857142857" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_9" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="280.6361904761905" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(45 285.7142857142857 107.36842105263158)"/>
+    
+    
+        
+        <circle id="sticker_white_11" style="fill: #bf00bf; stroke: black; stroke-width: 0.05;" cx="308.57142857142856" cy="107.36842105263158" r="7.6190476190476195"/>
+        <rect id="sticker_bar_white_11" style="fill: black; stroke: none;" rx="3.8095238095238098" ry="3.8095238095238098" x="303.49333333333334" y="105.46365914786968" width="10.156190476190476" height="3.8095238095238098" transform="rotate(135 308.57142857142856 107.36842105263158)"/>
+    
+    
+    
+        
+        <circle id="sticker_black_1" style="fill: #4040ff; stroke: black; stroke-width: 0.05;" cx="182.85714285714286" cy="71.57894736842105" r="5.333333333333334"/>
+        <rect id="sticker_bar_black_1" style="fill: black; stroke: none;" rx="2.666666666666667" ry="2.666666666666667" x="179.3024761904762" y="70.24561403508773" width="7.109333333333334" height="2.666666666666667" transform="rotate(45 182.85714285714286 71.57894736842105)"/>
+    
+    
+        
+        <circle id="sticker_black_3" style="fill: #00bfbf; stroke: black; stroke-width: 0.05;" cx="205.71428571428572" cy="71.57894736842105" r="5.333333333333334"/>
+        <rect id="sticker_bar_black_3" style="fill: black; stroke: none;" rx="2.666666666666667" ry="2.666666666666667" x="202.15961904761906" y="70.24561403508773" width="7.109333333333334" height="2.666666666666667" transform="rotate(135 205.71428571428572 71.57894736842105)"/>
+    
+    
+        
+        <circle id="sticker_black_6" style="fill: #8011ee; stroke: black; stroke-width: 0.05;" cx="251.42857142857144" cy="71.57894736842105" r="5.333333333333334"/>
+        <rect id="sticker_bar_black_6" style="fill: black; stroke: none;" rx="2.666666666666667" ry="2.666666666666667" x="247.87390476190478" y="70.24561403508773" width="7.109333333333334" height="2.666666666666667" transform="rotate(90 251.42857142857144 71.57894736842105)"/>
+    
+    
+        
+        <circle id="sticker_black_8" style="fill: #117fee; stroke: black; stroke-width: 0.05;" cx="274.2857142857143" cy="71.57894736842105" r="5.333333333333334"/>
+        <rect id="sticker_bar_black_8" style="fill: black; stroke: none;" rx="2.666666666666667" ry="2.666666666666667" x="270.7310476190476" y="70.24561403508773" width="7.109333333333334" height="2.666666666666667" transform="rotate(0 274.2857142857143 71.57894736842105)"/>
+    
+    
+        
+        <circle id="sticker_black_10" style="fill: #11ee80; stroke: black; stroke-width: 0.05;" cx="297.1428571428571" cy="71.57894736842105" r="5.333333333333334"/>
+        <rect id="sticker_bar_black_10" style="fill: black; stroke: none;" rx="2.666666666666667" ry="2.666666666666667" x="293.58819047619045" y="70.24561403508773" width="7.109333333333334" height="2.666666666666667" transform="rotate(90 297.1428571428571 71.57894736842105)"/>
+    
+    
+
+</svg>
