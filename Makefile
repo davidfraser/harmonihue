@@ -30,11 +30,11 @@ ConditionalRmDir=if [ -d $1 ] ; then rm -r $1 ; fi
 LILYPOND_BOOK=lilypond-book
 endif
 
-output_genshi=$(foreach filename,$(wildcard *.genshi.html),out/$(filename:.genshi.html=.html))
-output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),out/$(filename:.lilypond-genshi.html=.html))
-output_sample_lilypond=$(foreach filename,$(wildcard samples/*.ly),out/$(filename:.ly=.pdf) out/$(filename))
-output_svg=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.svg))
-output_png=$(foreach filename,$(wildcard *.genshi.svg),out/$(filename:.genshi.svg=.png))
+output_genshi=$(foreach filename,$(wildcard *.genshi.html),docs/$(filename:.genshi.html=.html))
+output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),docs/$(filename:.lilypond-genshi.html=.html))
+output_sample_lilypond=$(foreach filename,$(wildcard samples/*.ly),docs/$(filename:.ly=.pdf) docs/$(filename))
+output_svg=$(foreach filename,$(wildcard *.genshi.svg),docs/$(filename:.genshi.svg=.svg))
+output_png=$(foreach filename,$(wildcard *.genshi.svg),docs/$(filename:.genshi.svg=.png))
 html_includes=header.html footer.html head_contents.html
 genshify_args="target=\"mezzanine_include\""
 
@@ -43,12 +43,12 @@ all: build_all
 build_all: chromaturn.ly $(output_genshi) $(output_lilypond_genshi) $(output_svg) $(output_png) $(output_sample_lilypond)
 
 clean:
-	$(RRM) out
+	$(RRM) docs
 	$(RRM) tmp
 	$(RM) chromaturn.ly
 
-SAMPLES=out/samples/.d
-OUT=out/.d
+SAMPLES=docs/samples/.d
+OUT=docs/.d
 TMP=tmp/.d
 
 %/.d:
@@ -63,45 +63,45 @@ include Makefile.pydeps
 %.ly: %.genshi.ly
 	python ./genshify -o $@ $< ${genshify_args}
 
-out/guitar-fretboard.svg: guitar_layout.py sticker-def.genshi.xml guitar-base.genshi.xml guitar-strings.genshi.xml
+docs/guitar-fretboard.svg: guitar_layout.py sticker-def.genshi.xml guitar-base.genshi.xml guitar-strings.genshi.xml
 
-out/piano-keyboard.svg: piano_layout.py
+docs/piano-keyboard.svg: piano_layout.py
 
-out/%.svg: %.genshi.svg $(OUT)
+docs/%.svg: %.genshi.svg $(OUT)
 	python ./genshify -o $@ $< ${genshify_args}
 
-out/%.png: out/%.svg
+docs/%.png: docs/%.svg
 	inkscape $< -o $@
 
-out/%.html: %.genshi.html $(html_includes) $(OUT)
+docs/%.html: %.genshi.html $(html_includes) $(OUT)
 	python ./genshify -o $@ $< ${genshify_args}
 
-out/%.txt: %.genshi.txt $(OUT)
+docs/%.txt: %.genshi.txt $(OUT)
 	python ./genshify -o $@ $< ${genshify_args}
 
 # Remove temporary files to ensure regeneration of lilypond pictures, since lilypond-book does its own incomplete dependency check
-# include a temporary fix to copy the generated pngs into the out/ directory, since this is not happening on lilypond 2.22
-out/%.html: tmp/%.html $(OUT) $(TMP)
-	$(call ConditionalRmDir,out/lily/)
-	$(LILYPOND_BOOK) --lily-output-dir out/lily/ --process "lilypond -dbackend=eps" --output out/ $<
+# include a temporary fix to copy the generated pngs into the docs/ directory, since this is not happening on lilypond 2.22
+docs/%.html: tmp/%.html $(OUT) $(TMP)
+	$(call ConditionalRmDir,docs/lily/)
+	$(LILYPOND_BOOK) --lily-output-dir docs/lily/ --process "lilypond -dbackend=eps" --output docs/ $<
 	python copy-lily-pngs.py
-	$(call ConditionalRmDir,out/lily/)
+	$(call ConditionalRmDir,docs/lily/)
 
 tmp/%.html: %.lilypond-genshi.html chromaturn.ly $(TMP)
 	python ./genshify -o $@ $< ${genshify_args}
 
 # We ensure that this is copied to the target directory, and actually compile from there
-out/samples/%.ly: samples/%.ly $(SAMPLES)
+docs/samples/%.ly: samples/%.ly $(SAMPLES)
 	$(CP) $(call FixPath,$<) $(call FixPath,$@)
 
-out/samples/%.pdf: out/samples/%.ly $(SAMPLES) chromaturn.ly
+docs/samples/%.pdf: docs/samples/%.ly $(SAMPLES) chromaturn.ly
 	lilypond --pdf -o $(@:.pdf=) $<
 
 local: build_all
 	$(MKDIR) ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
-	rsync -avzP out/ ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
+	rsync -avzP docs/ ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
 
 upload: build_all
 	ssh longlake.frasergo.org "mkdir -p .virtualenv/frasergo/project/static/projects/harmonihue/"
-	rsync -avzP out/ longlake.frasergo.org:.virtualenv/frasergo/project/static/projects/harmonihue/
+	rsync -avzP docs/ longlake.frasergo.org:.virtualenv/frasergo/project/static/projects/harmonihue/
 

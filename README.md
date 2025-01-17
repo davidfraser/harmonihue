@@ -9,7 +9,7 @@ All source code in this repository is available under the [GPL v3](./LICENSE) li
 Book
 ----
 
-The main current focus is `book.genshi.html`. This is the source template for the documentation. It comprises of a [genshi](https://genshi.edgewall.org/) template for a HTML page that is then processed by lilypond to include musical score. The Python code used to generate the diagrams and tables in the template is located in `book_helpers.py`. To compile the book run `./make-book` - the book is then produced in `out/book.html` with associated files that are required.
+The main current focus is `book.genshi.html`. This is the source template for the documentation. It comprises of a [genshi](https://genshi.edgewall.org/) template for a HTML page that is then processed by lilypond to include musical score. The Python code used to generate the diagrams and tables in the template is located in `book_helpers.py`. To compile the book run `./make-book` - the book is then produced in `docs/book.html` with associated files that are required.
 
 Dependencies
 ------------
