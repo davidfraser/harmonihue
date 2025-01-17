@@ -35,12 +35,13 @@ output_lilypond_genshi=$(foreach filename,$(wildcard *.lilypond-genshi.html),doc
 output_sample_lilypond=$(foreach filename,$(wildcard samples/*.ly),docs/$(filename:.ly=.pdf) docs/$(filename))
 output_svg=$(foreach filename,$(wildcard *.genshi.svg),docs/$(filename:.genshi.svg=.svg))
 output_png=$(foreach filename,$(wildcard *.genshi.svg),docs/$(filename:.genshi.svg=.png))
+output_css=$(foreach filename,$(wildcard css/*.css),docs/$(filename))
 html_includes=header.html footer.html head_contents.html
-genshify_args="target=\"mezzanine_include\""
+# genshify_args="target=\"github_pages\""
 
 all: build_all
 
-build_all: chromaturn.ly $(output_genshi) $(output_lilypond_genshi) $(output_svg) $(output_png) $(output_sample_lilypond)
+build_all: chromaturn.ly $(output_css) $(output_genshi) $(output_lilypond_genshi) $(output_svg) $(output_png) $(output_sample_lilypond)
 
 clean:
 	$(RRM) docs
@@ -49,6 +50,7 @@ clean:
 
 SAMPLES=docs/samples/.d
 OUT=docs/.d
+OUT_CSS=docs/css/.d
 TMP=tmp/.d
 
 %/.d:
@@ -78,6 +80,9 @@ docs/%.html: %.genshi.html $(html_includes) $(OUT)
 
 docs/%.txt: %.genshi.txt $(OUT)
 	python ./genshify -o $@ $< ${genshify_args}
+
+docs/css/%.css: css/%.css $(OUT) $(OUT_CSS)
+	$(CP) $(call FixPath,$<) $(call FixPath,$@)
 
 # Remove temporary files to ensure regeneration of lilypond pictures, since lilypond-book does its own incomplete dependency check
 # include a temporary fix to copy the generated pngs into the docs/ directory, since this is not happening on lilypond 2.22
