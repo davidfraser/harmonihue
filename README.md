@@ -1,6 +1,11 @@
 harmonihue
 ==========
 
+License
+-------
+
+All source code in this repository is available under the [GPL v3](./LICENSE) license, unless otherwise specified.
+
 Book
 ----
 
