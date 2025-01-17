@@ -5,6 +5,5 @@ Makefile.pydeps
 **.pyc
 .*.sw*
 tmp
-docs
 # virtual environments
 venv*
