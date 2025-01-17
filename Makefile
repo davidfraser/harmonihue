@@ -97,11 +97,11 @@ docs/samples/%.ly: samples/%.ly $(SAMPLES)
 docs/samples/%.pdf: docs/samples/%.ly $(SAMPLES) chromaturn.ly
 	lilypond --pdf -o $(@:.pdf=) $<
 
-local: build_all
-	$(MKDIR) ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
-	rsync -avzP docs/ ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
+# local: build_all
+# 	$(MKDIR) ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
+# 	rsync -avzP docs/ ~/frasergo-website/frasergo-mezzanine/static/projects/harmonihue/
 
-upload: build_all
-	ssh longlake.frasergo.org "mkdir -p .virtualenv/frasergo/project/static/projects/harmonihue/"
-	rsync -avzP docs/ longlake.frasergo.org:.virtualenv/frasergo/project/static/projects/harmonihue/
+# upload: build_all
+# 	ssh longlake.frasergo.org "mkdir -p .virtualenv/frasergo/project/static/projects/harmonihue/"
+# 	rsync -avzP docs/ longlake.frasergo.org:.virtualenv/frasergo/project/static/projects/harmonihue/
 
