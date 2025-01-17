@@ -195,5 +195,5 @@ def get_sine_bow_colors(count=12, saturation=None, value=None):
 
 
 # use this to affect pages that are just wanting to use the chosen color spreading function
-default_spread_colors = get_yhue_spread
+default_spread_colors = get_sine_bow_colors
 
