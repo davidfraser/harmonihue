@@ -80,9 +80,11 @@ out/%.txt: %.genshi.txt $(OUT)
 	python ./genshify -o $@ $< ${genshify_args}
 
 # Remove temporary files to ensure regeneration of lilypond pictures, since lilypond-book does its own incomplete dependency check
+# include a temporary fix to copy the generated pngs into the out/ directory, since this is not happening on lilypond 2.22
 out/%.html: tmp/%.html $(OUT) $(TMP)
 	$(call ConditionalRmDir,out/lily/)
 	$(LILYPOND_BOOK) --lily-output-dir out/lily/ --process "lilypond -dbackend=eps" --output out/ $<
+	python copy-lily-pngs.py
 	$(call ConditionalRmDir,out/lily/)
 
 tmp/%.html: %.lilypond-genshi.html chromaturn.ly $(TMP)
